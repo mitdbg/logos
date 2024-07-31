@@ -1,0 +1,15 @@
+{
+    "suffix": "postgresql.log",
+    "true_causes": [
+        "work_mem mean",
+        "max_parallel_workers mean"
+    ],
+    "outcome": "duration mean",
+    "ranking_columns": [
+        "rank",
+        "candidate"
+    ],
+    "latency_columns": [
+        "latency"
+    ]
+}

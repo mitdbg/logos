@@ -1,0 +1,18 @@
+{
+    "suffix": ".log",
+    "true_causes": [
+        "x mean"
+    ],
+    "outcome": "y mean",
+    "ranking_columns": [
+        "V",
+        "R",
+        "rank",
+        "candidate"
+    ],
+    "latency_columns": [
+        "V",
+        "R",
+        "latency"
+    ]
+}

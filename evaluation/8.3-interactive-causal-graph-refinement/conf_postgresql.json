@@ -1,0 +1,51 @@
+{
+    "suffix": "postgresql.log",
+    "treatment": "max_parallel_workers mean",
+    "outcome": "duration mean",
+    "starting_graph_edges": [
+        [
+            "max_parallel_workers mean",
+            "duration mean"
+        ]
+    ],
+    "true_graph_edges": [
+        [
+            "work_mem mean",
+            "duration mean"
+        ],
+        [
+            "max_parallel_workers mean",
+            "duration mean"
+        ],
+        [
+            "work_mem mean",
+            "max_parallel_workers mean"
+        ],
+        [
+            "maintenance_work_mem mean",
+            "duration mean"
+        ],
+        [
+            "effective_cache_size mean",
+            "duration mean"
+        ],
+        [
+            "seq_page_cost mean",
+            "duration mean"
+        ],
+        [
+            "random_page_cost mean",
+            "duration mean"
+        ]
+    ],
+    "results_columns": [
+        "judgments",
+        "edge",
+        "ATE",
+        "ARE_ATE"
+    ],
+    "latency_columns": [
+        "judgments",
+        "latency"
+    ]
+}

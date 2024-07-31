@@ -1,0 +1,1820 @@
+
+
+========================================
+
+
+2024-01-03 06:05:50.942151 Starting PostgreSQL
+
+2024-01-03 06:05:50.946116 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-03 06:05:51.071805 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f53c7dfa0c0>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-03 06:05:51.077663 Done running pc with fisherz
+2024-01-03 06:05:51.077755 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-03 06:05:51.279817 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f53c7dfa0c0>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-03 06:05:51.286376 Done running pc with mv_fisherz
+2024-01-03 06:05:51.286516 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 06:05:51.351353 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f53c7dfa0c0>: 'm'
+2024-01-03 06:05:51.354934 Done running pc with mc_fisherz
+2024-01-03 06:05:51.355027 Running pc with kci
+2024-01-03 06:35:51.455707 Function timed out
+2024-01-03 06:35:51.470300 Done running pc with kci
+2024-01-03 06:35:51.470509 Running pc with chisq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 06:35:53.295567 Writing out pc with chisq
+2024-01-03 06:35:53.464141 Done running pc with chisq
+2024-01-03 06:35:53.464264 Running pc with gsq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 06:35:55.441201 Done running pc with gsq
+2024-01-03 06:35:55.441470 Running pc with d_separation
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 06:35:55.508248 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f53c7dfa0c0>: 'NoneType' object has no attribute 'is_directed'
+2024-01-03 06:35:55.511779 Done running pc with d_separation
+2024-01-03 06:35:55.519352 Running fci with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-03 06:35:55.638594 Error running <function run_method_with_timer.<locals>.run_fci at 0x7f53c7dfa480>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-03 06:35:55.645771 Done running fci with fisherz
+2024-01-03 06:35:55.645878 Running fci with kci
+2024-01-03 07:05:55.748850 Function timed out
+2024-01-03 07:05:55.768293 Done running fci with kci
+2024-01-03 07:05:55.768428 Running fci with chisq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 07:05:57.576112 Writing out fci with chisq
+2024-01-03 07:05:57.730178 Done running fci with chisq
+2024-01-03 07:05:57.730302 Running fci with gsq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 07:05:59.820409 Done running fci with gsq
+2024-01-03 07:05:59.839519 Running gin with kci
+2024-01-03 07:35:59.876857 Function timed out
+2024-01-03 07:35:59.881953 Done running gin with kci
+2024-01-03 07:35:59.882205 Running gin with hsic
+2024-01-03 08:05:59.992324 Function timed out
+2024-01-03 08:05:59.997348 Done running gin with hsic
+2024-01-03 08:06:00.008502 Running grasp with local_score_CV_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+
+GRaSP completed in: 1545.75s 
+2024-01-03 08:31:45.948226 Writing out grasp with local_score_CV_general
+2024-01-03 08:31:46.061516 Done running grasp with local_score_CV_general
+2024-01-03 08:31:46.061853 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+2024-01-03 08:31:46.086213 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa200>: Array must not contain infs or NaNs
+2024-01-03 08:31:46.091977 Done running grasp with local_score_marginal_general
+2024-01-03 08:31:46.092107 Running grasp with local_score_CV_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 08:31:46.106897 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa200>: 147
+2024-01-03 08:31:46.109842 Done running grasp with local_score_CV_multi
+2024-01-03 08:31:46.109928 Running grasp with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 08:31:46.124667 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa200>: 145
+2024-01-03 08:31:46.127453 Done running grasp with local_score_marginal_multi
+2024-01-03 08:31:46.127555 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:35: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+2024-01-03 08:31:46.179957 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa200>: Singular matrix
+2024-01-03 08:31:46.182844 Done running grasp with local_score_BIC
+2024-01-03 08:31:46.183145 Running grasp with local_score_BDeu
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+
+GRaSP edge count: 8    
+GRaSP edge count: 7    
+GRaSP completed in: 183.61s 
+2024-01-03 08:34:49.882239 Writing out grasp with local_score_BDeu
+2024-01-03 08:34:50.065370 Done running grasp with local_score_BDeu
+2024-01-03 08:34:50.068512 Running ges with local_score_CV_general
+2024-01-03 09:04:50.171463 Function timed out
+2024-01-03 09:04:50.186782 Done running ges with local_score_CV_general
+2024-01-03 09:04:50.187066 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-03 09:04:50.242122 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f53c7dfa200>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 09:04:50.248872 Done running ges with local_score_marginal_general
+2024-01-03 09:04:50.249013 Running ges with local_score_CV_multi
+2024-01-03 09:34:50.351287 Function timed out
+2024-01-03 09:34:50.363616 Done running ges with local_score_CV_multi
+2024-01-03 09:34:50.363735 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-03 09:34:50.415003 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f53c7dfa200>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 09:34:50.421060 Done running ges with local_score_marginal_multi
+2024-01-03 09:34:50.421190 Running ges with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-03 09:34:51.814271 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f53c7dfa200>: Singular matrix
+2024-01-03 09:34:51.823610 Done running ges with local_score_BIC
+2024-01-03 09:34:51.823990 Running ges with local_score_BIC_from_cov
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-03 09:34:53.226743 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f53c7dfa200>: Singular matrix
+2024-01-03 09:34:53.235627 Done running ges with local_score_BIC_from_cov
+2024-01-03 09:34:53.235978 Running ges with local_score_BDeu
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 09:57:25.996371 Writing out ges with local_score_BDeu
+2024-01-03 09:57:26.182626 Done running ges with local_score_BDeu
+2024-01-03 09:57:26.186337 Running exact_search with dp
+2024-01-03 09:57:26.221640 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7f53c7dfa7a0>: can only convert an array of size 1 to a Python scalar
+2024-01-03 09:57:26.225030 Done running exact_search with dp
+2024-01-03 09:57:26.225118 Running exact_search with astar
+2024-01-03 09:57:26.259700 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7f53c7dfa7a0>: can only convert an array of size 1 to a Python scalar
+2024-01-03 09:57:26.262718 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-03 09:57:26.263546 Starting XYZ_10
+
+2024-01-03 09:57:26.268986 Running pc with fisherz
+2024-01-03 09:57:27.424565 Writing out pc with fisherz
+2024-01-03 09:57:27.772686 Done running pc with fisherz
+2024-01-03 09:57:27.772819 Running pc with mv_fisherz
+2024-01-03 09:57:31.628584 Writing out pc with mv_fisherz
+2024-01-03 09:57:31.981817 Done running pc with mv_fisherz
+2024-01-03 09:57:31.982017 Running pc with mc_fisherz
+2024-01-03 09:57:31.992973 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f53c7dfa020>: 'm'
+2024-01-03 09:57:31.996780 Done running pc with mc_fisherz
+2024-01-03 09:57:31.996922 Running pc with kci
+2024-01-03 10:03:13.096464 Writing out pc with kci
+2024-01-03 10:03:13.477972 Done running pc with kci
+2024-01-03 10:03:13.478129 Running pc with chisq
+2024-01-03 10:03:23.656359 Writing out pc with chisq
+2024-01-03 10:03:23.985969 Done running pc with chisq
+2024-01-03 10:03:23.986107 Running pc with gsq
+2024-01-03 10:03:25.380298 Done running pc with gsq
+2024-01-03 10:03:25.380658 Running pc with d_separation
+2024-01-03 10:03:25.396162 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f53c7dfa020>: 'NoneType' object has no attribute 'is_directed'
+2024-01-03 10:03:25.399916 Done running pc with d_separation
+2024-01-03 10:03:25.406846 Running fci with fisherz
+2024-01-03 10:03:27.271998 Writing out fci with fisherz
+2024-01-03 10:03:27.514304 Done running fci with fisherz
+2024-01-03 10:03:27.514618 Running fci with kci
+2024-01-03 10:08:42.319904 Writing out fci with kci
+2024-01-03 10:08:42.644501 Done running fci with kci
+2024-01-03 10:08:42.644654 Running fci with chisq
+2024-01-03 10:08:52.798424 Writing out fci with chisq
+2024-01-03 10:08:53.137509 Done running fci with chisq
+2024-01-03 10:08:53.137627 Running fci with gsq
+2024-01-03 10:08:54.565174 Done running fci with gsq
+2024-01-03 10:08:54.575518 Running gin with kci
+2024-01-03 10:11:31.495755 Writing out gin with kci
+2024-01-03 10:11:31.772797 Done running gin with kci
+2024-01-03 10:11:31.772909 Running gin with hsic
+2024-01-03 10:14:49.684631 Writing out gin with hsic
+2024-01-03 10:14:49.960411 Done running gin with hsic
+2024-01-03 10:14:49.962853 Running grasp with local_score_CV_general
+
+GRaSP edge count: 14    
+GRaSP edge count: 14    
+GRaSP edge count: 14    
+GRaSP completed in: 1729.11s 
+2024-01-03 10:43:39.102482 Writing out grasp with local_score_CV_general
+2024-01-03 10:43:39.421359 Done running grasp with local_score_CV_general
+2024-01-03 10:43:39.421463 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-03 10:43:40.723067 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa7a0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 10:43:40.732162 Done running grasp with local_score_marginal_general
+2024-01-03 10:43:40.732379 Running grasp with local_score_CV_multi
+2024-01-03 10:43:40.738981 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa7a0>: 0
+2024-01-03 10:43:40.741847 Done running grasp with local_score_CV_multi
+2024-01-03 10:43:40.741951 Running grasp with local_score_marginal_multi
+2024-01-03 10:43:40.746185 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f53c7dfa7a0>: 10
+2024-01-03 10:43:40.748864 Done running grasp with local_score_marginal_multi
+2024-01-03 10:43:40.748943 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:39: RuntimeWarning: invalid value encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+
+GRaSP edge count: 43    
+GRaSP edge count: 40    
+GRaSP edge count: 42    
+GRaSP edge count: 41    
+GRaSP edge count: 41    
+GRaSP edge count: 42    
+GRaSP edge count: 40    
+GRaSP completed in: 1.90s 
+2024-01-03 10:43:42.689759 Writing out grasp with local_score_BIC
+2024-01-03 10:43:42.922623 Done running grasp with local_score_BIC
+2024-01-03 10:43:42.922751 Running grasp with local_score_BDeu
+
+GRaSP completed in: 243.45s 
+2024-01-03 10:47:46.389869 Writing out grasp with local_score_BDeu
+2024-01-03 10:47:46.597588 Done running grasp with local_score_BDeu
+2024-01-03 10:47:46.599863 Running ges with local_score_CV_general
+2024-01-03 11:17:46.700688 Function timed out
+2024-01-03 11:17:46.710194 Done running ges with local_score_CV_general
+2024-01-03 11:17:46.710329 Running ges with local_score_marginal_general
+2024-01-03 11:17:48.057167 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f53c7dfa200>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 11:17:48.065761 Done running ges with local_score_marginal_general
+2024-01-03 11:17:48.065903 Running ges with local_score_CV_multi
+2024-01-03 11:47:48.170491 Function timed out
+2024-01-03 11:47:48.180119 Done running ges with local_score_CV_multi
+2024-01-03 11:47:48.180549 Running ges with local_score_marginal_multi
+2024-01-03 11:47:49.520252 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f53c7dfa200>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 11:47:49.529671 Done running ges with local_score_marginal_multi
+2024-01-03 11:47:49.530049 Running ges with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: invalid value encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-03 11:48:44.128031 Writing out ges with local_score_BIC
+2024-01-03 11:48:44.324391 Done running ges with local_score_BIC
+2024-01-03 11:48:44.324542 Running ges with local_score_BIC_from_cov
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: invalid value encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-03 11:49:41.372017 Writing out ges with local_score_BIC_from_cov
+2024-01-03 11:49:41.582746 Done running ges with local_score_BIC_from_cov
+2024-01-03 11:49:41.582886 Running ges with local_score_BDeu
+2024-01-03 11:56:50.447976 Writing out ges with local_score_BDeu
+2024-01-03 11:56:50.661959 Done running ges with local_score_BDeu
+2024-01-03 11:56:50.664348 Running exact_search with dp
+Traceback (most recent call last):
+  File "~/causal-log/evaluation/discovery/discovery.py", line 274, in <module>
+    main()
+  File "~/causal-log/evaluation/discovery/discovery.py", line 258, in main
+    for dataset_name in datasets.keys()[2:]:
+                        ~~~~~~~~~~~~~~~^^^^
+TypeError: 'dict_keys' object is not subscriptable
+
+
+========================================
+
+
+2024-01-03 12:20:56.737715 Starting XYZ_100
+
+2024-01-03 12:20:56.744681 Running pc with fisherz
+2024-01-03 12:22:32.066212 Writing out pc with fisherz
+2024-01-03 12:22:34.054368 Done running pc with fisherz
+2024-01-03 12:22:34.054519 Running pc with mv_fisherz
+2024-01-03 12:25:37.635699 Writing out pc with mv_fisherz
+2024-01-03 12:25:39.808483 Done running pc with mv_fisherz
+2024-01-03 12:25:39.808643 Running pc with mc_fisherz
+2024-01-03 12:25:39.887382 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686df80>: 'm'
+2024-01-03 12:25:39.891189 Done running pc with mc_fisherz
+2024-01-03 12:25:39.891302 Running pc with kci
+2024-01-03 12:55:39.992901 Function timed out
+2024-01-03 12:55:40.011034 Done running pc with kci
+2024-01-03 12:55:40.011381 Running pc with chisq
+2024-01-03 12:57:13.146582 Done running pc with chisq
+2024-01-03 12:57:13.146818 Running pc with gsq
+2024-01-03 12:59:15.058904 Done running pc with gsq
+2024-01-03 12:59:15.059145 Running pc with d_separation
+2024-01-03 12:59:15.132949 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686df80>: 'NoneType' object has no attribute 'is_directed'
+2024-01-03 12:59:15.136375 Done running pc with d_separation
+2024-01-03 12:59:15.147119 Running fci with fisherz
+2024-01-03 12:59:46.548395 Writing out fci with fisherz
+2024-01-03 12:59:49.498198 Done running fci with fisherz
+2024-01-03 12:59:49.498449 Running fci with kci
+2024-01-03 13:29:49.596217 Function timed out
+2024-01-03 13:29:49.616344 Done running fci with kci
+2024-01-03 13:29:49.616514 Running fci with chisq
+2024-01-03 13:31:25.005969 Done running fci with chisq
+2024-01-03 13:31:25.006332 Running fci with gsq
+2024-01-03 13:33:27.828012 Done running fci with gsq
+2024-01-03 13:33:27.853437 Running gin with kci
+2024-01-03 14:03:27.921230 Function timed out
+2024-01-03 14:03:27.931381 Done running gin with kci
+2024-01-03 14:03:27.931636 Running gin with hsic
+2024-01-03 14:33:27.946729 Function timed out
+2024-01-03 14:33:27.956058 Done running gin with hsic
+2024-01-03 14:33:27.963584 Running grasp with local_score_CV_general
+2024-01-03 15:03:28.068685 Function timed out
+2024-01-03 15:03:28.080084 Done running grasp with local_score_CV_general
+2024-01-03 15:03:28.080368 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-03 15:03:29.571018 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e0c0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 15:03:29.580853 Done running grasp with local_score_marginal_general
+2024-01-03 15:03:29.580991 Running grasp with local_score_CV_multi
+2024-01-03 15:03:29.600595 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e0c0>: 55
+2024-01-03 15:03:29.603938 Done running grasp with local_score_CV_multi
+2024-01-03 15:03:29.604255 Running grasp with local_score_marginal_multi
+2024-01-03 15:03:29.623815 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e0c0>: 79
+2024-01-03 15:03:29.626653 Done running grasp with local_score_marginal_multi
+2024-01-03 15:03:29.626738 Running grasp with local_score_BIC
+
+GRaSP edge count: 7    
+GRaSP completed in: 29.18s 
+2024-01-03 15:03:58.938690 Writing out grasp with local_score_BIC
+2024-01-03 15:03:59.055103 Done running grasp with local_score_BIC
+2024-01-03 15:03:59.055288 Running grasp with local_score_BDeu
+2024-01-03 15:33:59.110366 Function timed out
+2024-01-03 15:33:59.119459 Done running grasp with local_score_BDeu
+2024-01-03 15:33:59.133973 Running ges with local_score_CV_general
+2024-01-03 16:03:59.241805 Function timed out
+2024-01-03 16:03:59.255462 Done running ges with local_score_CV_general
+2024-01-03 16:03:59.255741 Running ges with local_score_marginal_general
+2024-01-03 16:04:00.575645 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f19f686e0c0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 16:04:00.585613 Done running ges with local_score_marginal_general
+2024-01-03 16:04:00.585766 Running ges with local_score_CV_multi
+2024-01-03 16:34:00.681745 Function timed out
+2024-01-03 16:34:00.696518 Done running ges with local_score_CV_multi
+2024-01-03 16:34:00.696873 Running ges with local_score_marginal_multi
+2024-01-03 16:34:02.021857 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f19f686e0c0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-03 16:34:02.031692 Done running ges with local_score_marginal_multi
+2024-01-03 16:34:02.031850 Running ges with local_score_BIC
+2024-01-03 16:58:26.447517 Writing out ges with local_score_BIC
+2024-01-03 16:58:26.568012 Done running ges with local_score_BIC
+2024-01-03 16:58:26.568179 Running ges with local_score_BIC_from_cov
+2024-01-03 17:22:52.914085 Writing out ges with local_score_BIC_from_cov
+2024-01-03 17:22:53.033003 Done running ges with local_score_BIC_from_cov
+2024-01-03 17:22:53.033189 Running ges with local_score_BDeu
+2024-01-03 17:52:53.138320 Function timed out
+2024-01-03 17:52:53.148536 Done running ges with local_score_BDeu
+2024-01-03 17:52:53.163225 Running exact_search with dp
+2024-01-03 18:22:53.220149 Function timed out
+2024-01-03 18:22:53.233322 Done running exact_search with dp
+2024-01-03 18:22:53.233934 Running exact_search with astar
+2024-01-03 18:52:53.250760 Function timed out
+2024-01-03 18:52:53.261536 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-03 18:52:53.263228 Starting XYZ_1000
+
+2024-01-03 18:52:53.314981 Running pc with fisherz
+2024-01-03 19:22:53.354752 Function timed out
+2024-01-03 19:22:53.509035 Done running pc with fisherz
+2024-01-03 19:22:53.509320 Running pc with mv_fisherz
+2024-01-03 19:52:53.604395 Function timed out
+2024-01-03 19:52:53.632977 Done running pc with mv_fisherz
+2024-01-03 19:52:53.633238 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 19:53:00.175076 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686df80>: 'm'
+2024-01-03 19:53:00.193606 Done running pc with mc_fisherz
+2024-01-03 19:53:00.193914 Running pc with kci
+2024-01-03 20:23:00.301884 Function timed out
+2024-01-03 20:23:00.317261 Done running pc with kci
+2024-01-03 20:23:00.317619 Running pc with chisq
+2024-01-03 20:53:00.428051 Function timed out
+2024-01-03 20:53:00.451555 Done running pc with chisq
+2024-01-03 20:53:00.451910 Running pc with gsq
+2024-01-03 21:23:00.562291 Function timed out
+2024-01-03 21:23:00.583743 Done running pc with gsq
+2024-01-03 21:23:00.584102 Running pc with d_separation
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-03 21:23:07.268821 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686df80>: 'NoneType' object has no attribute 'is_directed'
+2024-01-03 21:23:07.287485 Done running pc with d_separation
+2024-01-03 21:23:07.343171 Running fci with fisherz
+2024-01-03 21:53:07.417666 Function timed out
+2024-01-03 21:53:07.705524 Done running fci with fisherz
+2024-01-03 21:53:07.705768 Running fci with kci
+2024-01-03 22:23:07.731322 Function timed out
+2024-01-03 22:23:07.749149 Done running fci with kci
+2024-01-03 22:23:07.749485 Running fci with chisq
+2024-01-03 22:53:07.858453 Function timed out
+2024-01-03 22:53:07.886959 Done running fci with chisq
+2024-01-03 22:53:07.887303 Running fci with gsq
+2024-01-03 23:23:07.973778 Function timed out
+2024-01-03 23:23:07.999290 Done running fci with gsq
+2024-01-03 23:23:08.087454 Running gin with kci
+2024-01-03 23:53:08.133163 Function timed out
+2024-01-03 23:53:08.149913 Done running gin with kci
+2024-01-03 23:53:08.150157 Running gin with hsic
+2024-01-04 00:23:08.255908 Function timed out
+2024-01-04 00:23:08.272349 Done running gin with hsic
+2024-01-04 00:23:08.306640 Running grasp with local_score_CV_general
+2024-01-04 00:53:08.411798 Function timed out
+2024-01-04 00:53:08.430466 Done running grasp with local_score_CV_general
+2024-01-04 00:53:08.430737 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+2024-01-04 00:53:09.776015 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e340>: Array must not contain infs or NaNs
+2024-01-04 00:53:09.789954 Done running grasp with local_score_marginal_general
+2024-01-04 00:53:09.790109 Running grasp with local_score_CV_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 00:53:11.044250 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e340>: 191
+2024-01-04 00:53:11.053307 Done running grasp with local_score_CV_multi
+2024-01-04 00:53:11.053550 Running grasp with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 00:53:12.317410 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e340>: 66
+2024-01-04 00:53:12.326510 Done running grasp with local_score_marginal_multi
+2024-01-04 00:53:12.326814 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:35: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+2024-01-04 00:54:43.665792 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f19f686e340>: Singular matrix
+2024-01-04 00:54:43.684809 Done running grasp with local_score_BIC
+2024-01-04 00:54:43.684958 Running grasp with local_score_BDeu
+2024-01-04 01:24:43.785724 Function timed out
+2024-01-04 01:24:43.797881 Done running grasp with local_score_BDeu
+2024-01-04 01:24:43.854126 Running ges with local_score_CV_general
+2024-01-04 01:54:43.961705 Function timed out
+2024-01-04 01:54:43.984758 Done running ges with local_score_CV_general
+2024-01-04 01:54:43.985013 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 01:54:46.538316 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f19f686e020>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 01:54:46.552945 Done running ges with local_score_marginal_general
+2024-01-04 01:54:46.553076 Running ges with local_score_CV_multi
+2024-01-04 02:24:46.654590 Function timed out
+2024-01-04 02:24:46.674712 Done running ges with local_score_CV_multi
+2024-01-04 02:24:46.674944 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 02:24:49.216816 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f19f686e020>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 02:24:49.231735 Done running ges with local_score_marginal_multi
+2024-01-04 02:24:49.231896 Running ges with local_score_BIC
+2024-01-04 02:54:49.334999 Function timed out
+2024-01-04 02:54:49.379967 Done running ges with local_score_BIC
+2024-01-04 02:54:49.380294 Running ges with local_score_BIC_from_cov
+2024-01-04 03:24:49.493820 Function timed out
+2024-01-04 03:24:49.541029 Done running ges with local_score_BIC_from_cov
+2024-01-04 03:24:49.541415 Running ges with local_score_BDeu
+2024-01-04 03:54:49.629236 Function timed out
+2024-01-04 03:54:49.642114 Done running ges with local_score_BDeu
+2024-01-04 03:54:49.794727 Running exact_search with dp
+2024-01-04 04:24:49.894332 Function timed out
+2024-01-04 04:24:49.902737 Done running exact_search with dp
+2024-01-04 04:24:49.902865 Running exact_search with astar
+2024-01-04 04:54:50.008167 Function timed out
+2024-01-04 04:54:50.016777 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-04 04:54:50.019044 Starting OpenStack_Cinder
+
+2024-01-04 04:54:50.028985 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 04:54:51.071671 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686e160>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 04:54:51.081667 Done running pc with fisherz
+2024-01-04 04:54:51.081866 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 04:54:53.342474 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686e160>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 04:54:53.353812 Done running pc with mv_fisherz
+2024-01-04 04:54:53.353958 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 04:54:54.021403 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f19f686e160>: 'm'
+2024-01-04 04:54:54.027793 Done running pc with mc_fisherz
+2024-01-04 04:54:54.028097 Running pc with kci
+2024-01-04 05:24:54.136787 Function timed out
+2024-01-04 05:24:54.165457 Done running pc with kci
+2024-01-04 05:24:54.165849 Running pc with chisq
+
+
+========================================
+
+
+2024-01-04 05:56:36.594319 Starting OpenStack_Cinder
+
+2024-01-04 05:56:36.603960 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 05:56:37.720848 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018285f80>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 05:56:37.731789 Done running pc with fisherz
+2024-01-04 05:56:37.732065 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 05:56:40.048959 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018285f80>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 05:56:40.060601 Done running pc with mv_fisherz
+2024-01-04 05:56:40.060779 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 05:56:40.701355 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018285f80>: 'm'
+2024-01-04 05:56:40.706373 Done running pc with mc_fisherz
+2024-01-04 05:56:40.706553 Running pc with kci
+2024-01-04 06:26:40.809696 Function timed out
+2024-01-04 06:26:40.830642 Done running pc with kci
+2024-01-04 06:26:40.830834 Running pc with chisq
+2024-01-04 06:56:40.932836 Function timed out
+2024-01-04 06:56:41.097174 Done running pc with chisq
+2024-01-04 06:56:41.097387 Running pc with gsq
+2024-01-04 07:26:41.205290 Function timed out
+2024-01-04 07:26:41.281192 Done running pc with gsq
+2024-01-04 07:26:41.281604 Running pc with d_separation
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 07:26:41.953324 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018285f80>: 'NoneType' object has no attribute 'is_directed'
+2024-01-04 07:26:41.958705 Done running pc with d_separation
+2024-01-04 07:26:41.979470 Running fci with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 07:26:43.156899 Error running <function run_method_with_timer.<locals>.run_fci at 0x7fd018286ac0>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 07:26:43.168713 Done running fci with fisherz
+2024-01-04 07:26:43.168882 Running fci with kci
+2024-01-04 07:56:43.272507 Function timed out
+2024-01-04 07:56:43.308329 Done running fci with kci
+2024-01-04 07:56:43.308515 Running fci with chisq
+2024-01-04 08:26:43.331293 Function timed out
+2024-01-04 08:26:43.476357 Done running fci with chisq
+2024-01-04 08:26:43.476707 Running fci with gsq
+2024-01-04 08:56:43.587297 Function timed out
+2024-01-04 08:56:43.698091 Done running fci with gsq
+2024-01-04 08:56:43.730580 Running gin with kci
+2024-01-04 09:26:43.838763 Function timed out
+2024-01-04 09:26:43.845647 Done running gin with kci
+2024-01-04 09:26:43.845768 Running gin with hsic
+2024-01-04 09:56:43.939909 Function timed out
+2024-01-04 09:56:43.947043 Done running gin with hsic
+2024-01-04 09:56:43.954904 Running grasp with local_score_CV_general
+2024-01-04 10:26:44.058282 Function timed out
+2024-01-04 10:26:44.073500 Done running grasp with local_score_CV_general
+2024-01-04 10:26:44.073716 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-04 10:26:44.597519 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286840>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 10:26:44.606210 Done running grasp with local_score_marginal_general
+2024-01-04 10:26:44.606361 Running grasp with local_score_CV_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 10:26:44.733248 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286840>: 576
+2024-01-04 10:26:44.736626 Done running grasp with local_score_CV_multi
+2024-01-04 10:26:44.736956 Running grasp with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 10:26:44.864422 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286840>: 390
+2024-01-04 10:26:44.867407 Done running grasp with local_score_marginal_multi
+2024-01-04 10:26:44.867742 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:35: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+2024-01-04 10:26:47.347632 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286840>: Singular matrix
+2024-01-04 10:26:47.351895 Done running grasp with local_score_BIC
+2024-01-04 10:26:47.352284 Running grasp with local_score_BDeu
+2024-01-04 10:56:47.462278 Function timed out
+2024-01-04 10:56:47.478035 Done running grasp with local_score_BDeu
+2024-01-04 10:56:47.497685 Running ges with local_score_CV_general
+2024-01-04 11:26:47.610240 Function timed out
+2024-01-04 11:26:47.627503 Done running ges with local_score_CV_general
+2024-01-04 11:26:47.627606 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 11:26:48.189633 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286840>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 11:26:48.197980 Done running ges with local_score_marginal_general
+2024-01-04 11:26:48.198167 Running ges with local_score_CV_multi
+2024-01-04 11:56:48.302036 Function timed out
+2024-01-04 11:56:48.321272 Done running ges with local_score_CV_multi
+2024-01-04 11:56:48.321603 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 11:56:48.886322 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286840>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 11:56:48.895113 Done running ges with local_score_marginal_multi
+2024-01-04 11:56:48.895278 Running ges with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-04 11:57:09.906791 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286840>: Singular matrix
+2024-01-04 11:57:09.931323 Done running ges with local_score_BIC
+2024-01-04 11:57:09.931675 Running ges with local_score_BIC_from_cov
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-04 11:57:30.949498 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286840>: Singular matrix
+2024-01-04 11:57:30.972144 Done running ges with local_score_BIC_from_cov
+2024-01-04 11:57:30.972514 Running ges with local_score_BDeu
+2024-01-04 12:27:31.006292 Function timed out
+2024-01-04 12:27:31.018554 Done running ges with local_score_BDeu
+2024-01-04 12:27:31.037786 Running exact_search with dp
+2024-01-04 12:27:31.104368 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018286de0>: can only convert an array of size 1 to a Python scalar
+2024-01-04 12:27:31.108145 Done running exact_search with dp
+2024-01-04 12:27:31.108386 Running exact_search with astar
+2024-01-04 12:27:31.173223 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018286de0>: can only convert an array of size 1 to a Python scalar
+2024-01-04 12:27:31.176473 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-04 12:27:31.178325 Starting OpenStack_Neutron
+
+2024-01-04 12:27:31.189652 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 12:27:32.101023 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286200>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 12:27:32.109809 Done running pc with fisherz
+2024-01-04 12:27:32.110072 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 12:27:33.303621 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286200>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 12:27:33.312091 Done running pc with mv_fisherz
+2024-01-04 12:27:33.312222 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 12:27:34.078525 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286200>: 'm'
+2024-01-04 12:27:34.084081 Done running pc with mc_fisherz
+2024-01-04 12:27:34.084468 Running pc with kci
+2024-01-04 12:57:34.194017 Function timed out
+2024-01-04 12:57:34.222789 Done running pc with kci
+2024-01-04 12:57:34.223152 Running pc with chisq
+2024-01-04 13:27:34.245606 Function timed out
+2024-01-04 13:27:34.269200 Done running pc with chisq
+2024-01-04 13:27:34.269587 Running pc with gsq
+2024-01-04 13:57:34.380010 Function timed out
+2024-01-04 13:57:34.457969 Done running pc with gsq
+2024-01-04 13:57:34.458356 Running pc with d_separation
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 13:57:35.208402 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286200>: 'NoneType' object has no attribute 'is_directed'
+2024-01-04 13:57:35.213233 Done running pc with d_separation
+2024-01-04 13:57:35.233820 Running fci with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 13:57:36.248523 Error running <function run_method_with_timer.<locals>.run_fci at 0x7fd018286840>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 13:57:36.259997 Done running fci with fisherz
+2024-01-04 13:57:36.260337 Running fci with kci
+2024-01-04 14:27:36.363494 Function timed out
+2024-01-04 14:27:36.397669 Done running fci with kci
+2024-01-04 14:27:36.397905 Running fci with chisq
+2024-01-04 14:57:36.503601 Function timed out
+2024-01-04 14:57:36.529591 Done running fci with chisq
+2024-01-04 14:57:36.529998 Running fci with gsq
+2024-01-04 15:27:36.639772 Function timed out
+2024-01-04 15:27:36.756276 Done running fci with gsq
+2024-01-04 15:27:36.767357 Running gin with kci
+2024-01-04 15:57:36.871433 Function timed out
+2024-01-04 15:57:36.879889 Done running gin with kci
+2024-01-04 15:57:36.880147 Running gin with hsic
+2024-01-04 16:27:36.990713 Function timed out
+2024-01-04 16:27:36.999443 Done running gin with hsic
+2024-01-04 16:27:37.020050 Running grasp with local_score_CV_general
+2024-01-04 16:57:37.132165 Function timed out
+2024-01-04 16:57:37.148917 Done running grasp with local_score_CV_general
+2024-01-04 16:57:37.149228 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-04 16:57:37.489569 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd0182860c0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 16:57:37.498112 Done running grasp with local_score_marginal_general
+2024-01-04 16:57:37.498242 Running grasp with local_score_CV_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 16:57:37.645202 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd0182860c0>: 256
+2024-01-04 16:57:37.648581 Done running grasp with local_score_CV_multi
+2024-01-04 16:57:37.648893 Running grasp with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 16:57:37.794651 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd0182860c0>: 191
+2024-01-04 16:57:37.797468 Done running grasp with local_score_marginal_multi
+2024-01-04 16:57:37.797805 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:39: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-04 16:57:40.372136 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd0182860c0>: Singular matrix
+2024-01-04 16:57:40.378341 Done running grasp with local_score_BIC
+2024-01-04 16:57:40.378455 Running grasp with local_score_BDeu
+2024-01-04 17:27:40.481811 Function timed out
+2024-01-04 17:27:40.492406 Done running grasp with local_score_BDeu
+2024-01-04 17:27:40.512580 Running ges with local_score_CV_general
+2024-01-04 17:57:40.622278 Function timed out
+2024-01-04 17:57:40.636050 Done running ges with local_score_CV_general
+2024-01-04 17:57:40.636162 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 17:57:40.996926 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd0182862a0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 17:57:41.005124 Done running ges with local_score_marginal_general
+2024-01-04 17:57:41.005251 Running ges with local_score_CV_multi
+2024-01-04 18:27:41.012730 Function timed out
+2024-01-04 18:27:41.029220 Done running ges with local_score_CV_multi
+2024-01-04 18:27:41.029567 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 18:27:41.390121 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd0182862a0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-04 18:27:41.398444 Done running ges with local_score_marginal_multi
+2024-01-04 18:27:41.398564 Running ges with local_score_BIC
+2024-01-04 18:57:41.502169 Function timed out
+2024-01-04 18:57:41.527018 Done running ges with local_score_BIC
+2024-01-04 18:57:41.527352 Running ges with local_score_BIC_from_cov
+2024-01-04 19:27:41.625984 Function timed out
+2024-01-04 19:27:41.651446 Done running ges with local_score_BIC_from_cov
+2024-01-04 19:27:41.651834 Running ges with local_score_BDeu
+2024-01-04 19:57:41.762057 Function timed out
+2024-01-04 19:57:41.772438 Done running ges with local_score_BDeu
+2024-01-04 19:57:41.792609 Running exact_search with dp
+2024-01-04 19:57:41.862957 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018286520>: can only convert an array of size 1 to a Python scalar
+2024-01-04 19:57:41.866650 Done running exact_search with dp
+2024-01-04 19:57:41.866890 Running exact_search with astar
+2024-01-04 19:57:41.950348 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018286520>: can only convert an array of size 1 to a Python scalar
+2024-01-04 19:57:41.953457 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-04 19:57:41.955764 Starting OpenStack_Nova
+
+2024-01-04 19:57:41.976508 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 19:57:43.922863 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286b60>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 19:57:43.935581 Done running pc with fisherz
+2024-01-04 19:57:43.935702 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 19:57:48.594094 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286b60>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 19:57:48.607069 Done running pc with mv_fisherz
+2024-01-04 19:57:48.607199 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 19:57:49.993662 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286b60>: 'm'
+2024-01-04 19:57:49.999724 Done running pc with mc_fisherz
+2024-01-04 19:57:50.000081 Running pc with kci
+2024-01-04 20:27:50.110066 Function timed out
+2024-01-04 20:27:50.122514 Done running pc with kci
+2024-01-04 20:27:50.122882 Running pc with chisq
+2024-01-04 20:57:50.233080 Function timed out
+2024-01-04 20:57:50.276716 Done running pc with chisq
+2024-01-04 20:57:50.277087 Running pc with gsq
+2024-01-04 21:27:50.326282 Function timed out
+2024-01-04 21:27:50.396567 Done running pc with gsq
+2024-01-04 21:27:50.396947 Running pc with d_separation
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-04 21:27:51.782981 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286b60>: 'NoneType' object has no attribute 'is_directed'
+2024-01-04 21:27:51.788777 Done running pc with d_separation
+2024-01-04 21:27:51.817433 Running fci with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-04 21:27:53.786641 Error running <function run_method_with_timer.<locals>.run_fci at 0x7fd018286020>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-04 21:27:53.799809 Done running fci with fisherz
+2024-01-04 21:27:53.799915 Running fci with kci
+2024-01-04 21:57:53.903589 Function timed out
+2024-01-04 21:57:53.917340 Done running fci with kci
+2024-01-04 21:57:53.917740 Running fci with chisq
+2024-01-04 22:27:53.948535 Function timed out
+2024-01-04 22:27:54.010399 Done running fci with chisq
+2024-01-04 22:27:54.010805 Running fci with gsq
+2024-01-04 22:57:54.121114 Function timed out
+2024-01-04 22:57:54.234778 Done running fci with gsq
+2024-01-04 22:57:54.280442 Running gin with kci
+2024-01-04 23:27:54.389808 Function timed out
+2024-01-04 23:27:54.396767 Done running gin with kci
+2024-01-04 23:27:54.397109 Running gin with hsic
+2024-01-04 23:57:54.506369 Function timed out
+2024-01-04 23:57:54.514296 Done running gin with hsic
+2024-01-04 23:57:54.540992 Running grasp with local_score_CV_general
+2024-01-05 00:27:54.649945 Function timed out
+2024-01-05 00:27:54.665577 Done running grasp with local_score_CV_general
+2024-01-05 00:27:54.665697 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-05 00:27:55.829021 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286520>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-05 00:27:55.837782 Done running grasp with local_score_marginal_general
+2024-01-05 00:27:55.838153 Running grasp with local_score_CV_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-05 00:27:56.105411 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286520>: 611
+2024-01-05 00:27:56.108691 Done running grasp with local_score_CV_multi
+2024-01-05 00:27:56.109013 Running grasp with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-05 00:27:56.378212 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286520>: 590
+2024-01-05 00:27:56.381070 Done running grasp with local_score_marginal_multi
+2024-01-05 00:27:56.381387 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:35: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:39: RuntimeWarning: invalid value encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:39: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-05 00:28:48.361021 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286520>: Singular matrix
+2024-01-05 00:28:48.381989 Done running grasp with local_score_BIC
+2024-01-05 00:28:48.382170 Running grasp with local_score_BDeu
+2024-01-05 00:58:48.487442 Function timed out
+2024-01-05 00:58:48.499024 Done running grasp with local_score_BDeu
+2024-01-05 00:58:48.524915 Running ges with local_score_CV_general
+2024-01-05 01:28:48.632874 Function timed out
+2024-01-05 01:28:48.650244 Done running ges with local_score_CV_general
+2024-01-05 01:28:48.650407 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-05 01:28:49.911476 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd0182867a0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-05 01:28:49.922153 Done running ges with local_score_marginal_general
+2024-01-05 01:28:49.922560 Running ges with local_score_CV_multi
+2024-01-05 01:58:50.026020 Function timed out
+2024-01-05 01:58:50.044817 Done running ges with local_score_CV_multi
+2024-01-05 01:58:50.045011 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-05 01:58:51.313410 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd0182867a0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-05 01:58:51.322521 Done running ges with local_score_marginal_multi
+2024-01-05 01:58:51.322701 Running ges with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: invalid value encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-05 01:59:59.701972 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd0182867a0>: Singular matrix
+2024-01-05 01:59:59.750402 Done running ges with local_score_BIC
+2024-01-05 01:59:59.750578 Running ges with local_score_BIC_from_cov
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: invalid value encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-05 02:01:08.119152 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd0182867a0>: Singular matrix
+2024-01-05 02:01:08.166962 Done running ges with local_score_BIC_from_cov
+2024-01-05 02:01:08.167340 Running ges with local_score_BDeu
+2024-01-05 02:31:08.277465 Function timed out
+2024-01-05 02:31:08.288131 Done running ges with local_score_BDeu
+2024-01-05 02:31:08.314467 Running exact_search with dp
+2024-01-05 02:31:08.505537 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018286020>: can only convert an array of size 1 to a Python scalar
+2024-01-05 02:31:08.513641 Done running exact_search with dp
+2024-01-05 02:31:08.513930 Running exact_search with astar
+2024-01-05 02:31:08.703921 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018286020>: can only convert an array of size 1 to a Python scalar
+2024-01-05 02:31:08.712015 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-05 02:31:08.714411 Starting Proprietary
+
+2024-01-05 02:31:08.721079 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-05 02:31:08.760810 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286840>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-05 02:31:08.765922 Done running pc with fisherz
+2024-01-05 02:31:08.766029 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-05 02:31:08.820500 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286840>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-05 02:31:08.825335 Done running pc with mv_fisherz
+2024-01-05 02:31:08.825509 Running pc with mc_fisherz
+2024-01-05 02:31:08.862990 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286840>: 'm'
+2024-01-05 02:31:08.865757 Done running pc with mc_fisherz
+2024-01-05 02:31:08.866076 Running pc with kci
+2024-01-05 03:01:08.972333 Function timed out
+2024-01-05 03:01:08.988807 Done running pc with kci
+2024-01-05 03:01:08.989204 Running pc with chisq
+2024-01-05 03:01:09.896330 Writing out pc with chisq
+2024-01-05 03:01:10.077734 Done running pc with chisq
+2024-01-05 03:01:10.077849 Running pc with gsq
+2024-01-05 03:01:10.942975 Writing out pc with gsq
+2024-01-05 03:01:11.110824 Done running pc with gsq
+2024-01-05 03:01:11.110957 Running pc with d_separation
+2024-01-05 03:01:11.145805 Error running <function run_method_with_timer.<locals>.run_pc at 0x7fd018286840>: 'NoneType' object has no attribute 'is_directed'
+2024-01-05 03:01:11.149652 Done running pc with d_separation
+2024-01-05 03:01:11.157965 Running fci with fisherz
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-05 03:01:11.208374 Error running <function run_method_with_timer.<locals>.run_fci at 0x7fd018285f80>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-05 03:01:11.213367 Done running fci with fisherz
+2024-01-05 03:01:11.213452 Running fci with kci
+2024-01-05 03:31:11.298076 Function timed out
+2024-01-05 03:31:11.316784 Done running fci with kci
+2024-01-05 03:31:11.317152 Running fci with chisq
+X25 --> X3
+2024-01-05 03:31:12.256375 Writing out fci with chisq
+2024-01-05 03:31:12.428981 Done running fci with chisq
+2024-01-05 03:31:12.429258 Running fci with gsq
+2024-01-05 03:31:13.341103 Writing out fci with gsq
+2024-01-05 03:31:13.501029 Done running fci with gsq
+2024-01-05 03:31:13.506644 Running gin with kci
+2024-01-05 04:01:13.585945 Function timed out
+2024-01-05 04:01:13.591173 Done running gin with kci
+2024-01-05 04:01:13.591264 Running gin with hsic
+2024-01-05 04:31:13.625943 Function timed out
+2024-01-05 04:31:13.630985 Done running gin with hsic
+2024-01-05 04:31:13.639816 Running grasp with local_score_CV_general
+2024-01-05 05:01:13.746439 Function timed out
+2024-01-05 05:01:13.759442 Done running grasp with local_score_CV_general
+2024-01-05 05:01:13.759701 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+2024-01-05 05:01:13.869012 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286200>: Array must not contain infs or NaNs
+2024-01-05 05:01:13.878106 Done running grasp with local_score_marginal_general
+2024-01-05 05:01:13.878295 Running grasp with local_score_CV_multi
+2024-01-05 05:01:13.888854 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286200>: 32
+2024-01-05 05:01:13.891874 Done running grasp with local_score_CV_multi
+2024-01-05 05:01:13.891988 Running grasp with local_score_marginal_multi
+2024-01-05 05:01:13.902033 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286200>: 17
+2024-01-05 05:01:13.904910 Done running grasp with local_score_marginal_multi
+2024-01-05 05:01:13.905019 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:35: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:39: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+2024-01-05 05:01:13.990061 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7fd018286200>: Singular matrix
+2024-01-05 05:01:13.992890 Done running grasp with local_score_BIC
+2024-01-05 05:01:13.993207 Running grasp with local_score_BDeu
+
+GRaSP completed in: 19.80s 
+2024-01-05 05:01:33.849773 Done running grasp with local_score_BDeu
+2024-01-05 05:01:33.858373 Running ges with local_score_CV_general
+2024-01-05 05:31:33.968076 Function timed out
+2024-01-05 05:31:33.981341 Done running ges with local_score_CV_general
+2024-01-05 05:31:33.981491 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+2024-01-05 05:31:34.087784 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286700>: Array must not contain infs or NaNs
+2024-01-05 05:31:34.096823 Done running ges with local_score_marginal_general
+2024-01-05 05:31:34.096973 Running ges with local_score_CV_multi
+2024-01-05 06:01:34.197901 Function timed out
+2024-01-05 06:01:34.209558 Done running ges with local_score_CV_multi
+2024-01-05 06:01:34.209699 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+2024-01-05 06:01:34.315030 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286700>: Array must not contain infs or NaNs
+2024-01-05 06:01:34.323867 Done running ges with local_score_marginal_multi
+2024-01-05 06:01:34.324006 Running ges with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-05 06:01:34.429783 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286700>: Singular matrix
+2024-01-05 06:01:34.433245 Done running ges with local_score_BIC
+2024-01-05 06:01:34.433349 Running ges with local_score_BIC_from_cov
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-05 06:01:34.537226 Error running <function run_method_with_timer.<locals>.run_ges at 0x7fd018286700>: Singular matrix
+2024-01-05 06:01:34.540385 Done running ges with local_score_BIC_from_cov
+2024-01-05 06:01:34.540725 Running ges with local_score_BDeu
+2024-01-05 06:02:47.789125 Done running ges with local_score_BDeu
+2024-01-05 06:02:47.797877 Running exact_search with dp
+2024-01-05 06:02:47.817432 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018285f80>: can only convert an array of size 1 to a Python scalar
+2024-01-05 06:02:47.820660 Done running exact_search with dp
+2024-01-05 06:02:47.820898 Running exact_search with astar
+2024-01-05 06:02:47.839394 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7fd018285f80>: can only convert an array of size 1 to a Python scalar
+2024-01-05 06:02:47.842052 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-06 07:52:10.933329 Starting PostgreSQL
+
+2024-01-06 07:52:10.936063 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-06 07:52:19.200559 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f49a3b02160>: cost matrix is infeasible
+2024-01-06 07:52:19.210138 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 07:52:19.210430 Starting XYZ_10
+
+2024-01-06 07:52:19.213476 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:639: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 11 iterations, i.e. alpha=1.760e-01, with an active set of 9 regressors, and the smallest cholesky pivot element being 2.220e-16. Reduce max_iter or increase eps parameters.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 21 iterations, alpha=1.625e-03, previous alpha=1.525e-03, with an active set of 10 regressors.
+  warnings.warn(
+2024-01-06 07:52:19.938290 Writing out lingam with placeholder
+2024-01-06 07:52:20.511788 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 07:52:20.512195 Starting XYZ_100
+
+2024-01-06 07:52:20.519588 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 101 iterations, alpha=3.200e-02, previous alpha=8.000e-03, with an active set of 100 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 129 iterations, alpha=5.163e-02, previous alpha=5.151e-02, with an active set of 106 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 155 iterations, alpha=5.625e-03, previous alpha=5.589e-03, with an active set of 114 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 144 iterations, alpha=2.266e-04, previous alpha=2.098e-04, with an active set of 117 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 138 iterations, alpha=5.430e-04, previous alpha=4.319e-04, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 137 iterations, alpha=7.617e-05, previous alpha=6.857e-05, with an active set of 120 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 140 iterations, alpha=4.079e-04, previous alpha=4.051e-04, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 134 iterations, alpha=1.617e-03, previous alpha=1.465e-03, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 150 iterations, alpha=8.437e-04, previous alpha=7.716e-04, with an active set of 121 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 176 iterations, alpha=2.344e-04, previous alpha=2.079e-04, with an active set of 123 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 143 iterations, alpha=6.973e-04, previous alpha=6.288e-04, with an active set of 124 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 132 iterations, alpha=2.431e-02, previous alpha=2.420e-02, with an active set of 113 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 154 iterations, alpha=3.875e-02, previous alpha=3.860e-02, with an active set of 113 regressors.
+  warnings.warn(
+2024-01-06 07:53:19.659409 Writing out lingam with placeholder
+2024-01-06 07:53:20.869371 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 07:53:20.869960 Starting XYZ_1000
+
+2024-01-06 07:53:20.912582 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-06 07:54:35.762695 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f49a3b022a0>: index 1000 is out of bounds for axis 0 with size 1000
+2024-01-06 07:54:35.777832 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 07:54:35.779313 Starting OpenStack_Cinder
+
+2024-01-06 07:54:35.786047 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+2024-01-06 07:58:12.847928 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f49a3b02fc0>: index 581 is out of bounds for axis 0 with size 538
+2024-01-06 07:58:12.863461 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 07:58:12.864013 Starting OpenStack_Neutron
+
+2024-01-06 07:58:12.869587 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+2024-01-06 07:59:57.619275 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f49a3b02200>: index 429 is out of bounds for axis 0 with size 406
+2024-01-06 07:59:57.630667 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 07:59:57.631082 Starting OpenStack_Nova
+
+2024-01-06 07:59:57.641756 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+2024-01-06 08:06:57.997384 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f49a3b01f80>: index 879 is out of bounds for axis 0 with size 878
+2024-01-06 08:06:58.012651 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 08:06:58.013413 Starting Proprietary
+
+2024-01-06 08:06:58.017036 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-06 08:07:07.909140 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f49a3b02480>: cost matrix is infeasible
+2024-01-06 08:07:07.919985 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-06 12:55:47.059163 Starting XYZ_10
+
+2024-01-06 12:55:47.061102 Running exact_search with dp
+2024-01-06 13:25:47.168498 Function timed out
+2024-01-06 13:25:47.176467 Done running exact_search with dp
+2024-01-06 13:25:47.176756 Running exact_search with astar
+2024-01-06 13:55:47.280599 Function timed out
+2024-01-06 13:55:47.292025 Done running exact_search with astar
+
+
+
+
+========================================
+
+
+2024-01-09 07:59:25.181549 Starting PostgreSQL_filtered
+
+2024-01-09 07:59:25.183629 Running pc with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-09 07:59:25.308035 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f806113a020>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-09 07:59:25.314991 Done running pc with fisherz
+2024-01-09 07:59:25.315091 Running pc with mv_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-09 07:59:25.515544 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f806113a020>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-09 07:59:25.523197 Done running pc with mv_fisherz
+2024-01-09 07:59:25.523523 Running pc with mc_fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 07:59:25.584877 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f806113a020>: 'm'
+2024-01-09 07:59:25.589021 Done running pc with mc_fisherz
+2024-01-09 07:59:25.589114 Running pc with kci
+2024-01-09 08:29:25.692476 Function timed out
+2024-01-09 08:29:25.711466 Done running pc with kci
+2024-01-09 08:29:25.711797 Running pc with chisq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 08:29:27.457733 Writing out pc with chisq
+2024-01-09 08:29:27.632546 Done running pc with chisq
+2024-01-09 08:29:27.632694 Running pc with gsq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 08:29:29.560240 Done running pc with gsq
+2024-01-09 08:29:29.560547 Running pc with d_separation
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/PC.py:36: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 08:29:29.627682 Error running <function run_method_with_timer.<locals>.run_pc at 0x7f806113a020>: 'NoneType' object has no attribute 'is_directed'
+2024-01-09 08:29:29.632035 Done running pc with d_separation
+2024-01-09 08:29:29.637153 Running fci with fisherz
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+~/logs-venv/lib/python3.11/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+2024-01-09 08:29:29.763916 Error running <function run_method_with_timer.<locals>.run_fci at 0x7f806113a480>: Data correlation matrix is singular. Cannot run fisherz test. Please check your data.
+2024-01-09 08:29:29.769300 Done running fci with fisherz
+2024-01-09 08:29:29.769386 Running fci with kci
+2024-01-09 08:59:29.872258 Function timed out
+2024-01-09 08:59:29.896621 Done running fci with kci
+2024-01-09 08:59:29.897002 Running fci with chisq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 08:59:31.691457 Writing out fci with chisq
+2024-01-09 08:59:31.860127 Done running fci with chisq
+2024-01-09 08:59:31.860249 Running fci with gsq
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ConstraintBased/FCI.py:736: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 08:59:33.866358 Done running fci with gsq
+2024-01-09 08:59:33.873953 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-09 08:59:34.473819 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f806113a200>: cost matrix is infeasible
+2024-01-09 08:59:34.482378 Done running lingam with placeholder
+2024-01-09 08:59:34.485315 Running gin with kci
+2024-01-09 09:29:34.590233 Function timed out
+2024-01-09 09:29:34.596075 Done running gin with kci
+2024-01-09 09:29:34.596317 Running gin with hsic
+2024-01-09 09:59:34.642261 Function timed out
+2024-01-09 09:59:34.649076 Done running gin with hsic
+2024-01-09 09:59:34.656449 Running grasp with local_score_CV_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+
+GRaSP completed in: 919.56s 
+2024-01-09 10:14:54.426424 Writing out grasp with local_score_CV_general
+2024-01-09 10:14:54.574672 Done running grasp with local_score_CV_general
+2024-01-09 10:14:54.574768 Running grasp with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/numpy/matrixlib/defmatrix.py:446: RuntimeWarning: Mean of empty slice.
+  return N.ndarray.mean(self, axis, dtype, out, keepdims=True)._collapse(axis)
+~/logs-venv/lib/python3.11/site-packages/numpy/core/_methods.py:121: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+2024-01-09 10:14:54.596688 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f806113a5c0>: Array must not contain infs or NaNs
+2024-01-09 10:14:54.601880 Done running grasp with local_score_marginal_general
+2024-01-09 10:14:54.602020 Running grasp with local_score_CV_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 10:14:54.617340 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f806113a5c0>: 147
+2024-01-09 10:14:54.620896 Done running grasp with local_score_CV_multi
+2024-01-09 10:14:54.620994 Running grasp with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 10:14:54.635211 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f806113a5c0>: 122
+2024-01-09 10:14:54.638092 Done running grasp with local_score_marginal_multi
+2024-01-09 10:14:54.638180 Running grasp with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:35: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+2024-01-09 10:14:54.681039 Error running <function run_method_with_timer.<locals>.run_grasp at 0x7f806113a5c0>: Singular matrix
+2024-01-09 10:14:54.683907 Done running grasp with local_score_BIC
+2024-01-09 10:14:54.683996 Running grasp with local_score_BDeu
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/PermutationBased/GRaSP.py:107: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+
+GRaSP completed in: 173.77s 
+2024-01-09 10:17:48.536777 Writing out grasp with local_score_BDeu
+2024-01-09 10:17:48.718115 Done running grasp with local_score_BDeu
+2024-01-09 10:17:48.720587 Running ges with local_score_CV_general
+2024-01-09 10:47:48.825391 Function timed out
+2024-01-09 10:47:48.841842 Done running ges with local_score_CV_general
+2024-01-09 10:47:48.842085 Running ges with local_score_marginal_general
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-09 10:47:48.879617 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f806113a5c0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-09 10:47:48.886285 Done running ges with local_score_marginal_general
+2024-01-09 10:47:48.886397 Running ges with local_score_CV_multi
+2024-01-09 11:17:48.990515 Function timed out
+2024-01-09 11:17:49.007337 Done running ges with local_score_CV_multi
+2024-01-09 11:17:49.007695 Running ges with local_score_marginal_multi
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/ScoreUtils.py:108: ComplexWarning: Casting complex values to real discards the imaginary part
+  return evals.astype(float), evec.astype(float)
+2024-01-09 11:17:49.050591 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f806113a5c0>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2024-01-09 11:17:49.057623 Done running ges with local_score_marginal_multi
+2024-01-09 11:17:49.057825 Running ges with local_score_BIC
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-09 11:17:50.456719 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f806113a5c0>: Singular matrix
+2024-01-09 11:17:50.466913 Done running ges with local_score_BIC
+2024-01-09 11:17:50.467266 Running ges with local_score_BIC_from_cov
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:69: RuntimeWarning: divide by zero encountered in log
+  return n * np.log(cov[i, i])
+~/logs-venv/lib/python3.11/site-packages/causallearn/score/LocalScoreFunction.py:73: RuntimeWarning: divide by zero encountered in log
+  H = np.log(cov[i, i] - yX * np.linalg.inv(XX) * yX.T)
+~/logs-venv/lib/python3.11/site-packages/causallearn/utils/GESUtils.py:228: RuntimeWarning: invalid value encountered in subtract
+  ch_score = score1 - score2
+2024-01-09 11:17:51.856455 Error running <function run_method_with_timer.<locals>.run_ges at 0x7f806113a5c0>: Singular matrix
+2024-01-09 11:17:51.866612 Done running ges with local_score_BIC_from_cov
+2024-01-09 11:17:51.866956 Running ges with local_score_BDeu
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/ScoreBased/GES.py:40: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+2024-01-09 11:36:53.196817 Writing out ges with local_score_BDeu
+2024-01-09 11:36:53.380605 Done running ges with local_score_BDeu
+2024-01-09 11:36:53.383263 Running exact_search with dp
+2024-01-09 11:36:53.421544 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7f806113a480>: can only convert an array of size 1 to a Python scalar
+2024-01-09 11:36:53.426936 Done running exact_search with dp
+2024-01-09 11:36:53.427010 Running exact_search with astar
+2024-01-09 11:36:53.459216 Error running <function run_method_with_timer.<locals>.run_exact_search at 0x7f806113a480>: can only convert an array of size 1 to a Python scalar
+2024-01-09 11:36:53.462774 Done running exact_search with astar
+
+
+========================================
+
+
+2024-01-10 06:32:41.150470 Starting PostgreSQL_filtered
+
+2024-01-10 06:32:41.152515 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:32:41.949663 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7ff1a2fde200>: cost matrix is infeasible
+2024-01-10 06:32:41.959833 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:32:41.960143 Starting XYZ_10
+
+2024-01-10 06:32:41.962675 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+made it this far
+2024-01-10 06:32:42.672273 Writing out lingam with placeholder
+2024-01-10 06:32:43.237174 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:32:43.237633 Starting XYZ_100
+
+2024-01-10 06:32:43.242487 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 106 iterations, alpha=5.600e-02, previous alpha=5.400e-02, with an active set of 99 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 137 iterations, alpha=2.687e-03, previous alpha=2.664e-03, with an active set of 112 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 139 iterations, alpha=1.395e-03, previous alpha=1.356e-03, with an active set of 116 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 137 iterations, alpha=3.340e-04, previous alpha=7.386e-05, with an active set of 118 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 134 iterations, alpha=1.426e-04, previous alpha=1.388e-04, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 146 iterations, alpha=3.359e-04, previous alpha=3.254e-04, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 133 iterations, alpha=1.558e-04, previous alpha=1.554e-04, with an active set of 120 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 143 iterations, alpha=8.301e-04, previous alpha=8.187e-04, with an active set of 118 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 145 iterations, alpha=4.219e-04, previous alpha=1.200e-05, with an active set of 122 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 158 iterations, alpha=1.398e-03, previous alpha=8.841e-04, with an active set of 121 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 157 iterations, alpha=2.002e-04, previous alpha=8.757e-05, with an active set of 124 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 163 iterations, alpha=9.835e-04, previous alpha=3.086e-04, with an active set of 126 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 131 iterations, alpha=8.288e-02, previous alpha=8.028e-02, with an active set of 110 regressors.
+  warnings.warn(
+made it this far
+2024-01-10 06:33:47.310582 Writing out lingam with placeholder
+2024-01-10 06:33:48.491989 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:33:48.492659 Starting XYZ_1000
+
+2024-01-10 06:33:48.518083 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:34:53.759758 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7ff1a2fde340>: index 1000 is out of bounds for axis 0 with size 1000
+2024-01-10 06:34:53.776205 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:34:53.777792 Starting OpenStack_Cinder
+
+Traceback (most recent call last):
+  File "~/causal-log/evaluation/discovery/discovery.py", line 278, in <module>
+    main()
+  File "~/causal-log/evaluation/discovery/discovery.py", line 267, in main
+    run_method_with_timer(dataset_name, "lingam", LINGAM_OPTIONS, fres)
+  File "~/causal-log/evaluation/discovery/discovery.py", line 100, in run_method_with_timer
+    data_df = pd.read_pickle(datasets[dataset_name]["prepared_log"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/logs-venv/lib/python3.11/site-packages/pandas/io/pickle.py", line 189, in read_pickle
+    with get_handle(
+         ^^^^^^^^^^^
+  File "~/logs-venv/lib/python3.11/site-packages/pandas/io/common.py", line 872, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '~/causal-log/evaluation/datasets/Openstack/Cinder/Cinder_combined_all.log_prepared_log_ID_None.pkl'
+
+
+========================================
+
+
+2024-01-10 06:36:41.542342 Starting PostgreSQL_filtered
+
+2024-01-10 06:36:41.544330 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:36:42.226411 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7fd996636200>: cost matrix is infeasible
+2024-01-10 06:36:42.235296 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:36:42.235667 Starting XYZ_10
+
+2024-01-10 06:36:42.238059 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 10 iterations, alpha=1.500e-02, previous alpha=1.400e-02, with an active set of 9 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 19 iterations, alpha=3.000e-03, previous alpha=1.875e-03, with an active set of 10 regressors.
+  warnings.warn(
+made it this far
+2024-01-10 06:36:42.943631 Writing out lingam with placeholder
+2024-01-10 06:36:43.516372 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:36:43.516705 Starting XYZ_100
+
+2024-01-10 06:36:43.521712 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 104 iterations, alpha=4.006e-02, previous alpha=3.300e-02, with an active set of 99 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 131 iterations, alpha=2.797e-03, previous alpha=2.720e-03, with an active set of 114 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 134 iterations, alpha=1.137e-02, previous alpha=1.110e-02, with an active set of 113 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 143 iterations, alpha=6.575e-04, previous alpha=5.194e-04, with an active set of 116 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 132 iterations, alpha=6.587e-03, previous alpha=6.565e-03, with an active set of 115 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 138 iterations, alpha=1.516e-03, previous alpha=1.470e-03, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 152 iterations, alpha=3.463e-05, previous alpha=2.930e-05, with an active set of 121 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 148 iterations, alpha=4.231e-04, previous alpha=4.224e-04, with an active set of 121 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 161 iterations, alpha=1.219e-01, previous alpha=4.065e-02, with an active set of 114 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 186 iterations, alpha=6.165e-04, previous alpha=6.135e-04, with an active set of 121 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 144 iterations, alpha=1.756e-02, previous alpha=1.756e-02, with an active set of 117 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 106 iterations, alpha=4.677e-01, previous alpha=4.674e-01, with an active set of 101 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 121 iterations, alpha=1.639e-01, previous alpha=1.639e-01, with an active set of 106 regressors.
+  warnings.warn(
+made it this far
+2024-01-10 06:37:45.962987 Writing out lingam with placeholder
+2024-01-10 06:37:47.144225 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:37:47.145187 Starting XYZ_1000
+
+2024-01-10 06:37:47.171273 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:38:49.342454 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7fd996636340>: index 1000 is out of bounds for axis 0 with size 1000
+2024-01-10 06:38:49.357074 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:38:49.358541 Starting OpenStack_Cinder
+
+Traceback (most recent call last):
+  File "~/causal-log/evaluation/discovery/discovery.py", line 278, in <module>
+    main()
+  File "~/causal-log/evaluation/discovery/discovery.py", line 267, in main
+    run_method_with_timer(dataset_name, "lingam", LINGAM_OPTIONS, fres)
+  File "~/causal-log/evaluation/discovery/discovery.py", line 100, in run_method_with_timer
+    data_df = pd.read_pickle(datasets[dataset_name]["prepared_log"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/logs-venv/lib/python3.11/site-packages/pandas/io/pickle.py", line 189, in read_pickle
+    with get_handle(
+         ^^^^^^^^^^^
+  File "~/logs-venv/lib/python3.11/site-packages/pandas/io/common.py", line 872, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '~/causal-log/evaluation/OpenStack/Cinder/Cinder_combined_all.log_prepared_log_ID_None.pkl'
+
+
+========================================
+
+
+2024-01-10 06:43:46.203288 Starting PostgreSQL_filtered
+
+2024-01-10 06:43:46.205301 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:43:46.766202 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f15a3e6a160>: cost matrix is infeasible
+2024-01-10 06:43:46.776750 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:43:46.777083 Starting XYZ_10
+
+2024-01-10 06:43:46.779708 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 12 iterations, alpha=1.500e-03, previous alpha=9.336e-04, with an active set of 9 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 22 iterations, alpha=1.250e-04, previous alpha=3.125e-05, with an active set of 11 regressors.
+  warnings.warn(
+made it this far
+2024-01-10 06:43:47.473906 Writing out lingam with placeholder
+2024-01-10 06:43:48.046170 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:43:48.046481 Starting XYZ_100
+
+2024-01-10 06:43:48.051386 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 102 iterations, alpha=1.675e-02, previous alpha=1.400e-02, with an active set of 99 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 125 iterations, alpha=4.897e-03, previous alpha=4.851e-03, with an active set of 112 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 125 iterations, alpha=2.976e-02, previous alpha=2.671e-02, with an active set of 112 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 141 iterations, alpha=3.106e-02, previous alpha=3.057e-02, with an active set of 112 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 146 iterations, alpha=1.506e-02, previous alpha=1.506e-02, with an active set of 113 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 139 iterations, alpha=6.625e-03, previous alpha=6.305e-03, with an active set of 116 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 131 iterations, alpha=3.516e-04, previous alpha=3.383e-04, with an active set of 118 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 152 iterations, alpha=4.116e-04, previous alpha=3.747e-04, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 130 iterations, alpha=3.203e-03, previous alpha=3.200e-03, with an active set of 117 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 150 iterations, alpha=7.324e-04, previous alpha=3.525e-04, with an active set of 121 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 146 iterations, alpha=9.644e-06, previous alpha=3.540e-06, with an active set of 123 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 165 iterations, alpha=1.672e-03, previous alpha=1.551e-03, with an active set of 120 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 132 iterations, alpha=4.031e-03, previous alpha=3.851e-03, with an active set of 119 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 161 iterations, alpha=7.617e-05, previous alpha=3.033e-05, with an active set of 126 regressors.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/sklearn/linear_model/_least_angle.py:669: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 160 iterations, alpha=6.470e-06, previous alpha=5.161e-06, with an active set of 127 regressors.
+  warnings.warn(
+made it this far
+2024-01-10 06:44:44.032578 Writing out lingam with placeholder
+2024-01-10 06:44:45.248278 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:44:45.248989 Starting XYZ_1000
+
+2024-01-10 06:44:45.274633 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:45:51.160154 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f15a3e6a2a0>: index 1000 is out of bounds for axis 0 with size 1000
+2024-01-10 06:45:51.176937 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:45:51.178714 Starting OpenStack_Cinder
+
+2024-01-10 06:45:51.186019 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+2024-01-10 06:50:20.048467 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f15a3e6afc0>: index 602 is out of bounds for axis 0 with size 538
+2024-01-10 06:50:20.059942 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:50:20.060398 Starting OpenStack_Neutron
+
+2024-01-10 06:50:20.066082 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+2024-01-10 06:52:04.237068 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f15a3e6a200>: index 490 is out of bounds for axis 0 with size 406
+2024-01-10 06:52:04.249985 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:52:04.250428 Starting OpenStack_Nova
+
+2024-01-10 06:52:04.261796 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+2024-01-10 06:59:08.011404 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f15a3e6b2e0>: index 900 is out of bounds for axis 0 with size 878
+2024-01-10 06:59:08.027435 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 06:59:08.028229 Starting Proprietary
+
+2024-01-10 06:59:08.031921 Running lingam with placeholder
+~/logs-venv/lib/python3.11/site-packages/sklearn/decomposition/_fastica.py:128: ConvergenceWarning: FastICA did not converge. Consider increasing tolerance or the maximum number of iterations.
+  warnings.warn(
+~/logs-venv/lib/python3.11/site-packages/causallearn/search/FCMBased/lingam/ica_lingam.py:59: RuntimeWarning: divide by zero encountered in divide
+  _, col_index = linear_sum_assignment(1 / np.abs(W_ica))
+2024-01-10 06:59:17.588072 Error running <function run_method_with_timer.<locals>.run_lingam at 0x7f15a3e6a0c0>: cost matrix is infeasible
+2024-01-10 06:59:17.599132 Done running lingam with placeholder
+
+
+========================================
+
+
+2024-01-10 09:21:25.344833 Starting PostgreSQL_filtered
+
+2024-01-10 09:21:25.349614 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/172 [00:00<?, ?it/s]2024-01-10 09:51:25.456839 Function timed out
+2024-01-10 09:51:25.488222 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 09:51:25.488782 Starting XYZ_10
+
+2024-01-10 09:51:25.492657 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/21 [00:00<?, ?it/s]
+Outer edge-finding loop using GPT...:   5%|▍         | 1/21 [09:56<3:18:56, 596.81s/it]
+Outer edge-finding loop using GPT...:  10%|▉         | 2/21 [19:27<3:04:05, 581.33s/it]
+Outer edge-finding loop using GPT...:  14%|█▍        | 3/21 [29:08<2:54:23, 581.33s/it]2024-01-10 10:21:25.596038 Function timed out
+2024-01-10 10:21:25.626612 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 10:21:25.627227 Starting XYZ_100
+
+2024-01-10 10:21:25.635348 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/201 [00:00<?, ?it/s]2024-01-10 10:51:25.717948 Function timed out
+2024-01-10 10:51:25.748873 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 10:51:25.749789 Starting XYZ_1000
+
+2024-01-10 10:51:25.790141 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/2001 [00:00<?, ?it/s]2024-01-10 11:21:25.856434 Function timed out
+2024-01-10 11:21:25.888309 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 11:21:25.890356 Starting OpenStack_Cinder
+
+2024-01-10 11:21:25.901224 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/632 [00:00<?, ?it/s]2024-01-10 11:51:26.004990 Function timed out
+2024-01-10 11:51:26.036288 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 11:51:26.036985 Starting OpenStack_Neutron
+
+2024-01-10 11:51:26.049562 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/686 [00:00<?, ?it/s]2024-01-10 12:21:26.168015 Function timed out
+2024-01-10 12:21:26.197899 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 12:21:26.199072 Starting OpenStack_Nova
+
+2024-01-10 12:21:26.222809 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/939 [00:00<?, ?it/s]2024-01-10 12:51:26.252224 Function timed out
+2024-01-10 12:51:26.296935 Done running gpt with gpt-4
+
+
+========================================
+
+
+2024-01-10 12:51:26.298233 Starting Proprietary
+
+2024-01-10 12:51:26.305538 Running gpt with gpt-4
+
+Outer edge-finding loop using GPT...:   0%|          | 0/120 [00:00<?, ?it/s]2024-01-10 13:21:26.415533 Function timed out
+2024-01-10 13:21:26.447160 Done running gpt with gpt-4

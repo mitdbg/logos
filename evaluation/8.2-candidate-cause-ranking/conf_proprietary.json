@@ -1,0 +1,18 @@
+{
+    "suffix": "normal.log",
+    "true_causes": [
+        "version mean"
+    ],
+    "outcome": "73b16c0a_196 mean",
+    "ranking_columns": [
+        "F",
+        "p_f",
+        "rank",
+        "candidate"
+    ],
+    "latency_columns": [
+        "F",
+        "p_f",
+        "latency"
+    ]
+}

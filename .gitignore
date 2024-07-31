@@ -1,0 +1,10 @@
+dataset_files/*/*
+evaluation/repro*
+webapp/log_results
+
+.env
+.ipynb_checkpoints/
+.vscode/
+
+**/__pycache__/
+**/scratch.*

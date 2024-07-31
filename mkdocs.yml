@@ -1,0 +1,98 @@
+site_name: Sawmill
+
+theme:
+  name: material
+  language: en
+
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - content.code.copy
+
+  palette: 
+
+    # Palette toggle for light mode
+    - scheme: default
+      primary: green
+      accent: amber
+      toggle:
+        icon: material/weather-night 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: green
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+
+plugins:
+- search
+- gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+- literate-nav:
+    nav_file: docs/SUMMARY.md
+- section-index
+- mkdocstrings:
+    handlers:
+      python:
+        setup_commands:
+            - import sys
+            - sys.path.append("src")
+        paths: [src]
+        options:
+            docstring_style: google
+            docstring_options:
+              show_if_no_docstring: true
+            show_source: true
+            members_order: "source"
+            filters: [".*"]
+            show_type_annotations: true
+
+nav:
+  - Home: reference/src/sawmill/index.md
+  - Docs: 
+    - "Sawmill": reference/src/sawmill/sawmill.md
+    - "Drain": reference/src/sawmill/drain.md
+    - "TagUtils": reference/src/sawmill/tag_utils.md 
+    - "CausalUnitSuggester": reference/src/sawmill/causal_unit_suggester.md
+    - "AggregateSelector": reference/src/sawmill/aggregate_selector.md
+    - "CausalDiscoverer": reference/src/sawmill/causal_discoverer.md
+    - "EdgeStateMatrix": reference/src/sawmill/edge_state_matrix.md
+    - "Regression": reference/src/sawmill/regression.md
+    - "GraphRenderer": reference/src/sawmill/graph_renderer.md
+    - "ATE": reference/src/sawmill/ate.md
+    - "ClusteringParams": reference/src/sawmill/clustering_params.md
+    - "EdgeOccurrenceTree": reference/src/sawmill/edge_occurrence_tree.md
+    - "Pickler": reference/src/sawmill/pickler.md
+    - "Printer": reference/src/sawmill/printer.md
+    - "Types": reference/src/sawmill/types.md
+    - Variable Names: 
+      - "ParsedVariableName": reference/src/sawmill/variable_name/parsed_variable_name.md
+      - "PreparedVariableName": reference/src/sawmill/variable_name/prepared_variable_name.md
+    - Aggregation/Imputation Functions: 
+      - "Aggregation Functions": reference/src/sawmill/aggimp/agg_funcs.md
+      - "Imputation Functions": reference/src/sawmill/aggimp/imp_funcs.md
+
+  
+markdown_extensions:
+    - markdown_include.include:
+        base_path: .
+    - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - tables
+

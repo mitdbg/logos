@@ -1,0 +1,39 @@
+{
+    "suffix": ".log",
+    "treatment": "x mean",
+    "outcome": "y mean",
+    "starting_graph_edges": [
+        [
+            "x mean",
+            "y mean"
+        ]
+    ],
+    "true_graph_edges": [
+        [
+            "x mean",
+            "y mean"
+        ],
+        [
+            "z mean",
+            "y mean"
+        ],
+        [
+            "z mean",
+            "x mean"
+        ]
+    ],
+    "results_columns": [
+        "V",
+        "R",
+        "judgments",
+        "edge",
+        "ATE",
+        "ARE_ATE"
+    ],
+    "latency_columns": [
+        "V",
+        "R",
+        "judgments",
+        "latency"
+    ]
+}

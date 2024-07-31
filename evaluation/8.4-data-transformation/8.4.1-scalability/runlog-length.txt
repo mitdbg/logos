@@ -1,0 +1,108 @@
+Generated log of length 10
+Initialized Sawmill with log file log_10.log
+Work directory set to ../../../../dataset-files/scaling/length
+Parsing file: log_10.log
+Parsing complete in 0.073786 seconds!
+Number of templates: 7
+Number of parsed variables: 3
+Causal unit set to LineID (tag: LineID) 
+Determining the causal unit assignment...
+Calculating aggregates for each causal unit...
+Successfully prepared the log with causal unit LineID (tag: LineID)
+Initialized ECCS!
+The graph has 0 nodes and 0 edges.
+Of the 0 edges in the graph, 0 are fixed.
+Of the 36 edges not in the graph, 6 are banned.
+The number of modifiable edges is 30.
+Preparation complete in 0.028782 seconds! 6 of the 36 possible edges were auto-rejected.
+Shape of prepared log: (10, 6)
+Generated log of length 100
+Initialized Sawmill with log file log_100.log
+Work directory set to ../../../../dataset-files/scaling/length
+Parsing file: log_100.log
+Parsing complete in 0.052841 seconds!
+Number of templates: 10
+Number of parsed variables: 11
+Causal unit set to LineID (tag: LineID) 
+Determining the causal unit assignment...
+Calculating aggregates for each causal unit...
+Successfully prepared the log with causal unit LineID (tag: LineID)
+Initialized ECCS!
+The graph has 0 nodes and 0 edges.
+Of the 0 edges in the graph, 0 are fixed.
+Of the 900 edges not in the graph, 30 are banned.
+The number of modifiable edges is 870.
+Preparation complete in 0.257197 seconds! 30 of the 900 possible edges were auto-rejected.
+Shape of prepared log: (100, 30)
+Generated log of length 1000
+Initialized Sawmill with log file log_1000.log
+Work directory set to ../../../../dataset-files/scaling/length
+Parsing file: log_1000.log
+Parsing complete in 0.165637 seconds!
+Number of templates: 10
+Number of parsed variables: 11
+Causal unit set to LineID (tag: LineID) 
+Determining the causal unit assignment...
+Calculating aggregates for each causal unit...
+Successfully prepared the log with causal unit LineID (tag: LineID)
+Initialized ECCS!
+The graph has 0 nodes and 0 edges.
+Of the 0 edges in the graph, 0 are fixed.
+Of the 900 edges not in the graph, 30 are banned.
+The number of modifiable edges is 870.
+Preparation complete in 2.075973 seconds! 30 of the 900 possible edges were auto-rejected.
+Shape of prepared log: (1000, 30)
+Generated log of length 10000
+Initialized Sawmill with log file log_10000.log
+Work directory set to ../../../../dataset-files/scaling/length
+Parsing file: log_10000.log
+Parsing complete in 1.528339 seconds!
+Number of templates: 10
+Number of parsed variables: 11
+Causal unit set to LineID (tag: LineID) 
+Determining the causal unit assignment...
+Calculating aggregates for each causal unit...
+Successfully prepared the log with causal unit LineID (tag: LineID)
+Initialized ECCS!
+The graph has 0 nodes and 0 edges.
+Of the 0 edges in the graph, 0 are fixed.
+Of the 900 edges not in the graph, 30 are banned.
+The number of modifiable edges is 870.
+Preparation complete in 19.934519 seconds! 30 of the 900 possible edges were auto-rejected.
+Shape of prepared log: (10000, 30)
+Generated log of length 100000
+Initialized Sawmill with log file log_100000.log
+Work directory set to ../../../../dataset-files/scaling/length
+Parsing file: log_100000.log
+Parsing complete in 12.803159 seconds!
+Number of templates: 10
+Number of parsed variables: 11
+Causal unit set to LineID (tag: LineID) 
+Determining the causal unit assignment...
+Calculating aggregates for each causal unit...
+Successfully prepared the log with causal unit LineID (tag: LineID)
+Initialized ECCS!
+The graph has 0 nodes and 0 edges.
+Of the 0 edges in the graph, 0 are fixed.
+Of the 900 edges not in the graph, 30 are banned.
+The number of modifiable edges is 870.
+Preparation complete in 198.660864 seconds! 30 of the 900 possible edges were auto-rejected.
+Shape of prepared log: (100000, 30)
+Generated log of length 1000000
+Initialized Sawmill with log file log_1000000.log
+Work directory set to ../../../../dataset-files/scaling/length
+Parsing file: log_1000000.log
+Parsing complete in 127.965621 seconds!
+Number of templates: 10
+Number of parsed variables: 11
+Causal unit set to LineID (tag: LineID) 
+Determining the causal unit assignment...
+Calculating aggregates for each causal unit...
+Successfully prepared the log with causal unit LineID (tag: LineID)
+Initialized ECCS!
+The graph has 0 nodes and 0 edges.
+Of the 0 edges in the graph, 0 are fixed.
+Of the 900 edges not in the graph, 30 are banned.
+The number of modifiable edges is 870.
+Preparation complete in 1993.915313 seconds! 30 of the 900 possible edges were auto-rejected.
+Shape of prepared log: (1000000, 30)

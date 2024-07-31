@@ -1,0 +1,16 @@
+Method,Latency
+logos,1,1.841013
+logos,2,0.001019
+logos,3,1.696954
+logos,4,0.027979
+logos,5,0.027841
+regression,1,0.485602
+regression,2,0.000918
+regression,3,0.000924
+regression,4,0.000942
+regression,5,0.000913
+langmodel,1,5.266044
+langmodel,2,0.000725
+langmodel,3,0.000575
+langmodel,4,0.000551
+langmodel,5,0.000539
