@@ -15,6 +15,6 @@ You might need to install the following packages:
 
 ### OpenAI integration
 
-Yo use the LLM-powered capabilites of LOGos, please add a `.env` file to the root of this repo and define `OPENAI_API_KEY` appropriately.
+If you use the LLM-powered capabilites of LOGos, please add a `.env` file to the root of this repo and define `OPENAI_API_KEY` appropriately.
 
 
