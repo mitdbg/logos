@@ -1,5 +1,6 @@
 dataset_files/*/*
 evaluation/repro*
+site/
 webapp/log_results
 
 .env
