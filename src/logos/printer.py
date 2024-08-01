@@ -10,7 +10,7 @@ class Printer:
     """
     A flag indicating whether or not to print messages to the console.
     """
-    SAWMILL_VERBOSE = False
+    LOGOS_VERBOSE = False
 
     @classmethod
     def printv(self, msg: Any) -> None:
@@ -20,7 +20,7 @@ class Printer:
         Parameters:
             msg: The message to be printed.
         """
-        if Printer.SAWMILL_VERBOSE:
+        if Printer.LOGOS_VERBOSE:
             print(msg)
 
     @classmethod
@@ -31,7 +31,7 @@ class Printer:
         Parameters:
             val: The new verbosity value.
         """
-        Printer.SAWMILL_VERBOSE = val
+        Printer.LOGOS_VERBOSE = val
 
     @staticmethod
     def set_warnings_to(self, value: str):

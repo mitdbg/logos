@@ -2,7 +2,8 @@ from collections import defaultdict
 import numpy as np
 from typing import Optional, Any, Self
 import networkx as nx
-from src.logos.types import *
+from .types import *
+from .printer import Printer
 
 
 class EdgeOccurrenceTree:
@@ -108,9 +109,9 @@ class EdgeOccurrenceTree:
         for _ in range(depth):
             prefix += "-"
         if self.cluster_id is not None:
-            print(prefix + str(self.cluster_id))
+            Printer.printv(prefix + str(self.cluster_id))
         else:
-            print(prefix + "node")
+            Printer.printv(prefix + "node")
         if self.left:
             self.left.print_tree(depth + 1)
         if self.right:

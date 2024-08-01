@@ -179,15 +179,26 @@ class LOGos:
 
         self._set_vars_to_defaults()
         self._filename = filename
-        print(f"Initialized LOGos with log file {filename}")
+        Printer.printv(f"Initialized LOGos with log file {filename}")
 
         # Set and create working directory
         self._workdir = workdir
         if not os.path.exists(self._workdir):
             os.makedirs(self._workdir, exist_ok=True)
-        print(f"Work directory set to {self._workdir}")
+        Printer.printv(f"Work directory set to {self._workdir}")
 
         self._skip_writeout = skip_writeout
+
+    def set_verbose_to(self, val: bool) -> None:
+        """
+        Set the verbosity of the printer.
+
+        Parameters:
+            val: The new verbosity value.
+        """
+        Printer.set_verbose(val)
+        if self._eccs:
+            self._eccs.set_verbose_to(val)
 
     def _get_filename(self, var_name: str) -> str:
         """
@@ -404,7 +415,7 @@ class LOGos:
 
         end_time = datetime.now()
         elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        print(f"Parsing complete in {elapsed} seconds!")
+        Printer.printv(f"Parsing complete in {elapsed} seconds!")
         return elapsed
 
     def include_in_template(
@@ -543,7 +554,6 @@ class LOGos:
         if skip_writeout is None:
             skip_writeout = self._skip_writeout
         if not skip_writeout:
-            print("about to write stuff out")
             Pickler.dump(self._parsed_log, self._get_filename(nameof(self._parsed_log)))
             Pickler.dump(
                 self._parsed_templates,
@@ -667,7 +677,7 @@ class LOGos:
         self._causal_unit_var = var_name
         self._num_causal_units = num_units
 
-        print(
+        Printer.printv(
             f"Causal unit set to {var_name} (tag: {self.get_tag_of_parsed(var_name)}) "
             + (
                 ""
@@ -740,16 +750,17 @@ class LOGos:
 
         self._edge_states = EdgeStateMatrix(self.prepared_variable_names)
         if reject_prunable_edges:
-            print(f"Pruning edges...")
+            Printer.printv(f"Pruning edges...")
             self.reject_all_prunable_edges(
                 lasso_alpha=lasso_alpha, lasso_max_iter=lasso_max_iter
             )
 
         self._eccs = ECCS(self._prepared_log, nx.DiGraph())
+        self._eccs.set_verbose_to(Printer.LOGOS_VERBOSE)
 
         end_time = datetime.now()
         elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        print(
+        Printer.printv(
             f"""Preparation complete in {elapsed} seconds! """
             f"""{np.count_nonzero(self._edge_states.m == -1)} of the {self.num_prepared_variables ** 2} possible edges were auto-rejected."""
         )
@@ -776,7 +787,7 @@ class LOGos:
                 variables based on the same base variable but using a different aggregation function.
         """
 
-        print(f"Determining the causal unit assignment...")
+        Printer.printv(f"Determining the causal unit assignment...")
         causal_unit_assignment = CausalUnitSuggester._discretize(
             self._parsed_log[self._causal_unit_var],
             self._parsed_variables[
@@ -797,7 +808,7 @@ class LOGos:
 
         # Start with the parsed log, optionally with extra variables counting the occurence of each template.
         if count_occurences:
-            print(f"Adding template occurrence count variables...")
+            Printer.printv(f"Adding template occurrence count variables...")
             self._prepared_log = pd.concat(
                 [
                     self._parsed_log,
@@ -842,7 +853,7 @@ class LOGos:
             )
             for col in ui_cols:
                 agg_dict.pop(col, None)
-            print(
+            Printer.printv(
                 f"Dropped {len(ui_cols)} uninteresting columns, out of an original total of {len(self.parsed_variables)}."
             )
 
@@ -850,7 +861,7 @@ class LOGos:
         agg_dict[self._causal_unit_var] = agg_dict[self._causal_unit_var][:1]
 
         # Perform the aggregation
-        print("Calculating aggregates for each causal unit...")
+        Printer.printv("Calculating aggregates for each causal unit...")
         agg_func_dict: dict[str, list[Callable]] = {
             name: [self._agg_funcs[f] for f in funcs]
             for name, funcs in agg_dict.items()
@@ -886,7 +897,7 @@ class LOGos:
         # Drop variables that do not add information compared to other variables based on the same base variable
         # but using a different aggregation function.
         if drop_bad_aggs:
-            print(f"Dropping aggregates that do not add information...")
+            Printer.printv(f"Dropping aggregates that do not add information...")
             cols_to_drop = AggregateSelector.find_uninformative_aggregates(
                 self._prepared_log, self._parsed_variables, self._causal_unit_var
             )
@@ -943,7 +954,7 @@ class LOGos:
                 self._get_filename(nameof(self._prepared_variables)),
             )
 
-        print(
+        Printer.printv(
             f"""Successfully prepared the log with causal unit {self._causal_unit_var} """
             f"""(tag: {self.get_tag_of_parsed(self._causal_unit_var)})"""
             + (
@@ -1138,7 +1149,7 @@ class LOGos:
         self,
         src: str,
         dst: str,
-        also_fix: bool,
+        also_fix: bool = False,
         interactive: bool = True,
     ) -> Tuple[float, Optional[str], Optional[str]]:
         """
@@ -1433,7 +1444,7 @@ class LOGos:
 
         # Handle the case where the user has not specified a target.
         if target is None and self._next_exploration is None:
-            print("No target specified.")
+            Printer.printv("No target specified.")
             return pd.DataFrame(columns=CandidateCauseRanker.COLUMN_ORDER), ""
         elif target is None:
             target = self._next_exploration
@@ -1478,7 +1489,7 @@ class LOGos:
 
         end_time = datetime.now()
         elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        print(f"Candidate cause exploration complete in {elapsed} seconds!")
+        Printer.printv(f"Candidate cause exploration complete in {elapsed} seconds!")
 
         return ret_val, elapsed
 
@@ -1532,7 +1543,7 @@ class LOGos:
                     f"refiner-gpt-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.log",
                 )
             ),
-            self.prepared_variables
+            self.prepared_variables,
         )
 
         edge_tags = None
@@ -1543,7 +1554,7 @@ class LOGos:
 
         end_time = datetime.now()
         elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        print(f"Candidate cause exploration complete in {elapsed} seconds!")
+        Printer.printv(f"Candidate cause exploration complete in {elapsed} seconds!")
 
         return edge_tags, elapsed
 

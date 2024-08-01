@@ -3,6 +3,7 @@ from openai import OpenAI
 from .variable_name.parsed_variable_name import ParsedVariableName
 from enum import IntEnum
 from typing import Optional
+from .printer import Printer
 
 
 class TagOrigin(IntEnum):
@@ -297,7 +298,7 @@ class TagUtils:
         TagUtils.check_columns(df, ["Name", "Tag"])
         if name in df["Name"].values:
             df.loc[df["Name"] == name, "Tag"] = tag
-            print(f"Variable {name} tagged as {tag}")
+            Printer.printv(f"Variable {name} tagged as {tag}")
         else:
             raise ValueError(f"{name} is not the name of a {info} variable.")
 

@@ -248,7 +248,6 @@ class InteractiveCausalGraphRefiner:
             [v.strip() for v in ".".join(row.split(".")[1:]).strip().split(",")]
             for row in reply_rows
         ]
-        print(possibly_ranked_edges)
         ranked_edges = []
         tags = data_tags["Tag"].values
         for edge in possibly_ranked_edges:

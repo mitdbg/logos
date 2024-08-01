@@ -147,7 +147,7 @@ class Pruner:
         )
         if os.path.isfile(filename) and not force:
             df = pickle.load(open(filename, "rb"))
-            print("Found pickled file")
+            Printer.printv("Found pickled file")
             return list(df.index[:top_n].values)
 
         Printer.printv("Starting to prune using triangle method")

@@ -12,6 +12,8 @@ from datetime import datetime
 from tqdm.auto import tqdm
 from typing import Optional
 
+from .printer import Printer
+
 
 class Cluster:
     """
@@ -96,7 +98,7 @@ class Drain:
         """
 
         full_path = os.path.join(self.indir, filename)
-        print(f"Parsing file: {full_path}")
+        Printer.printv(f"Parsing file: {full_path}")
         self.filename = filename
         self.root = Node()
         self.cluster_list = []
