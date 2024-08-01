@@ -1,5 +1,8 @@
 site_name: LOGos
 
+repo_url: https://github.com/mitdbg/logos
+repo_name: mitdbg/logos
+
 theme:
   name: material
   language: en
@@ -14,6 +17,9 @@ theme:
     - navigation.footer
     - navigation.indexes
     - content.code.copy
+
+  icon:
+    repo: fontawesome/brands/github
 
   palette: 
 

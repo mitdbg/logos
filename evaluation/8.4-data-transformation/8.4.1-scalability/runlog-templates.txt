@@ -1,5 +1,5 @@
 Generated log with 10 templates
-Initialized Sawmill with log file log_10.log
+Initialized LOGos with log file log_10.log
 Work directory set to ../../../../dataset-files/scaling/templates
 Parsing file: log_10.log
 Parsing complete in 1.527421 seconds!
@@ -17,7 +17,7 @@ The number of modifiable edges is 870.
 Preparation complete in 19.000356 seconds! 30 of the 900 possible edges were auto-rejected.
 Shape of prepared log: (10000, 30)
 Generated log with 100 templates
-Initialized Sawmill with log file log_100.log
+Initialized LOGos with log file log_100.log
 Work directory set to ../../../../dataset-files/scaling/templates
 Parsing file: log_100.log
 Parsing complete in 2.504695 seconds!
@@ -35,7 +35,7 @@ The number of modifiable edges is 89700.
 Preparation complete in 173.596132 seconds! 300 of the 90000 possible edges were auto-rejected.
 Shape of prepared log: (10000, 300)
 Generated log with 1000 templates
-Initialized Sawmill with log file log_1000.log
+Initialized LOGos with log file log_1000.log
 Work directory set to ../../../../dataset-files/scaling/templates
 Parsing file: log_1000.log
 Parsing complete in 14.623135 seconds!
@@ -53,7 +53,7 @@ The number of modifiable edges is 8979012.
 Preparation complete in 1717.454760 seconds! 2997 of the 8982009 possible edges were auto-rejected.
 Shape of prepared log: (10000, 2997)
 Generated log with 10000 templates
-Initialized Sawmill with log file log_10000.log
+Initialized LOGos with log file log_10000.log
 Work directory set to ../../../../dataset-files/scaling/templates
 Parsing file: log_10000.log
 Parsing complete in 62.520005 seconds!
