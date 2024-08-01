@@ -1,4 +1,4 @@
-site_name: Sawmill
+site_name: LOGos
 
 theme:
   name: material
@@ -19,7 +19,7 @@ theme:
 
     # Palette toggle for light mode
     - scheme: default
-      primary: green
+      primary: light-blue
       accent: amber
       toggle:
         icon: material/weather-night 
@@ -27,7 +27,7 @@ theme:
 
     # Palette toggle for dark mode
     - scheme: slate
-      primary: green
+      primary: light-blue
       accent: amber
       toggle:
         icon: material/weather-sunny
@@ -59,29 +59,32 @@ plugins:
             show_type_annotations: true
 
 nav:
-  - Home: reference/src/sawmill/index.md
+  - Home: index.md
   - Docs: 
-    - "Sawmill": reference/src/sawmill/sawmill.md
-    - "Drain": reference/src/sawmill/drain.md
-    - "TagUtils": reference/src/sawmill/tag_utils.md 
-    - "CausalUnitSuggester": reference/src/sawmill/causal_unit_suggester.md
-    - "AggregateSelector": reference/src/sawmill/aggregate_selector.md
-    - "CausalDiscoverer": reference/src/sawmill/causal_discoverer.md
-    - "EdgeStateMatrix": reference/src/sawmill/edge_state_matrix.md
-    - "Regression": reference/src/sawmill/regression.md
-    - "GraphRenderer": reference/src/sawmill/graph_renderer.md
-    - "ATE": reference/src/sawmill/ate.md
-    - "ClusteringParams": reference/src/sawmill/clustering_params.md
-    - "EdgeOccurrenceTree": reference/src/sawmill/edge_occurrence_tree.md
-    - "Pickler": reference/src/sawmill/pickler.md
-    - "Printer": reference/src/sawmill/printer.md
-    - "Types": reference/src/sawmill/types.md
+    - "LOGos": reference/logos/logos.md
+    - "Drain": reference/logos/drain.md
+    - "TagUtils": reference/logos/tag_utils.md 
+    - "CausalUnitSuggester": reference/logos/causal_unit_suggester.md
+    - "AggregateSelector": reference/logos/aggregate_selector.md
+    - "CausalDiscoverer": reference/logos/causal_discoverer.md
+    - "EdgeStateMatrix": reference/logos/edge_state_matrix.md
+    - "CandidateCauseRanker": reference/logos/candidate_cause_ranker.md
+    - "Pruner": reference/logos/pruner.md
+    - "Regression": reference/logos/regression.md
+    - "GraphRenderer": reference/logos/graph_renderer.md
+    - "ATECalculator": reference/logos/ate_calculator.md
+    - "InteractiveCausalGraphRefiner": reference/logos/interactive_causal_graph_refiner.md
+    - "ClusteringParams": reference/logos/clustering_params.md
+    - "EdgeOccurrenceTree": reference/logos/edge_occurrence_tree.md
+    - "Pickler": reference/logos/pickler.md
+    - "Printer": reference/logos/printer.md
+    - "Types": reference/logos/types.md
     - Variable Names: 
-      - "ParsedVariableName": reference/src/sawmill/variable_name/parsed_variable_name.md
-      - "PreparedVariableName": reference/src/sawmill/variable_name/prepared_variable_name.md
+      - "ParsedVariableName": reference/logos/variable_name/parsed_variable_name.md
+      - "PreparedVariableName": reference/logos/variable_name/prepared_variable_name.md
     - Aggregation/Imputation Functions: 
-      - "Aggregation Functions": reference/src/sawmill/aggimp/agg_funcs.md
-      - "Imputation Functions": reference/src/sawmill/aggimp/imp_funcs.md
+      - "Aggregation Functions": reference/logos/aggimp/agg_funcs.md
+      - "Imputation Functions": reference/logos/aggimp/imp_funcs.md
 
   
 markdown_extensions:
