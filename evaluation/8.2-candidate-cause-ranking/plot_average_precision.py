@@ -88,9 +88,11 @@ for dataset in datasets:
         {"avg_precision": [avg_precision[m] for m in mapping.keys()]},
         index=mapping.values(),
     )
-    ax = df.plot(kind="bar", figsize=(4, 5))
+    fig, ax = plt.subplots(figsize=(4, 4))
+    for idx, (label, value) in enumerate(zip(df.index, df["avg_precision"])):
+        ax.bar(idx, value, label=label)
     ax.tick_params(axis="both", which="major", labelsize=FONTSIZE)
-    plt.xticks(rotation=70)
+    plt.xticks([])
     plt.ylabel("Average Precision", fontsize=FONTSIZE, labelpad=10)
     plt.xlabel("")
 
@@ -107,13 +109,15 @@ for dataset in datasets:
 
     # Leave some gap on the y axis so that the labels are inside the plot
     y_max = max(list(avg_precision.values()))
+    plt.yticks([0, 0.2, 0.4, 0.6, 0.8, 1])
     plt.ylim(0, 1.15)
 
-    # Set the color of the bars
+    # Set the color of the bars and add legend if needed.
     ax.patches[0].set_facecolor("#7FBA82")
     ax.patches[1].set_facecolor("#ba8a7f")
     ax.patches[2].set_facecolor("#7F9FBA")
-    ax.get_legend().remove()
+    if dataset == 'postgresql':
+        plt.legend(fontsize=FONTSIZE, loc="upper center", borderpad=0.2)
 
     plt.tight_layout()
     fig_path = os.path.join(

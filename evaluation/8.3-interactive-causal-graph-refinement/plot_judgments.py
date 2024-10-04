@@ -70,9 +70,11 @@ for dataset in datasets:
     df = pd.DataFrame(
         {"judgments": [judgments[m] for m in mapping.keys()]}, index=mapping.values()
     )
-    ax = df.plot(kind="bar", figsize=(4, 5))
+    fig, ax = plt.subplots(figsize=(4, 4))
+    for idx, (label, value) in enumerate(zip(df.index, df["judgments"])):
+        ax.bar(idx, value, label=label)
     ax.tick_params(axis="both", which="major", labelsize=FONTSIZE)
-    plt.xticks(rotation=70)
+    plt.xticks([])
     plt.ylabel("Judgments Until\nGround Truth ATE", fontsize=FONTSIZE, labelpad=10)
     plt.xlabel("")
 
@@ -95,7 +97,6 @@ for dataset in datasets:
     ax.patches[0].set_facecolor("#7FBA82")
     ax.patches[1].set_facecolor("#ba8a7f")
     ax.patches[2].set_facecolor("#7F9FBA")
-    ax.get_legend().remove()
 
     plt.tight_layout()
     fig_path = os.path.join(

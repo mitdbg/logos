@@ -62,10 +62,13 @@ for dataset in datasets:
     df = pd.DataFrame(
         {"latency": [latency[m] for m in mapping.keys()]}, index=mapping.values()
     )
-    ax = df.plot(kind="bar", figsize=(4, 5))
+    fig, ax = plt.subplots(figsize=(4, 4))
+    for idx, (label, value) in enumerate(zip(df.index, df["latency"])):
+        ax.bar(idx, value, label=label)
     ax.tick_params(axis="both", which="major", labelsize=FONTSIZE)
+    plt.xticks([])
     plt.xticks(rotation=70)
-    plt.ylabel("Cumulative Processing\nTime (s)", fontsize=FONTSIZE, labelpad=10)
+    plt.ylabel("Cumulative Latency (s)", fontsize=FONTSIZE, labelpad=10)
     plt.xlabel("")
 
     # Print the value of each bar above it
@@ -87,7 +90,6 @@ for dataset in datasets:
     ax.patches[0].set_facecolor("#7FBA82")
     ax.patches[1].set_facecolor("#ba8a7f")
     ax.patches[2].set_facecolor("#7F9FBA")
-    ax.get_legend().remove()
 
     plt.tight_layout()
     fig_path = os.path.join(

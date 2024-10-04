@@ -56,10 +56,12 @@ for dataset in datasets:
     df = pd.DataFrame(
         {"latency": [latency[m] for m in mapping.keys()]}, index=mapping.values()
     )
-    ax = df.plot(kind="bar", figsize=(4, 5))
+    fig, ax = plt.subplots(figsize=(4, 4))
+    for idx, (label, value) in enumerate(zip(df.index, df["latency"])):
+        ax.bar(idx, value, label=label)
     ax.tick_params(axis="both", which="major", labelsize=FONTSIZE)
-    plt.xticks(rotation=70)
-    plt.ylabel("Mean latency (s)", fontsize=FONTSIZE, labelpad=10)
+    plt.xticks([])
+    plt.ylabel("Mean Latency (s)", fontsize=FONTSIZE, labelpad=10)
     plt.xlabel("")
 
     # Print the value of each bar above it
@@ -81,7 +83,9 @@ for dataset in datasets:
     ax.patches[0].set_facecolor("#7FBA82")
     ax.patches[1].set_facecolor("#ba8a7f")
     ax.patches[2].set_facecolor("#7F9FBA")
-    ax.get_legend().remove()
+    if dataset == 'postgresql':
+        plt.ylim(0, y_max * 2.25)
+        plt.legend(fontsize=FONTSIZE, loc="upper center", borderpad=0.2)
 
     plt.tight_layout()
     fig_path = os.path.join(
