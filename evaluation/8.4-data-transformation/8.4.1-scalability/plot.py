@@ -45,7 +45,7 @@ LINE_FORMATTING_DATA = {
         "xaxis_mult":1
     },
     "variables": {
-        "xlabel": r"$\frac{Variables}{Line Tokens}$",
+        "xlabel": r"\# Variables / \# Line Tokens",
         "color": "#7F9FBA",
         "parse_fit_start_idx": 0,
         "parse_fit_end_idx": 10,
@@ -79,14 +79,14 @@ def form_polynomial_string(p):
     p_str = p_str.replace("x", r"}x")
     return p_str
 
-plots_dir = os.path.join(LOGOS_ROOT_DIR, "evaluation", "plots")
+plots_dir = os.path.join(LOGOS_ROOT_DIR, "evaluation", "paper_plots")
 
 
 for metric in LINE_FORMATTING_DATA.keys():
 
     # Read data from CSV
     path = os.path.join(
-        LOGOS_ROOT_DIR, "evaluation", "results", f"8.4.1-scalability-{metric}.csv"
+        LOGOS_ROOT_DIR, "evaluation", "paper_results", f"8.4.1-scalability-{metric}.csv"
     )
     data = pd.read_csv(path)
     data.columns = [x.strip() for x in data.columns]
