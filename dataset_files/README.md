@@ -3,7 +3,7 @@
 This directory holds the following types of files, for each of the datasets `x` used in our evaluation:
 - `x/datasets_raw/`: The raw logs.
 - `x/datasets/`: The cached byproducts of processing the dataset with LogOS, in pickled form.
-- `x/evaluation/`: The outputs produced by our experiment runners when processing the dataset in question.
+- `x/paper_evaluation/`: The outputs produced by our experiment runners when processing the dataset in question for our paper.
 
 Some of these files are large, which is why we have hosted them on S3 instead of distributing them
 inside this repository. If you would like to access any of these datasets, please email us at markakis[at]mit[dot]edu.

@@ -83,7 +83,7 @@ for dataset in datasets:
     ax.patches[0].set_facecolor("#7FBA82")
     ax.patches[1].set_facecolor("#ba8a7f")
     ax.patches[2].set_facecolor("#7F9FBA")
-    if dataset == 'postgresql':
+    if dataset == "postgresql":
         plt.ylim(0, y_max * 2.25)
         plt.legend(fontsize=FONTSIZE, loc="upper center", borderpad=0.2)
 
