@@ -34,7 +34,7 @@ class Regression:
             "Slope": slope,
             "P-value": p_value,
         }
-    
+
     @staticmethod
     def get_normalized_copy(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         """
@@ -50,6 +50,9 @@ class Regression:
         """
         data = data.copy(deep=True)
         stdevs = data.std()
+
+        # Cast all columns to float64 to avoid numpy warnings
+        data = data.astype("float64")
 
         for column in data.columns:
             if stdevs[column] == 0:

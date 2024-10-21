@@ -816,6 +816,7 @@ class LOGos:
                         self._parsed_log["TemplateId"],
                         prefix="TemplateId",
                         prefix_sep="=",
+                        dtype=float,
                     ),
                 ],
                 axis=1,
@@ -914,7 +915,7 @@ class LOGos:
                 [
                     self._prepared_log,
                     pd.get_dummies(
-                        self._prepared_log[col], prefix=col, prefix_sep="=", dtype=int
+                        self._prepared_log[col], prefix=col, prefix_sep="=", dtype=float
                     ),
                 ],
                 axis=1,
