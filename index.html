@@ -347,27 +347,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#openai-integration" class="md-nav__link">
     <span class="md-ellipsis">
       OpenAI integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trying-out-logos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trying out LOGos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducing-our-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducing our evaluation
     </span>
   </a>
   
@@ -1067,27 +1067,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#openai-integration" class="md-nav__link">
     <span class="md-ellipsis">
       OpenAI integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trying-out-logos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trying out LOGos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducing-our-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducing our evaluation
     </span>
   </a>
   
@@ -1109,15 +1109,20 @@
 
 
 <h1 id="logos">LOGos</h1>
-<p>Utilizing system logs to perform causal analysis.</p>
-<h3 id="demo">Demo</h3>
-<p>You can find a quick demo of the LOGos API at <a href="demo.ipynb">demo.ipynb</a>. </p>
-<h3 id="documentation">Documentation</h3>
-<p>To view the documentation, run <code>mkdocs serve</code> from the root of this repo and open the corresponding page. </p>
-<p>You might need to install the following packages:
-<code>pip install mkdocs-material mkdocs-gen-files mkdocs-literate-nav markdown_include pymdown-extensions markdown mkdocs-pymdownx Pygments mkdocs-jupyter mkdocstrings-python mkdocstrings mdx_include</code></p>
+<p>Utilizing system logs to perform causal analysis. You can access the documentation <a href="https://mitdbg.github.io/logos">here</a>.</p>
+<p>Please begin by installing the Python packages required for this project by running <code>pip install -r requirements.txt</code>.</p>
 <h3 id="openai-integration">OpenAI integration</h3>
-<p>If you use the LLM-powered capabilites of LOGos, please add a <code>.env</code> file to the root of this repo and define <code>OPENAI_API_KEY</code> appropriately.</p>
+<p>In order to use the LLM-powered capabilites of LOGos, please add a <code>.env</code> file to the root of this repo and define <code>OPENAI_API_KEY</code> appropriately.</p>
+<h3 id="trying-out-logos">Trying out LOGos</h3>
+<p>For an introduction to our Python-based interface at <a href="demo/demo.ipynb"><code>demo/demo.ipynb</code></a>.</p>
+<p>We also offer a UI-based demo, which you can launch by running </p>
+<h3 id="reproducing-our-evaluation">Reproducing our evaluation</h3>
+<p>To reproduce the evaluation from our VLDB paper, please follow the following steps:</p>
+<ol>
+<li>Follow the instructions in <code>dataset_files/README.md</code> to gain access to our datasets.</li>
+<li>Within <code>evaluation/</code>, you will find directories based on each experiment presented in our paper. Based on the experiment you would like to reproduce, switch into the appropriate directory and run the <code>reproduce.sh</code> script (you may need to edit file permissions to make it executable). This will run the experiment and plot the results.</li>
+<li>Find the resulting plots in <code>evaluation/repro_plots/</code>. The raw data for each plot will be saved in <code>evaluation/repro_plots_data/</code>.</li>
+</ol>
 
 
 
