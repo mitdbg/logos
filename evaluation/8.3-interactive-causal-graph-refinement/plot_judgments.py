@@ -113,7 +113,7 @@ for dataset in datasets:
     res_path = os.path.join(
         LOGOS_ROOT_DIR,
         "evaluation",
-        f"{prefix}_results",
+        f"{prefix}_plots_data",
         f"8.3-interactive-causal-graph-refinement-{dataset}-judgments.csv",
     )
     if not os.path.exists(os.path.dirname(res_path)):

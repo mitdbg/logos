@@ -110,7 +110,7 @@ for v in distinct_v:
     res_path = os.path.join(
         LOGOS_ROOT_DIR,
         "evaluation",
-        f"{prefix}_results",
+        f"{prefix}_plots_data",
         f"8.3-interactive-causal-graph-refinement-{dataset}-latency-breakdown-{v}.csv",
     )
     if not os.path.exists(os.path.dirname(res_path)):
