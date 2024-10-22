@@ -12,13 +12,20 @@ def main():
     template_exp_max = 4
     templates = [10**i for i in range(template_exp_min, template_exp_max + 1)]
 
-    resultsdir = os.path.join(LOGOS_ROOT_DIR, "evaluation", "results")
-    workdir = os.path.join(LOGOS_ROOT_DIR, "dataset_files", "scaling", "templates")
-    if not os.path.exists(workdir):
-        os.makedirs(workdir)
+    dataset_files_dir = os.path.join(LOGOS_ROOT_DIR, "dataset_files", "scaling")
+    indir = os.path.join(dataset_files_dir, "datasets_raw")
+    workdir = os.path.join(dataset_files_dir, "datasets")
+    outdir = os.path.join(
+        dataset_files_dir, "repro_evaluation", "8.4-log-converter-scaling"
+    )
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
-    f = open("runlog-templates.txt", "w+")
-    fr1 = open(os.path.join(resultsdir, "8.4.1-scalability-templates.csv"), "w+")
+    runlog_path = os.path.join(outdir, f"templates_runlog.txt")
+    outfile_path = os.path.join(outdir, "8.4-log-converter-scaling-templates.csv")
+
+    f = open(runlog_path, "w+")
+    fr1 = open(outfile_path, "w+")
     fr1.write("Templates, Parse Time, Prep Time\n")
     sys.stdout = f
 
@@ -28,8 +35,9 @@ def main():
         S = t
         V = 1
         C = 10
-        filename = os.path.join(workdir, f"log_{t}.log")
-        gen_log(L, S, V, C, filename)
+        filename = os.path.join(indir, f"templates_log_{t}.log")
+        if not os.path.exists(filename):
+            gen_log(L, S, V, C, filename)
         print(f"Generated log with {t} templates")
 
         # Analyze log

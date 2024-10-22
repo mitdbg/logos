@@ -12,14 +12,21 @@ def main():
     variable_max = 10
     variables = [10 * i for i in range(variable_min, variable_max + 1)]
 
-    resultsdir = os.path.join(LOGOS_ROOT_DIR, "evaluation", "results")
-    workdir = os.path.join(LOGOS_ROOT_DIR, "dataset_files", "scaling", "variables")
-    if not os.path.exists(workdir):
-        os.makedirs(workdir)
+    dataset_files_dir = os.path.join(LOGOS_ROOT_DIR, "dataset_files", "scaling")
+    indir = os.path.join(dataset_files_dir, "datasets_raw")
+    workdir = os.path.join(dataset_files_dir, "datasets")
+    outdir = os.path.join(
+        dataset_files_dir, "repro_evaluation", "8.4-log-converter-scaling"
+    )
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
-    f = open("runlog-variables.txt", "w+")
-    fr1 = open(os.path.join(resultsdir, "8.4.1-scalability-variables.csv"), "w+")
-    fr1.write("variables, Parse Time, Prep Time\n")
+    runlog_path = os.path.join(outdir, f"variables_runlog.txt")
+    outfile_path = os.path.join(outdir, "8.4-log-converter-scaling-variables.csv")
+
+    f = open(runlog_path, "w+")
+    fr1 = open(outfile_path, "w+")
+    fr1.write("Variables, Parse Time, Prep Time\n")
     sys.stdout = f
 
     for v in variables:
@@ -28,8 +35,9 @@ def main():
         S = 10
         V = v
         C = 100 - v
-        filename = os.path.join(workdir, f"log_{v}.log")
-        gen_log(L, S, V, C, filename)
+        filename = os.path.join(indir, f"variables_log_{v}.log")
+        if not os.path.exists(filename):
+            gen_log(L, S, V, C, filename)
         print(f"Generated log with {v} variables")
 
         # Analyze log

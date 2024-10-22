@@ -12,13 +12,20 @@ def main():
     length_exp_max = 6
     lengths = [10**i for i in range(length_exp_min, length_exp_max + 1)]
 
-    resultsdir = os.path.join(LOGOS_ROOT_DIR, "evaluation", "results")
-    workdir = os.path.join(LOGOS_ROOT_DIR, "dataset_files", "scaling", "templates")
-    if not os.path.exists(workdir):
-        os.makedirs(workdir)
+    dataset_files_dir = os.path.join(LOGOS_ROOT_DIR, "dataset_files", "scaling")
+    indir = os.path.join(dataset_files_dir, "datasets_raw")
+    workdir = os.path.join(dataset_files_dir, "datasets")
+    outdir = os.path.join(
+        dataset_files_dir, "repro_evaluation", "8.4-log-converter-scaling"
+    )
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
-    f = open("runlog-length.txt", "w+")
-    fr1 = open(os.path.join(resultsdir, "8.4.1-scalability-length.csv"), "w+")
+    runlog_path = os.path.join(outdir, f"length_runlog.txt")
+    outfile_path = os.path.join(outdir, "8.4-log-converter-scaling-length.csv")
+
+    f = open(runlog_path, "w+")
+    fr1 = open(outfile_path, "w+")
     fr1.write("Length, Parse Time, Prep Time\n")
     sys.stdout = f
 
@@ -28,8 +35,9 @@ def main():
         S = 10
         V = 1
         C = 10
-        filename = os.path.join(workdir, f"log_{l}.log")
-        gen_log(L, S, V, C, filename)
+        filename = os.path.join(indir, f"length_log_{l}.log") 
+        if not os.path.exists(filename):
+            gen_log(L, S, V, C, filename)
         print(f"Generated log of length {l}")
 
         # Analyze log
