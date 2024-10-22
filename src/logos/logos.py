@@ -266,13 +266,18 @@ class LOGos:
         "Timestamp": r"\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z",
     }
 
+    """
+    A default prefix used to identify the beginning of each log message.
+    """
+    DEFAULT_MESSAGE_PREFIX = r".*"
+
     def parse(
         self,
         regex_dict: dict[str, str] = DEFAULT_REGEX_DICT,
         sim_thresh: float = 0.65,
         depth: int = 5,
         force: bool = False,
-        message_prefix: str = r".*",
+        message_prefix: str = DEFAULT_MESSAGE_PREFIX,
         enable_gpt_tagging: bool = False,
     ) -> str:
         """

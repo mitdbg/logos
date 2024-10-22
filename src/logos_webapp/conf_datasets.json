@@ -1,0 +1,15 @@
+[
+    {
+        "dataset_name": "Demo dataset",
+        "path": "demo/demo.log",
+        "workdir": "demo/workdir/",
+        "custom_agg": {
+            "Timestamp": [
+                "max"
+            ]
+        },
+        "custom_imp": {
+            "z": "ffill_imp"
+        }
+    }
+]
