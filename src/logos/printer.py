@@ -1,5 +1,4 @@
 from typing import Any
-import warnings
 
 
 class Printer:
@@ -32,20 +31,3 @@ class Printer:
             val: The new verbosity value.
         """
         Printer.LOGOS_VERBOSE = val
-
-    @staticmethod
-    def set_warnings_to(self, value: str):
-        """
-        Set selected warnings to `value`.
-
-        Parameters:
-            value: The value to set the warnings to.
-        """
-        warnings.filterwarnings(
-            value, category=RuntimeWarning, message="mean of empty slice"
-        )
-        warnings.filterwarnings(
-            value,
-            category=RuntimeWarning,
-            message="invalid value encountered in scalar divide",
-        )

@@ -1,7 +1,7 @@
-import pandas as pd
-from tqdm.auto import tqdm
-import pickle
 import os
+import pickle
+
+import pandas as pd
 
 
 class Pickler:

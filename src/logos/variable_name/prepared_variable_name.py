@@ -1,12 +1,18 @@
-from typing import Optional, Self
-from .parsed_variable_name import ParsedVariableName
+"""
+Represents a prepared variable name.
+"""
+
+from typing import Optional, Self, Union
+
+from src.logos.variable_name.parsed_variable_name import ParsedVariableName
 
 
 class PreparedVariableName:
     """
     Performs operations on a string interpreted as a prepared variable name.
 
-    The relevant string format is {template_id}[_{index}][={pre-agg value}]+{aggregate}[={post_agg value}].
+    The relevant string format is
+    {template_id}[_{index}][={pre-agg value}]+{aggregate}[={post_agg value}].
     """
 
     def __init__(self, s: str) -> None:
@@ -93,8 +99,8 @@ class PreparedVariableName:
             Whether the prepared variable has no pre- or post-aggregates.
         """
         return self.pre_agg_value() == "" and self.post_agg_value() == ""
-    
-    def has_base_var(self, x: str | Self) -> bool:
+
+    def has_base_var(self, x: Union[str, Self]) -> bool:
         """
         Check whether the prepared variable has the given base variable.
 
@@ -107,7 +113,10 @@ class PreparedVariableName:
         return PreparedVariableName.same_base_var(self, x)
 
     @staticmethod
-    def same_base_var(var1: str | Self, var2: str | Self) -> bool:
+    def same_base_var(
+        var1: Union[str, "PreparedVariableName"],
+        var2: Union[str, "PreparedVariableName"],
+    ) -> bool:
         """
         Check whether two prepared variables have the same base variable.
 

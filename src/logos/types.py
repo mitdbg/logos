@@ -1,6 +1,6 @@
-from typing import Callable
 from collections import defaultdict
-from typing import Self
+from typing import Callable
+
 
 class Types:
     Edge = tuple[str, str]

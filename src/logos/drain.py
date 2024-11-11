@@ -1,67 +1,75 @@
 """
 Inspired by the LogPAI implementation of the Drain algorithm for log parsing, 
-available under the MIT license here:
-[https://github.com/HelenGuohx/logbert/blob/main/logparser/Drain.py](https://github.com/HelenGuohx/logbert/blob/main/logparser/Drain.py)
+available under the MIT license 
+[here](https://github.com/HelenGuohx/logbert/blob/main/logparser/Drain.py).
 """
 
-import re
-import os
-import pandas as pd
 import hashlib
-from datetime import datetime
+import os
+import re
+from typing import Any, Optional, Union, cast
+
+import pandas as pd
 from tqdm.auto import tqdm
-from typing import Optional
 
-from .printer import Printer
+from src.logos.printer import Printer
 
 
-class Cluster:
+class Cluster:  # pylint: disable=too-few-public-methods
     """
     A cluster in the Drain parse tree.
     """
 
-    def __init__(self, template: str = "", message_ids: list[int] = []):
+    def __init__(
+        self, template: list[str], message_ids: Optional[list[int]] = None
+    ) -> None:
         """
         Parameters:
-            template : the template of log messages in this cluster
-            message_ids : the list of log message IDs in this cluster
+            template: The tokenized template of log messages in this cluster.
+            message_ids: The list of log message IDs in this cluster.
         """
 
         self.template = template
-        self.message_ids = message_ids
+        self.message_ids = [] if message_ids is None else message_ids
 
 
-class Node:
+class Node:  # pylint: disable=too-few-public-methods
     """
     A node in the Drain parse tree.
     """
 
-    def __init__(self, children=None, depth=0, id=None):
+    def __init__(
+        self,
+        children: Optional[dict] = None,
+        cluster_list: Optional[list[Cluster]] = None,
+        depth: int = 0,
+        node_id: Optional[Union[str, int]] = None,
+    ) -> None:
         """
         Parameters:
-            children : the dictionary of children nodes
-            depth : the depth of this node in the tree
-            id : the digit or token that this node represents
+            children: the dictionary of children nodes
+            cluster_list: the list of clusters in this node
+            depth: the depth of this node in the tree
+            node_id: the digit or token that this node represents
         """
-        if children is None:
-            children = dict()
-        self.children = children
+        self.children = {} if children is None else children
+        self.cluster_list = [] if cluster_list is None else cluster_list
         self.depth = depth
-        self.id = id
+        self.node_id = node_id
 
 
-class Drain:
+class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-methods
     """
     A class implementing the Drain log parsing algorithm.
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         indir: str = ".",
         depth: int = 4,
         st: float = 0.4,
         max_children: int = 100,
-        rex: dict = {},
+        rex: Optional[dict] = None,
         skip_writeout: bool = False,
         message_prefix: str = r".*",
     ):
@@ -73,17 +81,26 @@ class Drain:
             depth: depth of all leaf nodes
             st: similarity threshold
             max_children: max number of children of an internal node
-            rex: regular expressions used in preprocessing, provided as a dictionary from field name to field regex
+            rex: regular expressions used in preprocessing, provided as a dictionary from field name
+                to field regex
             skip_writeout: whether to skip writing out the parsed log file, templates and variables.
-            message_prefix: prefix that starts each message of the log file - lines are merged to their preceding line if they do not start with this prefix.
+            message_prefix: prefix that starts each message of the log file - lines are merged to
+                their preceding line if they do not start with this prefix.
         """
         self.indir = indir
         self.depth = depth - 2
         self.st = st
         self.max_children = max_children
-        self.rex = rex
+        self.rex = {} if rex is None else rex
         self.skip_writeout = skip_writeout
         self.message_prefix = message_prefix
+
+        # Not from arguments.
+        self.filename = ""
+        self.root = Node()
+        self.cluster_list: list[Cluster] = []
+        self.logdf = pd.DataFrame()
+        self.parsed_templates = pd.DataFrame()
 
     def parse(self, filename: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
@@ -100,8 +117,6 @@ class Drain:
         full_path = os.path.join(self.indir, filename)
         Printer.printv(f"Parsing file: {full_path}")
         self.filename = filename
-        self.root = Node()
-        self.cluster_list = []
         self.logdf = self._to_df(full_path)
 
         tqdm.pandas(desc="Determining template for each line...")
@@ -123,7 +138,7 @@ class Drain:
         log_messages = []
         linecount = 0
 
-        with open(log_file, "r") as f:
+        with open(log_file, "r", encoding="utf-8") as f:
             log_message = ""
 
             for line in tqdm(f.readlines(), desc="Reading and tokenizing log lines..."):
@@ -135,7 +150,7 @@ class Drain:
                             log_messages.append(self._preprocess(log_message))
                             linecount += 1
                         except Exception as e:
-                            raise ValueError
+                            raise ValueError from e
                     log_message = line
                 else:
                     log_message += " " + line
@@ -145,7 +160,7 @@ class Drain:
                     log_messages.append(self._preprocess(log_message))
                     linecount += 1
                 except Exception as e:
-                    raise ValueError
+                    raise ValueError from e
 
         logdf = pd.DataFrame(
             log_messages, columns=["Message", "Tokenized", "Replaced by regex"]
@@ -161,7 +176,8 @@ class Drain:
             msg: The message to preprocess.
 
         Returns:
-            A tuple containing the original message, the tokenized message, and a list of the values replaced by regexes.
+            A tuple containing the original message, the tokenized message, and a list of the
+                values replaced by regexes.
         """
 
         msg = msg.strip()
@@ -232,7 +248,7 @@ class Drain:
                 return None
             depth += 1
 
-        cluster_list = node.children
+        cluster_list = node.cluster_list
         returned_cluster = self._find_cluster(cluster_list, tokenized)
 
         return returned_cluster
@@ -250,21 +266,21 @@ class Drain:
         length = len(cluster.template)
         first_layer_node = None
         if length not in root.children:
-            first_layer_node = Node(depth=1, id=length)
+            first_layer_node = Node(depth=1, node_id=length)
             root.children[length] = first_layer_node
         else:
             first_layer_node = root.children[length]
 
         # Traverse the tree to add the new cluster.
-        node = first_layer_node
+        node = cast(Node, first_layer_node)
         depth = 1
         for token in cluster.template:
             # If out of depth, add current log cluster to the leaf node
             if depth >= self.depth or depth > length:
-                if len(node.children) == 0:
-                    node.children = [cluster]
+                if node.cluster_list is None:
+                    node.cluster_list = [cluster]
                 else:
-                    node.children.append(cluster)
+                    node.cluster_list.append(cluster)
                 break
 
             # If token not matched in this layer of existing tree.
@@ -272,25 +288,25 @@ class Drain:
                 if not any(char.isdigit() for char in token):
                     if "<*>" in node.children:
                         if len(node.children) < self.max_children:
-                            new_node = Node(depth=depth + 1, id=token)
+                            new_node = Node(depth=depth + 1, node_id=token)
                             node.children[token] = new_node
                             node = new_node
                         else:
                             node = node.children["<*>"]
                     else:
                         if len(node.children) + 1 < self.max_children:
-                            new_node = Node(depth=depth + 1, id=token)
+                            new_node = Node(depth=depth + 1, node_id=token)
                             node.children[token] = new_node
                             node = new_node
                         elif len(node.children) + 1 == self.max_children:
-                            new_node = Node(depth=depth + 1, id="<*>")
+                            new_node = Node(depth=depth + 1, node_id="<*>")
                             node.children["<*>"] = new_node
                             node = new_node
                         else:
                             node = node.children["<*>"]
                 else:
                     if "<*>" not in node.children:
-                        node.children["<*>"] = Node(depth=depth + 1, id="<*>")
+                        node.children["<*>"] = Node(depth=depth + 1, node_id="<*>")
                     node = node.children["<*>"]
 
             # If the token is matched
@@ -301,15 +317,16 @@ class Drain:
 
     def _similarity(self, seq1: list[str], seq2: list[str]) -> tuple[float, int]:
         """
-        Determine the fraction of tokens in `seq1` that are identical to the corresponding token in `seq2`.
-        Also return the number of parameters in `seq1`.
+        Determine the fraction of tokens in `seq1` that are identical to the corresponding token in
+        `seq2` (i.e. with the same index). Also return the number of parameters in `seq1`.
 
         Parameters:
             seq1: The first sequence.
             seq2: The second sequence.
 
         Returns:
-            A tuple containing the fraction of identical tokens and the number of parameters in `seq1`.
+            similarity: The fraction of identical tokens.
+            num_params: The number of parameters in `seq1`.
         """
         assert len(seq1) == len(seq2)
         matches = 0
@@ -340,7 +357,7 @@ class Drain:
             or None if no cluster is sufficiently similar.
         """
 
-        max_similarity = -1
+        max_similarity = -1.0
         max_num_params = -1
         max_cluster = None
 
@@ -355,8 +372,8 @@ class Drain:
 
         if max_similarity >= self.st:
             return max_cluster
-        else:
-            return None
+
+        return None
 
     def _get_updated_template(self, template: list[str], msg: list[str]) -> list[str]:
         """
@@ -397,11 +414,13 @@ class Drain:
         splitx = x.split("_")
         if len(splitx) != 2:
             return []
-        id = splitx[0]
+        template_id = splitx[0]
         position = int(splitx[1])
         start_position = max(0, position - 3)
         return (
-            parsed_templates[parsed_templates["TemplateId"] == id]["TemplateText"]
+            parsed_templates[parsed_templates["TemplateId"] == template_id][
+                "TemplateText"
+            ]
             .values[0]
             .split()[start_position:position]
         )
@@ -409,14 +428,13 @@ class Drain:
     def _postprocess(
         self,
     ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-        template_id_per_msg = [0] * self.logdf.shape[0]
         parsed_templates_list = []
 
         regex_tokens = ["<*" + str(i) + ">" for i in range(len(self.rex))]
 
         # Process each cluster to determine template information.
         for cluster in self.cluster_list:
-            d = {}
+            d: dict[str, Any] = {}
 
             # Determine the template ID
             d["TemplateText"] = " ".join(cluster.template)
@@ -429,10 +447,10 @@ class Drain:
                 i for i, x in enumerate(cluster.template) if x == "<*>"
             ]
             d["RegexIndices"] = []
-            for i in regex_tokens:
+            for t in regex_tokens:
                 try:
-                    d["RegexIndices"].append(cluster.template.index(str(i)))
-                except:
+                    d["RegexIndices"].append(cluster.template.index(str(t)))
+                except Exception:  # pylint: disable=broad-except
                     pass
 
             # Update the template ID for each log message in the cluster.
@@ -451,7 +469,8 @@ class Drain:
             template_occurences
         )
 
-        # Create columns for each variable (parsed or regex-derived) and extract them from each log message.
+        # Create columns for each variable (parsed or regex-derived) and extract them
+        # from each log message.
         variable_columns = list(self.rex.keys())
         variable_columns.extend(
             [

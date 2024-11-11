@@ -1,21 +1,28 @@
+"""
+Calculates the Average Treatment Effect (ATE) of a treatment on an outcome,
+alongside confidence measures.
+"""
+
 import contextlib
-import pandas as pd
+from typing import Any, Optional
+
 import networkx as nx
-from typing import Optional, Any
-from .tag_utils import TagUtils
+import pandas as pd
 from dowhy import CausalModel
 
+from src.logos.tag_utils import TagUtils
 
-class ATECalculator:
+
+class ATECalculator:  # pylint: disable=too-few-public-methods
     """
     A class to calculate ATEs and determine the impact of adding/removing/reversing DAG edges
     on these calculations.
     """
 
     @staticmethod
-    def get_ate_and_confidence(
+    def get_ate_and_confidence(  # pylint: disable=too-many-arguments, too-many-locals
         data: pd.DataFrame,
-        vars: pd.DataFrame,
+        variables: pd.DataFrame,
         treatment: str,
         outcome: str,
         confounder: Optional[str] = None,
@@ -28,26 +35,31 @@ class ATECalculator:
         Calculate the ATE of `treatment` on `outcome`, alongside confidence measures.
 
         Parameters:
+            data: The data frame containing the data for each variable.
+            variables: The data frame containing the variable names and their tags.
             treatment: The name or tag of the treatment variable.
             outcome: The name or tag of the outcome variable.
-            confounder: The name or tag of a confounder variable. If specified, overrides the current partial
-                causal graph in favor of a three-node graph with `treatment`, `outcome` and `confounder`.
-            graph: The graph to be used for causal analysis. If not specified, a two-node graph with just
-                `treatment` and `outcome` is used.
+            confounder: The name or tag of a confounder variable. If specified, overrides the
+                current partial causal graph in favor of a three-node graph with `treatment`,
+                `outcome` and `confounder`.
+            graph: The graph to be used for causal analysis. If not specified, a two-node graph with
+                just `treatment` and `outcome` is used.
             calculate_p_value: Whether to calculate the P-value of the ATE.
             calculate_std_error: Whether to calculate the standard error of the ATE.
-            get_estimand: Whether to return the estimand used to calculate the ATE, as part of the returned dictionary.
+            get_estimand: Whether to return the estimand used to calculate the ATE, as part of the
+                returned dictionary.
 
         Returns:
-            A dictionary containing the ATE of `treatment` on `outcome`, alongside confidence measures. If
-            `get_estimand` is True, the estimand used to calculate the ATE is also returned.
+            A dictionary containing the ATE of `treatment` on `outcome`, alongside confidence
+                measures. If `get_estimand` is True, the estimand used to calculate the ATE is also
+                returned as part of the dictionary.
         """
 
         # If the user provided the tag of any variable, retrieve their names
-        treatment = TagUtils.name_of(vars, treatment, "prepared")
-        outcome = TagUtils.name_of(vars, outcome, "prepared")
+        treatment = TagUtils.name_of(variables, treatment, "prepared")
+        outcome = TagUtils.name_of(variables, outcome, "prepared")
         if confounder is not None:
-            confounder = TagUtils.name_of(vars, confounder, "prepared")
+            confounder = TagUtils.name_of(variables, confounder, "prepared")
 
         # Should the effects be calculated based on the current partial causal graph,
         # some other graph provided as a function parameter,
@@ -64,7 +76,7 @@ class ATECalculator:
                 graph.add_edge(confounder, treatment)
 
         # Use dowhy to get the ATE, P-value and standard error.
-        with open("/dev/null", "w+") as f:
+        with open("/dev/null", "w+", encoding="utf-8") as f:
             try:
                 with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
                     model = CausalModel(
@@ -97,5 +109,5 @@ class ATECalculator:
                     if get_estimand:
                         d["Estimand"] = identified_estimand
                     return d
-            except:
-                raise ValueError
+            except Exception as e:
+                raise ValueError from e

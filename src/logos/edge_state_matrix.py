@@ -1,11 +1,12 @@
-import numpy as np
-import networkx as nx
-import pandas as pd
-from typing import Optional, TypeAlias
-from .variable_name.prepared_variable_name import PreparedVariableName
-from itertools import combinations
+"""
+A data structure for managing an the state of each directed edge in the causal graph.
+"""
 
-Edge: TypeAlias = tuple[str, str]
+import networkx as nx
+import numpy as np
+
+from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+
 
 class EdgeStateMatrix:
     """
@@ -116,12 +117,12 @@ class EdgeStateMatrix:
         """
         if state == 0:
             return "Undecided"
-        elif state == -1:
+        if state == -1:
             return "Rejected"
-        elif state == 1:
+        if state == 1:
             return "Accepted"
-        else:
-            raise ValueError(f"Invalid edge state {state}")
+
+        raise ValueError(f"Invalid edge state {state}")
 
     def mark_edge(self, src: str, dst: str, state: str) -> list[str]:
         """
@@ -184,7 +185,7 @@ class EdgeStateMatrix:
                 self._m[:, self.idx(var)] = -1
                 l.append(var)
 
-        return l 
+        return l
 
     @staticmethod
     def enumerate_with_max_edges(n: int, max_edges: int) -> list[np.ndarray]:

@@ -1,10 +1,12 @@
-import pandas as pd
-from typing import Optional
-
-
 """
 A collection of aggregation functions to be used during prepared log derivation.
 """
+
+# pylint: disable=redefined-builtin
+
+from typing import Optional
+
+import pandas as pd
 
 
 def mean(x: pd.Series) -> Optional[pd.Series]:
@@ -45,6 +47,7 @@ def max(x: pd.Series) -> Optional[pd.Series]:
     """
     return x.max(skipna=True) if x.isna().sum() < len(x) else None
 
+
 def median(x: pd.Series) -> Optional[pd.Series]:
     """
     Calculates the median of a series, ignoring NA values.
@@ -57,6 +60,7 @@ def median(x: pd.Series) -> Optional[pd.Series]:
     """
     return x.median(skipna=True) if x.isna().sum() < len(x) else None
 
+
 def mode(x: pd.Series) -> Optional[pd.Series]:
     """
     Calculates the mode of a series, ignoring NA values.
@@ -68,6 +72,7 @@ def mode(x: pd.Series) -> Optional[pd.Series]:
         The mode of the series, or None if the series is all NA.
     """
     return x.mode(dropna=True)[0] if x.isna().sum() < len(x) else None
+
 
 def std(x: pd.Series) -> Optional[pd.Series]:
     """
@@ -106,6 +111,7 @@ def first(x: pd.Series) -> Optional[pd.Series]:
         The first non-NA value of the series, or None if the series is all NA.
     """
     return x.dropna().head(1) if x.isna().sum() < len(x) else None
+
 
 def sum(x: pd.Series) -> Optional[pd.Series]:
     """

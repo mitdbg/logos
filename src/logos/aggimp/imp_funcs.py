@@ -1,8 +1,8 @@
-import pandas as pd
-
 """
 A collection of imputation functions to be used during prepared log derivation.
 """
+
+import pandas as pd
 
 
 def ffill_imp(x: pd.Series) -> pd.Series:

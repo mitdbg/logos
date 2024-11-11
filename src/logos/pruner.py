@@ -1,16 +1,18 @@
-import pandas as pd
-import networkx as nx
-from typing import Optional, Any
 import os
 import pickle
-from .variable_name.prepared_variable_name import PreparedVariableName
-from .printer import Printer
-from tqdm.auto import tqdm
+from typing import Any, Optional
+
+import networkx as nx
 import numpy as np
+import pandas as pd
 from sklearn.linear_model import Lasso
 from sklearn.preprocessing import StandardScaler
-from .pickler import Pickler
-from .ate_calculator import ATECalculator
+from tqdm.auto import tqdm
+
+from src.logos.ate_calculator import ATECalculator
+from src.logos.pickler import Pickler
+from src.logos.printer import Printer
+from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 
 
 class Pruner:
@@ -213,4 +215,3 @@ class Pruner:
         Pickler.dump(df, filename)
 
         return list(df.index[:top_n].values)
-

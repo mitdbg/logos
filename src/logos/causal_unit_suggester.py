@@ -1,5 +1,11 @@
-import pandas as pd
+"""
+A class for suggesting causal units to the user. This is mostly experimental, as the user would 
+typically define causal units themselves based on domain knowledge.
+"""
+
 from typing import Optional
+
+import pandas as pd
 
 
 class CausalUnitSuggester:
@@ -8,7 +14,7 @@ class CausalUnitSuggester:
     """
 
     @staticmethod
-    def _discretize(col: pd.Series, col_type: str, bins: int = 0) -> pd.Series:
+    def discretize(col: pd.Series, col_type: str, bins: int = 0) -> pd.Series:
         """
         Discretize an unsorted `col` based on its type. If `col_type` is 'num', then
         return labels for each of `bins` equi-depth bins. If `col_type` is 'str,
@@ -29,10 +35,11 @@ class CausalUnitSuggester:
                 .fillna(-1)
                 .astype(int)
             )
-        elif col_type == "str":
+
+        if col_type == "str":
             return pd.factorize(col, use_na_sentinel=True)[0]
-        else:
-            raise ValueError(f"Unknown column type: {col_type}")
+
+        raise ValueError(f"Unknown column type: {col_type}")
 
     @staticmethod
     def _get_all_discretizations(
@@ -57,19 +64,20 @@ class CausalUnitSuggester:
         if col_type == "num":
             l = []
             if len(col) >= k:
-                l.append(CausalUnitSuggester._discretize(col, col_type, k))
+                l.append(CausalUnitSuggester.discretize(col, col_type, k))
             if len(col) >= 2 * k:
-                l.append(CausalUnitSuggester._discretize(col, col_type, 2 * k))
+                l.append(CausalUnitSuggester.discretize(col, col_type, 2 * k))
             if len(col) >= 10 * k:
-                l.append(CausalUnitSuggester._discretize(col, col_type, 10 * k))
+                l.append(CausalUnitSuggester.discretize(col, col_type, 10 * k))
             return l
-        elif col_type == "str":
-            return [CausalUnitSuggester._discretize(col, col_type)]
-        else:
-            raise ValueError(f"Unknown column type: {col_type}")
+
+        if col_type == "str":
+            return [CausalUnitSuggester.discretize(col, col_type)]
+
+        raise ValueError(f"Unknown column type: {col_type}")
 
     @staticmethod
-    def _calculate_IUS(df: pd.DataFrame, discretization: pd.Series) -> float:
+    def _calculate_ius(df: pd.DataFrame, discretization: pd.Series) -> float:
         """
         Calculate the Information Utilization Score of `df` if each row belongs
         to the causal unit specified by `discretization`. The unit labelled -1
@@ -109,12 +117,15 @@ class CausalUnitSuggester:
 
         Parameters:
             data_df: The DataFrame to suggest causal unit definitions for.
-            var_df: A DataFrame with one row for each variable in `data_df` that includes variable type information.
-            min_causal_units: The minimum number of causal units that a suggested definition should create.
+            var_df: A DataFrame with one row for each variable in `data_df` that includes variable
+                type information.
+            min_causal_units: The minimum number of causal units that a suggested definition should
+                create.
             num_suggestions: The maximum number of causal unit definitions to suggest.
 
         Returns:
-            A DataFrame with one row for each suggested causal unit definition, or `None` if no suggestions were made.
+            A DataFrame with one row for each suggested causal unit definition, or `None` if no
+                suggestions were made.
         """
 
         list_of_suggestions = []
@@ -126,14 +137,15 @@ class CausalUnitSuggester:
                 k=min_causal_units,
             )
             for disc in discretizations:
-                # Ensure that the unique values in disc, excluding -1 if it exists, are at least min_causal_units
+                # Ensure that the unique values in disc, excluding -1 if it exists,
+                # are at least min_causal_units
                 if disc.max() >= (min_causal_units - 1):
                     list_of_suggestions.append(
                         {
                             "Variable": col,
                             "Type": var_df[var_df["Name"] == col]["Type"].values[0],
                             "Num Units": disc.max() + 1,
-                            "IUS": CausalUnitSuggester._calculate_IUS(data_df, disc),
+                            "IUS": CausalUnitSuggester._calculate_ius(data_df, disc),
                         }
                     )
 

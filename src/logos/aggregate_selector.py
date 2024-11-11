@@ -1,10 +1,16 @@
-import pandas as pd
+"""
+Functionality to select the best aggregate for each prepared variable.
+"""
+
 import numpy as np
-from .aggimp.agg_funcs import *
-from .variable_name.prepared_variable_name import PreparedVariableName
+import pandas as pd
 
 
 class AggregateSelector:
+    """
+    A class to select the best aggregate for each prepared variable.
+    """
+
     DEFAULT_AGGREGATES = {
         "num": [
             "mean",
@@ -18,7 +24,8 @@ class AggregateSelector:
         ],
     }
 
-    def _entropy(col: pd.Series) -> float:
+    @staticmethod
+    def entropy(col: pd.Series) -> float:
         """
         Calculates the entropy of a column.
 
@@ -34,6 +41,7 @@ class AggregateSelector:
             return 0
         return -np.sum(rel_value_counts * np.log2(rel_value_counts))
 
+    @staticmethod
     def find_uninformative_aggregates(
         prepared_log: pd.DataFrame, parsed_variables: pd.DataFrame, causal_unit_var: str
     ) -> list[str]:
@@ -57,17 +65,17 @@ class AggregateSelector:
             if len(aggs) == 0 or row.Name == causal_unit_var:
                 continue
 
-            vars = [f"{row.Name}+{agg}" for agg in aggs]
+            variables = [f"{row.Name}+{agg}" for agg in aggs]
             best_var = f"{row.Name}+{AggregateSelector.DEFAULT_AGGREGATES[row.Type][0]}"
             max_entropy = -np.inf
 
-            for var in vars:
-                entropy = AggregateSelector._entropy(prepared_log[var])
+            for var in variables:
+                entropy = AggregateSelector.entropy(prepared_log[var])
 
                 if entropy > max_entropy:
                     best_var = var
                     max_entropy = entropy
 
-            drop_list.extend([var for var in vars if var != best_var])
+            drop_list.extend([var for var in variables if var != best_var])
 
         return drop_list

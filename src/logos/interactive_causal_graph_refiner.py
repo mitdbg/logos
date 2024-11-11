@@ -1,40 +1,77 @@
-from eccs.eccs import ECCS
+"""
+A module for the interactive causal graph refiner functionality.
+"""
+
 import enum
-
-import pandas as pd
-import networkx as nx
-
 from datetime import datetime
-from openai import OpenAI
-from typing import Self, Optional
+from typing import Optional, cast
 
-from .edge_state_matrix import Edge
-from .regression import Regression
-from .tag_utils import TagUtils
+import networkx as nx
+import pandas as pd
+from eccs.eccs import ECCS
+from openai import OpenAI
+
+from src.logos.regression import Regression
+from src.logos.tag_utils import TagUtils
+from src.logos.types import Types
 
 
 class InteractiveCausalGraphRefinerMethod(str, enum.Enum):
+    """
+    An enumeration of the methods that can be used to suggest the next edge for
+    which the user should produce a judgment, in the process of refining a causal
+    graph.
+    """
+
     LOGOS = "logos"
     REGRESSION = "regression"
     LANGMODEL = "langmodel"
 
     @staticmethod
-    def from_str(method: str) -> Self:
+    def from_str(method: str) -> "InteractiveCausalGraphRefinerMethod":
+        """
+        Convert a string to an `InteractiveCausalGraphRefinerMethod`.
+
+        Parameters:
+            method: The string to convert.
+
+        Returns:
+            The corresponding `InteractiveCausalGraphRefinerMethod`.
+
+        Raises:
+            ValueError: If the string does not correspond to any
+                `InteractiveCausalGraphRefinerMethod`.
+        """
+
         if method == InteractiveCausalGraphRefinerMethod.LOGOS.value:
             return InteractiveCausalGraphRefinerMethod.LOGOS
-        elif method == InteractiveCausalGraphRefinerMethod.REGRESSION.value:
+        if method == InteractiveCausalGraphRefinerMethod.REGRESSION.value:
             return InteractiveCausalGraphRefinerMethod.REGRESSION
-        elif method == InteractiveCausalGraphRefinerMethod.LANGMODEL.value:
+        if method == InteractiveCausalGraphRefinerMethod.LANGMODEL.value:
             return InteractiveCausalGraphRefinerMethod.LANGMODEL
-        else:
-            raise ValueError(f"Unknown method: {method}")
+
+        raise ValueError(f"Unknown method: {method}")
 
     @staticmethod
-    def methods() -> list[Self]:
-        return [method for method in InteractiveCausalGraphRefinerMethod]
+    def methods() -> list["InteractiveCausalGraphRefinerMethod"]:
+        """
+        Return a list of all `InteractiveCausalGraphRefinerMethod`s.
+
+        Returns:
+            A list of all `InteractiveCausalGraphRefinerMethod`s.
+        """
+
+        return list(InteractiveCausalGraphRefinerMethod)
 
     @staticmethod
     def methods_str() -> list[str]:
+        """
+        Return a list of all `InteractiveCausalGraphRefinerMethod` values.
+
+        Returns:
+            A list of all `InteractiveCausalGraphRefinerMethod` values.
+        """
+
         return [method.value for method in InteractiveCausalGraphRefinerMethod]
 
 
@@ -51,7 +88,7 @@ class InteractiveCausalGraphRefiner:
         model: Optional[str] = None,
         gpt_log_path: Optional[str] = None,
         data_tags: Optional[pd.DataFrame] = None,
-    ) -> Edge:
+    ) -> Types.Edge:
         """
         Get the next edge for which the user should porduce a judgment, in the
         process of refining a causal graph.
@@ -81,12 +118,22 @@ class InteractiveCausalGraphRefiner:
             The next edge for which the user should produce a judgment.
         """
         if method == InteractiveCausalGraphRefinerMethod.LOGOS:
+            assert eccs is not None
+            assert treatment_name is not None
+            assert outcome_name is not None
             return InteractiveCausalGraphRefiner._get_suggestion_logos(
                 eccs, treatment_name, outcome_name
             )
         elif method == InteractiveCausalGraphRefinerMethod.REGRESSION:
+            assert graph is not None
             return InteractiveCausalGraphRefiner._get_suggestion_regression(data, graph)
         elif method == InteractiveCausalGraphRefinerMethod.LANGMODEL:
+            assert treatment_name is not None
+            assert outcome_name is not None
+            assert graph is not None
+            assert model is not None
+            assert gpt_log_path is not None
+            assert data_tags is not None
             return InteractiveCausalGraphRefiner._get_suggestion_langmodel(
                 data,
                 data_tags,
@@ -102,7 +149,7 @@ class InteractiveCausalGraphRefiner:
     @staticmethod
     def _get_suggestion_logos(
         eccs: ECCS, treatment_name: str, outcome_name: str
-    ) -> Edge:
+    ) -> Types.Edge:
         """
         Implement `get_suggestion()` for the `LOGOS` method.
 
@@ -122,10 +169,12 @@ class InteractiveCausalGraphRefiner:
         return edge_edits[0].edge if (edge_edits and len(edge_edits) > 0) else None
 
     most_recent_graph = None
-    cache = []
+    cache: list[Types.Edge] = []
 
     @classmethod
-    def _get_suggestion_regression(cls, data: pd.DataFrame, graph: nx.DiGraph) -> Edge:
+    def _get_suggestion_regression(
+        cls, data: pd.DataFrame, graph: nx.DiGraph
+    ) -> Types.Edge:
         """
         Implement `get_suggestion()` for the `REGRESSION` method.
 
@@ -147,7 +196,7 @@ class InteractiveCausalGraphRefiner:
             for w in set(data.columns) - set(graph.neighbors(v)) - set([v]):
                 d = Regression.ols(w, data[w], data[v])
                 abs_slope = abs(d["Slope"])
-                l.append((Edge((w, v)), abs_slope))
+                l.append((cast(Types.Edge, (w, v)), abs_slope))
 
         l.sort(key=lambda x: x[1], reverse=True)
         cls.cache = [row[0] for row in l[1:]]
@@ -164,7 +213,7 @@ class InteractiveCausalGraphRefiner:
         graph: nx.DiGraph,
         model: str = "gpt-4o-mini-2024-07-18",
         gpt_log_path: Optional[str] = None,
-    ) -> Edge:
+    ) -> Types.Edge:
         """
         Implement `get_suggestion()` for the `LANGMODEL` method.
 
@@ -190,12 +239,29 @@ class InteractiveCausalGraphRefiner:
 
         num_samples_per_var = 3
 
-        if gpt_log_path == None:
+        if gpt_log_path is None:
             gpt_log_path = (
                 f"ranker-gpt-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.log"
             )
-        with open(gpt_log_path, "w+") as f:
 
+        # Prepare some substrings for the prompt
+        def tag_func(x: str) -> Optional[str]:
+            return TagUtils.tag_of(data_tags, x, "prepared")
+
+        vars_to_examples = {
+            v: data[v].unique().tolist()[:num_samples_per_var] for v in data.columns
+        }
+        vars_and_examples_s = ", ".join(
+            [
+                f'{tag_func(v)}: [{", ".join(str(x) for x in vars_to_examples[v])}]'
+                for v in data.columns
+            ]
+        )
+        directed_edges_s = ", ".join(
+            [f"({tag_func(u)}, {tag_func(v)})" for u, v in graph.edges]
+        )
+
+        with open(gpt_log_path, "w+", encoding="utf-8") as f:
             # Define the messages to send to the model
             messages = [
                 {
@@ -204,26 +270,28 @@ class InteractiveCausalGraphRefiner:
                 },
                 {
                     "role": "user",
-                    "content": f"""Below is a list of variable names and some example distinct values for each. """
-                    f"""The lists are not sorted in compatible ways, so that elements in the same position may not correspond to the same entity. """
-                    f"""{', '.join([f'{TagUtils.tag_of(data_tags, v, "prepared")}: [{", ".join(str(x) for x in data[v].unique().tolist()[:num_samples_per_var])}]' for v in data.columns])}"""
-                    """\n\n"""
-                    """I have constructed a partial causal graph over these variables. Here is the list of directed edges: """
-                    f"""[{', '.join([f'({TagUtils.tag_of(data_tags, u, "prepared")}, {TagUtils.tag_of(data_tags, v, "prepared")})' for u, v in graph.edges])}]"""
-                    """\n\n"""
-                    f"""I plan to use this causal graph to calculate the ATE of {treatment_tag} on {outcome_tag}. """
-                    """However, I'm not sure of its correctness nor completeness. """
-                    """I want you to rank pairs of variables from this collection of variables, based on how important it is for me to either add or remove an edge between them in the graph"""
-                    """ for the accuracy of my ATE calculation. """
-                    """I understand that you may think this is speculative, but I want you to do your best to come up with such a ranked list ALWAYS. """
-                    """I will interpret any results you give me knowing that you may not be sure about them. """
-                    """Only return the ranked answers, one per line, preceded by a number and a period. Separate each variable in a pair with a comma. """
-                    """Do not return any other text before or after the list.""",
+                    "content": """Below is a list of variable names and some example distinct """
+                    """values for each. The lists are not sorted in compatible ways, so that """
+                    """elements in the same position may not correspond to the same entity. """
+                    f"""{vars_and_examples_s}\n\n"""
+                    """I have constructed a partial causal graph over these variables. Here is """
+                    f"""the list of directed edges: [{directed_edges_s}]\n\n"""
+                    f"""I plan to use this causal graph to calculate the ATE of {treatment_tag} """
+                    f"""on {outcome_tag}. However, I'm not sure of its correctness nor """
+                    """completeness. I want you to rank pairs of variables from this collection """
+                    """of variables, based on how important it is for me to either add or remove """
+                    """an edge between them in the graph for the accuracy of my ATE calculation. """
+                    """I understand that you may think this is speculative, but I want you to do """
+                    """your best to come up with such a ranked list ALWAYS. I will interpret any """
+                    """results you give me knowing that you may not be sure about them. Only """
+                    """return the ranked answers, one per line, preceded by a number and a """
+                    """period. Separate each variable in a pair with a comma. Do not return any """
+                    """other text before or after the list.""",
                 },
             ]
 
             reply = (
-                client.chat.completions.create(model=model, messages=messages)
+                client.chat.completions.create(model=model, messages=messages)  # type: ignore
                 .choices[0]
                 .message.content
             )
@@ -240,7 +308,7 @@ class InteractiveCausalGraphRefiner:
             f.close()
 
         # Combat hallucinations
-        reply_rows = reply.split("\n")
+        reply_rows = cast(str, reply).split("\n")
         reply_rows = [
             row for row in reply_rows if row.strip() != "" and row[0].isdigit()
         ]
@@ -268,7 +336,7 @@ class InteractiveCausalGraphRefiner:
                 right = f"{edge[1]} mean"
 
             if left is not None and right is not None:
-                ranked_edges.append(Edge((left, right)))
+                ranked_edges.append(cast(Types.Edge, (left, right)))
 
         cls.cache = ranked_edges[1:]
         return ranked_edges[0]

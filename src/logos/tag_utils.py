@@ -1,9 +1,11 @@
-import pandas as pd
-from openai import OpenAI
-from .variable_name.parsed_variable_name import ParsedVariableName
 from enum import IntEnum
 from typing import Optional
-from .printer import Printer
+
+import pandas as pd
+from openai import OpenAI
+
+from src.logos.printer import Printer
+from src.logos.variable_name.parsed_variable_name import ParsedVariableName
 
 
 class TagOrigin(IntEnum):
@@ -57,36 +59,6 @@ class TagUtils:
         """
         if not set(fields).issubset(set(series.index)):
             raise ValueError(f"Fields {fields} are not all present in the series.")
-
-    @staticmethod
-    def best_effort_tag(
-        templates_df: pd.DataFrame,
-        variable_row: pd.Series,
-        enable_gpt_tagging: bool,
-        gpt_model: str,
-    ) -> tuple[str, bool]:
-        """
-        Apply `gpt_tag` to `variable_row`, if possible, and return the result. If there is
-        no environment variable called OPENAI_API_KEY, or if `enable_gpt_tagging` is False,
-        apply `preceding_tokens_tag` instead.
-
-        Parameters:
-            templates_df: The dataframe containing information about the log templates.
-            variable_row: The row of the dataframe containing information about the parsed variable.
-            enable_gpt_tagging: A boolean indicating whether GPT-3.5 tagging should be enabled.
-            gpt_model: The GPT model to use.
-
-        Returns:
-            A tuple containing (i) the GPT-3.5 tag for the parsed variable name, if possible, or the
-            best-effort tag otherwise, and (ii) a boolean indicating whether the GPT-3.5 tag was used.
-        """
-        if enable_gpt_tagging:
-            try:
-                return (TagUtils.gpt_tag(templates_df, variable_row, gpt_model), True)
-            except:
-                return (TagUtils.preceding_tokens_tag(variable_row), False)
-        else:
-            return (TagUtils.preceding_tokens_tag(variable_row), False)
 
     @staticmethod
     def waterfall_tag(
@@ -154,7 +126,9 @@ class TagUtils:
             A tuple containing (i) the tag for the parsed variable, and (ii) the origin of the tag.
         """
 
-        TagUtils.check_fields(variable_row, ["Preceding 3 tokens", "Name", "From regex"])
+        TagUtils.check_fields(
+            variable_row, ["Preceding 3 tokens", "Name", "From regex"]
+        )
         name = variable_row["Name"]
         if variable_row["From regex"]:
             return name, TagOrigin.REGEX_VARIABLE
@@ -206,6 +180,7 @@ class TagUtils:
 
         template_id = ParsedVariableName(variable_row["Name"]).template_id()
         idx = ParsedVariableName(variable_row["Name"]).index()
+        assert idx is not None
 
         line = templates_df[templates_df["TemplateId"] == template_id][
             "TemplateExample"
@@ -224,7 +199,7 @@ class TagUtils:
                 f"""in the following log line:\n {line}\n"""
                 f"""Here are the 3 tokens that precede the variable: [{', '.join(line_toks[max(idx-3, 0):idx])} ]\n"""
                 f"""Here are some more example values for this variable: [{', '.join(variable_row['Examples'])} ]\n"""
-                #f"""Make sure the tag matches none of the following values: [{', '.join(banned_values) if banned_values is not None else ''} ]\n"""
+                # f"""Make sure the tag matches none of the following values: [{', '.join(banned_values) if banned_values is not None else ''} ]\n"""
                 """Return only the tag as a single word, possibly including underscores. DO NOT EVER REPLY WITH MORE THAN ONE WORD.\n""",
             },
         ]
@@ -232,19 +207,19 @@ class TagUtils:
         client = OpenAI()
 
         tag = (
-            client.chat.completions.create(model=model, messages=messages)
+            client.chat.completions.create(model=model, messages=messages)  # type: ignore
             .choices[0]
             .message.content
         )
+        assert type(tag) == str
         tag_length = len(tag.split())
         if tag_length > 1:
             # GPT didn't listen to us and returned a phrase describing the tag.
             # Extract the word between the second-last and last occurrence of double quotes.
             tag = tag.split('"')[-2]
 
-
         with open("gpt_log.txt", "a+") as f:
-            f.write('----------------------------------\n')
+            f.write("----------------------------------\n")
             f.write(f"Variable name: {variable_row['Name']}\n\n")
             f.write(f"Model used: {model}\n\n")
             f.write(f"Messages sent to the model:\n{messages}\n\n")
@@ -254,7 +229,7 @@ class TagUtils:
         # Double-check that the tag is not in the banned values
         if banned_values is not None and tag in banned_values:
             with open("gpt_log.txt", "a+") as f:
-                f.write('That tag is banned, returning name.\n')
+                f.write("That tag is banned, returning name.\n")
             return variable_row["Name"]
 
         return tag
@@ -348,7 +323,9 @@ class TagUtils:
             )
 
     @staticmethod
-    def tag_of(df: pd.DataFrame, name_or_tag: Optional[str], info: str = "") -> Optional[str]:
+    def tag_of(
+        df: pd.DataFrame, name_or_tag: Optional[str], info: str = ""
+    ) -> Optional[str]:
         """
         Determine the tag of a parsed or prepared variable, given either itself or its name.
         Retuirn None if the variable is None.

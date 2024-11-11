@@ -1,24 +1,25 @@
-import pandas as pd
 import sys
 
+import pandas as pd
+
 sys.path.append("../..")
+import multiprocessing as mp
+import pickle
 import threading
-from causallearn.search.ConstraintBased.PC import pc
+from datetime import datetime
+
+import networkx as nx
+from causallearn.graph.Endpoint import Endpoint
 from causallearn.search.ConstraintBased.FCI import fci
+from causallearn.search.ConstraintBased.PC import pc
 from causallearn.search.FCMBased import lingam
 from causallearn.search.FCMBased.lingam.utils import make_dot
 from causallearn.search.HiddenCausal.GIN import GIN
 from causallearn.search.PermutationBased.GRaSP import grasp
-from causallearn.search.ScoreBased.GES import ges
 from causallearn.search.ScoreBased.ExactSearch import bic_exact_search
-from causallearn.graph.Endpoint import Endpoint
-import pickle
-from datetime import datetime
-import multiprocessing as mp
-from src.logos.graph_renderer import GraphRenderer
-import networkx as nx
-from src.logos.causal_discoverer import CausalDiscoverer
+from causallearn.search.ScoreBased.GES import ges
 
+from src.logos.graph_renderer import GraphRenderer
 
 TIMEOUT_SECONDS = 30 * 60
 
@@ -34,7 +35,7 @@ PC_OPTIONS = [
 
 FCI_OPTIONS = ["fisherz", "kci", "chisq", "gsq"]
 
-LINGAM_OPTIONS = ['placeholder']
+LINGAM_OPTIONS = ["placeholder"]
 
 GIN_OPTIONS = ["kci", "hsic"]
 
@@ -58,8 +59,6 @@ GES_OPTIONS = [
 ]
 
 EXACT_SEARCH_OPTIONS = ["dp", "astar"]
-
-GPT_OPTIONS = ["gpt-4"]
 
 
 datasets = {
@@ -184,12 +183,6 @@ def run_method_with_timer(dataset_name, method_name, options, fres):
                     nx_cg.add_edge(i, j)
         return nx_cg
 
-    def run_gpt(option):
-        vars_df["Name"] = vars_df["Name_old"]
-        nx_cg =  CausalDiscoverer.gpt(data_df, model=option, vars_df=vars_df)
-        vars_df["Name"] = vars_df.index.to_list()
-        return nx_cg
-
     # Run a function within a try except block
     def run_safe(function, option):
         try:
@@ -267,14 +260,13 @@ def main():
     for dataset_name in datasets.keys():
         print("\n\n========================================\n\n")
         print(f"{datetime.now()} Starting {dataset_name}\n")
-        #run_method_with_timer(dataset_name, "pc", PC_OPTIONS, fres)
-        #run_method_with_timer(dataset_name, "fci", FCI_OPTIONS, fres)
-        #run_method_with_timer(dataset_name, "lingam", LINGAM_OPTIONS, fres)
-        #run_method_with_timer(dataset_name, "gin", GIN_OPTIONS, fres)
-        #run_method_with_timer(dataset_name, "grasp", GRASP_OPTIONS, fres)
-        #run_method_with_timer(dataset_name, "ges", GES_OPTIONS, fres)
-        #run_method_with_timer(dataset_name, "exact_search", EXACT_SEARCH_OPTIONS, fres)
-        run_method_with_timer(dataset_name, "gpt", GPT_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "pc", PC_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "fci", FCI_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "lingam", LINGAM_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "gin", GIN_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "grasp", GRASP_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "ges", GES_OPTIONS, fres)
+        # run_method_with_timer(dataset_name, "exact_search", EXACT_SEARCH_OPTIONS, fres)
 
     fout.close()
     fres.close()

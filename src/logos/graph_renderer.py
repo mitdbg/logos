@@ -1,9 +1,14 @@
-import networkx as nx
+"""
+A module for rendering causal graphs.
+"""
+
 import base64
 from io import BytesIO
-from IPython.display import display, HTML
+
 import matplotlib.pyplot as plt
+import networkx as nx
 import pandas as pd
+from IPython.display import HTML, display
 
 
 class GraphRenderer:
@@ -91,7 +96,9 @@ class GraphRenderer:
         Parameters:
             graph: The graph to be displayed.
         """
-        return HTML('<img src="data:image/png;base64,{}" style="max-width: 100%; height: auto;">'.format(graph))
+        return HTML(
+            f'<img src="data:image/png;base64,{graph}" style="max-width: 100%; height: auto;">'
+        )
 
     @staticmethod
     def display_graph(graph: nx.DiGraph, var_info: pd.DataFrame) -> None:

@@ -5,39 +5,38 @@ import logging
 import multiprocessing
 import os
 import warnings
+from datetime import datetime
+from typing import Any, Callable, List, Optional, Tuple, Union, cast
 
 import networkx as nx
 import numpy as np
 import pandas as pd
-
-from datetime import datetime
 from eccs.eccs import ECCS
 from IPython.display import display
 from tqdm.auto import tqdm
-from typing import Optional, Any, Callable, Tuple, Union, List
 from varname import nameof
 
-from .aggregate_selector import AggregateSelector
-from .ate_calculator import ATECalculator
-from .candidate_cause_ranker import CandidateCauseRanker, CandidateCauseRankerMethod
-from .causal_discoverer import CausalDiscoverer
-from .causal_unit_suggester import CausalUnitSuggester
-from .clustering_params import ClusteringParams
-from .drain import Drain
-from .edge_state_matrix import Edge, EdgeStateMatrix
-from .graph_renderer import GraphRenderer
-from .interactive_causal_graph_refiner import (
+from src.logos.aggregate_selector import AggregateSelector
+from src.logos.ate_calculator import ATECalculator
+from src.logos.candidate_cause_ranker import (
+    CandidateCauseRanker,
+    CandidateCauseRankerMethod,
+)
+from src.logos.causal_unit_suggester import CausalUnitSuggester
+from src.logos.drain import Drain
+from src.logos.edge_state_matrix import EdgeStateMatrix
+from src.logos.graph_renderer import GraphRenderer
+from src.logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
     InteractiveCausalGraphRefinerMethod,
 )
-from .pickler import Pickler
-from .printer import Printer
-from .pruner import Pruner
-from .regression import Regression
-from .tag_utils import TagUtils, TagOrigin
-from .variable_name.parsed_variable_name import ParsedVariableName
-from .variable_name.prepared_variable_name import PreparedVariableName
-
+from src.logos.pickler import Pickler
+from src.logos.printer import Printer
+from src.logos.pruner import Pruner
+from src.logos.tag_utils import TagUtils
+from src.logos.types import Types
+from src.logos.variable_name.parsed_variable_name import ParsedVariableName
+from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 
 # Suppress logging below WARNING level
 logging.getLogger().setLevel(logging.WARNING)
@@ -517,7 +516,7 @@ class LOGos:
                 new_template_id = new_template_ids[value]
                 new_var_name = f"{new_template_id}_{str(other_idx)}"
 
-                x = {}
+                x: dict[str, Any] = {}
                 x["Name"] = new_var_name
                 x["Occurrences"] = occurrences
                 x["Preceding 3 tokens"] = (
@@ -615,14 +614,14 @@ class LOGos:
         """
         return TagUtils.get_tag(self._prepared_variables, name, "prepared")
 
-    def get_causal_unit_info(self) -> Tuple[str, int]:
+    def get_causal_unit_info(self) -> Tuple[Optional[str], Optional[int]]:
         """
         Get the variable used to define causal units and the number of
         causal units.
 
         Returns:
-            The name of the variable used to define causal units
-            and the number of causal units.
+            causal_unit_var: The variable used to define causal units, if specified.
+            num_causal_units: The number of causal units, if specified.
         """
         return self._causal_unit_var, self._num_causal_units
 
@@ -694,7 +693,7 @@ class LOGos:
     def prepare(
         self,
         custom_agg: dict[str, list[str]] = {},
-        custom_imp: dict[str, list[str]] = {},
+        custom_imp: dict[str, str] = {},
         count_occurences: bool = False,
         ignore_uninteresting: bool = True,
         force: bool = False,
@@ -702,13 +701,13 @@ class LOGos:
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
         drop_bad_aggs: bool = True,
         reject_prunable_edges: bool = False,
-    ) -> str:
+    ) -> Optional[str]:
         """
         Prepare the log parsed from the table for causal analysis, using aggregation and imputation as needed.
 
         Parameters:
             custom_agg: A dictionary of custom aggregation functions to be used for specific variables.
-            custom_imp: A dictionary of custom imputation functions to be used for specific variables.
+            custom_imp: A dictionary of a custom imputation function to be used for specific variables.
             count_occurences: Whether to include extra variables counting the occurence of each template.
             ignore_uninteresting: Whether to ignore uninteresting variables.
             force: Whether to force re-preparation of the log.
@@ -719,7 +718,7 @@ class LOGos:
             reject_prunable_edges: Whether to reject edges that are prunable based on LASSO applciation.
 
         Returns:
-            The time elapsed for preparation, as a string.
+            The time elapsed for preparation, as a string, or `None` if the preparation was aborted.
         """
 
         start_time = datetime.now()
@@ -757,7 +756,7 @@ class LOGos:
         if reject_prunable_edges:
             Printer.printv(f"Pruning edges...")
             self.reject_all_prunable_edges(
-                lasso_alpha=lasso_alpha, lasso_max_iter=lasso_max_iter
+                also_ban=True, lasso_alpha=lasso_alpha, lasso_max_iter=lasso_max_iter
             )
 
         self._eccs = ECCS(self._prepared_log, nx.DiGraph())
@@ -775,7 +774,7 @@ class LOGos:
     def _prepare_anew(
         self,
         custom_agg: dict[str, list[str]] = {},
-        custom_imp: dict[str, list[str]] = {},
+        custom_imp: dict[str, str] = {},
         count_occurences: bool = False,
         ignore_uninteresting: bool = True,
         drop_bad_aggs: bool = True,
@@ -785,7 +784,7 @@ class LOGos:
 
         Parameters:
             custom_agg: A dictionary of custom aggregation functions to be used for specific variables.
-            custom_imp: A dictionary of custom imputation functions to be used for specific variables.
+            custom_imp: A dictionary of the custom imputation function to be used for specific variables.
             count_occurences: Whether to include extra variables counting the occurence of each template.
             ignore_uninteresting: Whether to ignore uninteresting variables.
             drop_bad_aggs: Whether to drop prepared variables that do not add information compared to other
@@ -793,12 +792,12 @@ class LOGos:
         """
 
         Printer.printv(f"Determining the causal unit assignment...")
-        causal_unit_assignment = CausalUnitSuggester._discretize(
+        causal_unit_assignment = CausalUnitSuggester.discretize(
             self._parsed_log[self._causal_unit_var],
             self._parsed_variables[
                 self._parsed_variables["Name"] == self._causal_unit_var
             ]["Type"].values[0],
-            self._num_causal_units,
+            self._num_causal_units if self._num_causal_units else 0,
         )
 
         # Convert keys in custom_agg and custom_imp to the names of the variables, if they are tags.
@@ -833,7 +832,7 @@ class LOGos:
         self._prepared_log.drop(columns="TemplateId", inplace=True)
 
         # Build dictionary of aggregation functions
-        agg_dict: dict[str, str] = {
+        agg_dict: dict[str, list[str]] = {
             variable.Name: (
                 custom_agg[variable.Name]
                 if variable.Name in custom_agg
@@ -864,6 +863,7 @@ class LOGos:
             )
 
         # Ensure the causal unit variable only has one aggregation function
+        assert self._causal_unit_var is not None
         agg_dict[self._causal_unit_var] = agg_dict[self._causal_unit_var][:1]
 
         # Perform the aggregation
@@ -1179,6 +1179,7 @@ class LOGos:
 
         src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
         dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
+        assert self._edge_states is not None
         to_drop = self._edge_states.mark_edge(src_name, dst_name, "Accepted")
         for node in to_drop:
             if node in self._graph.nodes:
@@ -1232,6 +1233,7 @@ class LOGos:
 
         src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
         dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
+        assert self._edge_states is not None
         self._edge_states.mark_edge(src_name, dst_name, "Rejected")
         if self._eccs and also_ban:
             self._eccs.ban_edge(src_name, dst_name)
@@ -1267,6 +1269,7 @@ class LOGos:
                 (3) optionally a string representation of the graph, if `interactive` is False.
         """
         dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
+        assert self._edge_states is not None
         for v in self.prepared_variable_names:
             if self._edge_states.get_edge_state(v, dst_name) == "Undecided":
                 self._edge_states.mark_edge(v, dst_name, "Rejected")
@@ -1304,6 +1307,7 @@ class LOGos:
                 (3) optionally a string representation of the graph, if `interactive` is False.
         """
         src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
+        assert self._edge_states is not None
         for v in self.prepared_variable_names:
             if self._edge_states.get_edge_state(src_name, v) == "Undecided":
                 self._edge_states.mark_edge(src_name, v, "Rejected")
@@ -1345,6 +1349,7 @@ class LOGos:
                 (3) optionally a string representation of the graph, if `interactive` is False.
         """
         num_processors = multiprocessing.cpu_count()
+        assert self._edge_states is not None
         with multiprocessing.Pool(processes=num_processors) as pool:
             all_candidates = pool.starmap(
                 Pruner.prune_with_lasso,
@@ -1392,6 +1397,7 @@ class LOGos:
             return 0
 
         # Number of edges among the incident that have been considered
+        assert self._edge_states is not None
         graph_var_indices = [self._edge_states.idx(x) for x in list(self._graph.nodes)]
         other_indices = list(np.setdiff1d(np.arange(N), graph_var_indices))
         considered = np.sum(
@@ -1454,6 +1460,7 @@ class LOGos:
             return pd.DataFrame(columns=CandidateCauseRanker.COLUMN_ORDER), ""
         elif target is None:
             target = self._next_exploration
+        assert target is not None
 
         # If the user provided the target as a tag, retrieve its name
         target = TagUtils.name_of(self._prepared_variables, target, "prepared")
@@ -1480,6 +1487,7 @@ class LOGos:
         )
 
         # Mark the edges rejected by the pruning step, if any.
+        assert self._edge_states is not None
         for var in pruned:
             self._edge_states.mark_edge(var, target, "Rejected")
 
@@ -1506,7 +1514,7 @@ class LOGos:
         outcome: Optional[str] = None,
         model: str = "gpt-4o-mini-2024-07-18",
         gpt_log_path: Optional[str] = None,
-    ) -> Tuple[Edge, str]:
+    ) -> Tuple[Optional[Types.Edge], str]:
         """
         Present the user with an edge, the presence and direction of which they should assess.
 
@@ -1528,10 +1536,16 @@ class LOGos:
 
         start_time = datetime.now()
 
-        treatment_name = TagUtils.name_of(
-            self._prepared_variables, treatment, "prepared"
-        )
-        outcome_name = TagUtils.name_of(self._prepared_variables, outcome, "prepared")
+        if method == InteractiveCausalGraphRefinerMethod.LOGOS:
+            assert treatment is not None
+            assert outcome is not None
+
+            treatment_name = TagUtils.name_of(
+                self._prepared_variables, treatment, "prepared"
+            )
+            outcome_name = TagUtils.name_of(
+                self._prepared_variables, outcome, "prepared"
+            )
 
         edge = InteractiveCausalGraphRefiner.get_suggestion(
             self.prepared_log,
@@ -1552,10 +1566,15 @@ class LOGos:
             self.prepared_variables,
         )
 
-        edge_tags = None
+        edge_tags: Optional[tuple[str, str]] = None
         if edge:
-            edge_tags = tuple(
-                TagUtils.tag_of(self._prepared_variables, x, "prepared") for x in edge
+            edge_tags = (
+                cast(
+                    str, TagUtils.tag_of(self._prepared_variables, edge[0], "prepared")
+                ),
+                cast(
+                    str, TagUtils.tag_of(self._prepared_variables, edge[1], "prepared")
+                ),
             )
 
         end_time = datetime.now()
@@ -1578,6 +1597,7 @@ class LOGos:
 
         # Try to find a suggestion from the partial causal graph.
         node_names = list(self._graph.nodes)
+        assert self._edge_states is not None
         graph_var_indices = [self._edge_states.idx(x) for x in node_names]
         graph_var_incoming_edge_states = self._edge_states.m[:, graph_var_indices]
         undecided_edges_per_col = (
@@ -1608,37 +1628,6 @@ class LOGos:
         # If no suggestion was found, return None.
         self._next_exploration = None
         return None
-
-    def discover_graph(
-        self,
-        method: str = "hill_climb",
-        max_cond_vars: int = 3,
-        model: str = "gpt-3.5-turbo",
-    ) -> None:
-        """
-        Discover a causal graph based on the prepared table automatically.
-
-        Parameters:
-            method: The method to be used for graph discovery, among "PC", "hill_climb", "exhaustive" and "GPT".
-            max_cond_vars: The maximum number of conditioning variables to be used for PC.
-            model: The model to be used for GPT-based graph discovery.
-
-        """
-
-        if method == "PC":
-            self._graph = CausalDiscoverer.pc(
-                self._prepared_log, max_cond_vars=max_cond_vars
-            )
-        elif method == "hill_climb":
-            self._graph = CausalDiscoverer.hill_climb(self._prepared_log)
-        elif method == "exhaustive":
-            self._graph = CausalDiscoverer.exhaustive(self._prepared_log)
-        elif method == "GPT":
-            self._graph = CausalDiscoverer.gpt(self._prepared_log, model=model)
-        else:
-            raise ValueError(f"Invalid graph discovery method {method}")
-
-        self._edge_states.clear_and_set_from_graph(self._graph)
 
     def get_adjusted_ate(
         self,

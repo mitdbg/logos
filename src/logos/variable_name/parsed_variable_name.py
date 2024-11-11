@@ -1,12 +1,17 @@
+"""
+Represents a parsed variable name.
+"""
+
 from typing import Optional
 
 
 class ParsedVariableName:
     """
-    Performs operations on a atring interpreted as a parsed variable name.
+    Performs operations on a string interpreted as a parsed variable name.
 
     The relevant string format is {template_id}[_{index}].
     """
+
     def __init__(self, s: str) -> None:
         """
         Initializes a ParsedVariableName object.
@@ -38,10 +43,10 @@ class ParsedVariableName:
         """
         return self._index if self._index != -1 else None
 
-    def str(self) -> str:
+    def __str__(self) -> str:
         """
         Returns the string representation of the parsed variable name.
-        
+
         Returns:
             The string representation of the parsed variable name.
         """
