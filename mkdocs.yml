@@ -72,7 +72,6 @@ nav:
     - "TagUtils": reference/logos/tag_utils.md 
     - "CausalUnitSuggester": reference/logos/causal_unit_suggester.md
     - "AggregateSelector": reference/logos/aggregate_selector.md
-    - "CausalDiscoverer": reference/logos/causal_discoverer.md
     - "EdgeStateMatrix": reference/logos/edge_state_matrix.md
     - "CandidateCauseRanker": reference/logos/candidate_cause_ranker.md
     - "Pruner": reference/logos/pruner.md
@@ -80,7 +79,6 @@ nav:
     - "GraphRenderer": reference/logos/graph_renderer.md
     - "ATECalculator": reference/logos/ate_calculator.md
     - "InteractiveCausalGraphRefiner": reference/logos/interactive_causal_graph_refiner.md
-    - "ClusteringParams": reference/logos/clustering_params.md
     - "EdgeOccurrenceTree": reference/logos/edge_occurrence_tree.md
     - "Pickler": reference/logos/pickler.md
     - "Printer": reference/logos/printer.md
