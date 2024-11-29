@@ -6,7 +6,7 @@ This directory holds the following types of files, for each of the datasets `x` 
 - `x/paper_evaluation/`: The outputs produced by our experiment runners when processing the dataset in question for our paper.
 
 Some of these files are large, which is why we have hosted them on S3 instead of distributing them
-inside this repository. If you would like to access any of these datasets, please email us at markakis[at]mit[dot]edu.
+inside this repository. If you would like to access any of these datasets, please email us at markakis[at]mit[dot]edu with your 12-digit AWS account ID.
 
 Once you have been granted access, you can download the `PostgreSQL` dataset by running:
 ```sh
