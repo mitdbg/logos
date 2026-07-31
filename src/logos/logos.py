@@ -255,7 +255,10 @@ class LOGos:
         """
         return (
             row["Type"] != "num"
-            and (self._parsed_log[row["Name"]].nunique() >= 0.15 * row["Occurrences"])
+            and (
+                self._parsed_log[row["Name"]].nunique()
+                >= 0.15 * row["Occurrences"]
+            )
         ) or (self._parsed_log[row["Name"]].nunique() == 1)
 
     """
@@ -332,56 +335,70 @@ class LOGos:
                 self._parsed_variables,
             ) = parser.parse(self._filename.split("/")[-1])
             tqdm.pandas(desc="Determining variable types...")
-            self._parsed_variables["Type"] = self._parsed_variables.progress_apply(
-                self._find_type, axis=1
+            self._parsed_variables["Type"] = (
+                self._parsed_variables.progress_apply(  # type: ignore[operator]
+                    self._find_type, axis=1
+                )
             )
 
             # Cast and convert date columns
             is_date = self._parsed_variables["Type"] == "date"
-            date_cols = self._parsed_variables.loc[is_date, "Name"]
+            date_cols = self._parsed_variables.loc[is_date, "Name"].tolist()
             tqdm.pandas(desc="Casting date variables...")
-            self._parsed_log[date_cols] = self._parsed_log[date_cols].progress_apply(
+            self._parsed_log[date_cols] = self._parsed_log[
+                date_cols
+            ].progress_apply(  # type: ignore[operator]
                 pd.to_datetime, errors="coerce"
             )
             tqdm.pandas(desc="Casting date variables round 2...")
-            self._parsed_log[date_cols] = self._parsed_log[date_cols].progress_applymap(
+            self._parsed_log[date_cols] = self._parsed_log[
+                date_cols
+            ].progress_map(  # type: ignore[operator]
                 lambda x: x.timestamp() if not pd.isnull(x) else None
             )
             self._parsed_variables.loc[is_date, "Type"] = "num"
 
             # Cast and convert time columns
             is_time = self._parsed_variables["Type"] == "time"
-            time_cols = self._parsed_variables.loc[is_time, "Name"]
+            time_cols = self._parsed_variables.loc[is_time, "Name"].tolist()
             tqdm.pandas(desc="Casting time variables...")
-            self._parsed_log[time_cols] = self._parsed_log[time_cols].progress_apply(
+            self._parsed_log[time_cols] = self._parsed_log[
+                time_cols
+            ].progress_apply(  # type: ignore[operator]
                 pd.to_timedelta, errors="coerce"
             )
             tqdm.pandas(desc="Casting time variables round 2...")
-            self._parsed_log[time_cols] = self._parsed_log[time_cols].progress_applymap(
+            self._parsed_log[time_cols] = self._parsed_log[
+                time_cols
+            ].progress_map(  # type: ignore[operator]
                 lambda x: x.total_seconds() if not pd.isnull(x) else None
             )
             self._parsed_variables.loc[is_time, "Type"] = "num"
 
             # Cast numeric columns
             is_num = self._parsed_variables["Type"] == "num"
-            numeric_cols = self._parsed_variables.loc[is_num, "Name"]
+            numeric_cols = self._parsed_variables.loc[is_num, "Name"].tolist()
             tqdm.pandas(desc="Casting numerical variables...")
             self._parsed_log[numeric_cols] = self._parsed_log[
                 numeric_cols
-            ].progress_apply(pd.to_numeric, errors="coerce")
+            ].progress_apply(  # type: ignore[operator]
+                pd.to_numeric, errors="coerce"
+            )
 
             # Tag variables.
             tqdm.pandas(desc="Tagging variables...")
             if enable_gpt_tagging:
                 tag, tag_origin = zip(
-                    *self._parsed_variables.progress_apply(
-                        lambda x: TagUtils.waterfall_tag(self.parsed_templates, x),
+                    *self._parsed_variables.progress_apply(  # type: ignore[operator]
+                        lambda x: TagUtils.waterfall_tag(
+                            self.parsed_templates, x
+                        ),
                         axis=1,
                     )
                 )
             else:
                 tag, tag_origin = zip(
-                    *self._parsed_variables.progress_apply(
+                    *self._parsed_variables.progress_apply(  # type: ignore[operator]
                         lambda x: TagUtils.preceding_tokens_tag(x),
                         axis=1,
                     )
@@ -393,7 +410,9 @@ class LOGos:
             # Detect identifiers.
             tqdm.pandas(desc="Detecting identifiers...")
             self._parsed_variables["IsUninteresting"] = (
-                self._parsed_variables.progress_apply(self._find_uninteresting, axis=1)
+                self._parsed_variables.progress_apply(  # type: ignore[operator]
+                    self._find_uninteresting, axis=1
+                )
             )
 
             # Reorder columns.
@@ -468,7 +487,9 @@ class LOGos:
             new_template_row["VariableIndices"] = new_variable_indices
             new_template_row["RegexIndices"] = old_template_row["RegexIndices"]
 
-            self._parsed_templates.loc[len(self._parsed_templates)] = new_template_row
+            self._parsed_templates.loc[len(self._parsed_templates)] = (
+                new_template_row
+            )
             new_template_ids[value] = new_template_row["TemplateId"]
 
         self._parsed_templates = self._parsed_templates[
@@ -692,8 +713,8 @@ class LOGos:
 
     def prepare(
         self,
-        custom_agg: dict[str, list[str]] = {},
-        custom_imp: dict[str, str] = {},
+        custom_agg: Optional[dict[str, list[str]]] = None,
+        custom_imp: Optional[dict[str, str]] = None,
         count_occurences: bool = False,
         ignore_uninteresting: bool = True,
         force: bool = False,
@@ -722,6 +743,10 @@ class LOGos:
         """
 
         start_time = datetime.now()
+        if custom_agg is None:
+            custom_agg = {}
+        if custom_imp is None:
+            custom_imp = {}
         # Ensure causal unit is set. TODO: make IUS maximizer the default
         if self._causal_unit_var is None:
             print("Causal unit not defined. Aborting.")
@@ -756,7 +781,9 @@ class LOGos:
         if reject_prunable_edges:
             Printer.printv(f"Pruning edges...")
             self.reject_all_prunable_edges(
-                also_ban=True, lasso_alpha=lasso_alpha, lasso_max_iter=lasso_max_iter
+                also_ban=True,
+                lasso_alpha=lasso_alpha,
+                lasso_max_iter=lasso_max_iter,
             )
 
         self._eccs = ECCS(self._prepared_log, nx.DiGraph())
@@ -773,8 +800,8 @@ class LOGos:
 
     def _prepare_anew(
         self,
-        custom_agg: dict[str, list[str]] = {},
-        custom_imp: dict[str, str] = {},
+        custom_agg: Optional[dict[str, list[str]]] = None,
+        custom_imp: Optional[dict[str, str]] = None,
         count_occurences: bool = False,
         ignore_uninteresting: bool = True,
         drop_bad_aggs: bool = True,
@@ -791,6 +818,10 @@ class LOGos:
                 variables based on the same base variable but using a different aggregation function.
         """
 
+        if custom_agg is None:
+            custom_agg = {}
+        if custom_imp is None:
+            custom_imp = {}
         Printer.printv(f"Determining the causal unit assignment...")
         causal_unit_assignment = CausalUnitSuggester.discretize(
             self._parsed_log[self._causal_unit_var],
@@ -878,9 +909,9 @@ class LOGos:
         self._prepared_log.columns = [
             "+".join(col) for col in self._prepared_log.columns.values
         ]
-        self._parsed_variables["Aggregates"] = self._parsed_variables["Name"].map(
-            lambda x: agg_dict.get(x, [])
-        )
+        self._parsed_variables["Aggregates"] = self._parsed_variables[
+            "Name"
+        ].map(lambda x: agg_dict.get(x, []))
         self._prepared_log.set_index(
             f"{self._causal_unit_var}+{self._parsed_variables[self._parsed_variables['Name'] == self._causal_unit_var]['Aggregates'].values[0][0]}",
             inplace=True,
@@ -889,7 +920,9 @@ class LOGos:
         self._prepared_log.index = self._prepared_log.index.astype(str)
 
         # Perform the imputation
-        for col in tqdm(self._prepared_log.columns, desc="Imputing missing values..."):
+        for col in tqdm(
+            self._prepared_log.columns, desc="Imputing missing values..."
+        ):
             if self._prepared_log[col].isnull().values.any():
                 base_var = PreparedVariableName(col).base_var()
                 func_name: str = (
@@ -903,9 +936,13 @@ class LOGos:
         # Drop variables that do not add information compared to other variables based on the same base variable
         # but using a different aggregation function.
         if drop_bad_aggs:
-            Printer.printv(f"Dropping aggregates that do not add information...")
+            Printer.printv(
+                f"Dropping aggregates that do not add information..."
+            )
             cols_to_drop = AggregateSelector.find_uninformative_aggregates(
-                self._prepared_log, self._parsed_variables, self._causal_unit_var
+                self._prepared_log,
+                self._parsed_variables,
+                self._causal_unit_var,
             )
             self._prepared_log.drop(columns=cols_to_drop, inplace=True)
 
@@ -920,7 +957,10 @@ class LOGos:
                 [
                     self._prepared_log,
                     pd.get_dummies(
-                        self._prepared_log[col], prefix=col, prefix_sep="=", dtype=float
+                        self._prepared_log[col],
+                        prefix=col,
+                        prefix_sep="=",
+                        dtype=float,
                     ),
                 ],
                 axis=1,
@@ -937,7 +977,7 @@ class LOGos:
         # Convert any date columns to Unix timestamps in milliseconds
         date_cols = self._prepared_variables.loc[
             self._prepared_variables["Type"] == "date", "Name"
-        ].values
+        ].tolist()
         self._prepared_log[date_cols] = self._prepared_log[date_cols].map(
             lambda x: x.timestamp() * 1000.0
         )
@@ -945,7 +985,7 @@ class LOGos:
         # Convert any time columns to milliseconds
         time_cols = self._prepared_variables.loc[
             self._prepared_variables["Type"] == "time", "Name"
-        ].values
+        ].tolist()
         self._prepared_log[time_cols] = self._prepared_log[time_cols].map(
             lambda x: x.total_seconds() * 1000.0
         )
@@ -981,15 +1021,15 @@ class LOGos:
         self._prepared_variables["Name"] = self._prepared_log.columns
 
         # Bring in varable name components leveraging PreparedVariableName
-        self._prepared_variables["Base"] = self._prepared_variables["Name"].apply(
-            lambda x: PreparedVariableName(x).base_var()
-        )
+        self._prepared_variables["Base"] = self._prepared_variables[
+            "Name"
+        ].apply(lambda x: PreparedVariableName(x).base_var())
         self._prepared_variables["Pre-agg Value"] = self._prepared_variables[
             "Name"
         ].apply(lambda x: PreparedVariableName(x).pre_agg_value())
-        self._prepared_variables["Agg"] = self._prepared_variables["Name"].apply(
-            lambda x: PreparedVariableName(x).aggregate()
-        )
+        self._prepared_variables["Agg"] = self._prepared_variables[
+            "Name"
+        ].apply(lambda x: PreparedVariableName(x).aggregate())
         self._prepared_variables["Post-agg Value"] = self._prepared_variables[
             "Name"
         ].apply(lambda x: PreparedVariableName(x).post_agg_value())
@@ -1009,9 +1049,9 @@ class LOGos:
             + (f" {x['Post-agg Value']}" if x["Post-agg Value"] != "" else ""),
             axis=1,
         )
-        self._prepared_variables["Base Variable Occurences"] = self._prepared_variables[
-            "Base"
-        ].apply(
+        self._prepared_variables[
+            "Base Variable Occurences"
+        ] = self._prepared_variables["Base"].apply(
             lambda x: (
                 self._parsed_variables.loc[
                     self._parsed_variables["Name"] == x, "Occurrences"
@@ -1020,7 +1060,9 @@ class LOGos:
                 else ""
             )
         )
-        self._prepared_variables["Type"] = self._prepared_variables["Base"].apply(
+        self._prepared_variables["Type"] = self._prepared_variables[
+            "Base"
+        ].apply(
             lambda x: (
                 self._parsed_variables.loc[
                     self._parsed_variables["Name"] == x, "Type"
@@ -1029,7 +1071,9 @@ class LOGos:
                 else ""
             )
         )
-        self._prepared_variables["Examples"] = self._prepared_variables["Base"].apply(
+        self._prepared_variables["Examples"] = self._prepared_variables[
+            "Base"
+        ].apply(
             lambda x: (
                 self._parsed_variables.loc[
                     self._parsed_variables["Name"] == x, "Examples"
@@ -1038,7 +1082,9 @@ class LOGos:
                 else ""
             )
         )
-        self._prepared_variables["From regex"] = self._prepared_variables["Base"].apply(
+        self._prepared_variables["From regex"] = self._prepared_variables[
+            "Base"
+        ].apply(
             lambda x: (
                 self._parsed_variables.loc[
                     self._parsed_variables["Name"] == x, "From regex"
@@ -1049,17 +1095,19 @@ class LOGos:
         )
 
         # Bring in template text, only for appropriate base variables.
-        self._prepared_variables["TemplateText"] = self._prepared_variables.apply(
-            lambda x: (
-                self._parsed_templates.loc[
-                    self._parsed_templates["TemplateId"]
-                    == PreparedVariableName(x["Name"]).template_id(),
-                    "TemplateText",
-                ].values[0]
-                if x["From regex"] == False
-                else ""
-            ),
-            axis=1,
+        self._prepared_variables["TemplateText"] = (
+            self._prepared_variables.apply(
+                lambda x: (
+                    self._parsed_templates.loc[
+                        self._parsed_templates["TemplateId"]
+                        == PreparedVariableName(x["Name"]).template_id(),
+                        "TemplateText",
+                    ].values[0]
+                    if x["From regex"] == False
+                    else ""
+                ),
+                axis=1,
+            )
         )
 
     def inspect(
@@ -1117,7 +1165,9 @@ class LOGos:
         col_list.extend([ref_var] if ref_var is not None else [])
         prepared_log_info_df = self._prepared_log[col_list].head(row_limit)
         col_names = [f"{name} (candidate)"]
-        col_names.extend([f"{ref_var} (outcome)"] if ref_var is not None else [])
+        col_names.extend(
+            [f"{ref_var} (outcome)"] if ref_var is not None else []
+        )
         prepared_log_info_df.columns = col_names
         display(prepared_log_info_df)
 
@@ -1149,7 +1199,9 @@ class LOGos:
         Parameters:
             filename: The name of the file to save to.
         """
-        GraphRenderer.save_graph(self._graph, self._prepared_variables, filename)
+        GraphRenderer.save_graph(
+            self._graph, self._prepared_variables, filename
+        )
 
     def accept(
         self,
@@ -1355,7 +1407,12 @@ class LOGos:
                 Pruner.prune_with_lasso,
                 tqdm(
                     [
-                        (self._prepared_log, [target], lasso_alpha, lasso_max_iter)
+                        (
+                            self._prepared_log,
+                            [target],
+                            lasso_alpha,
+                            lasso_max_iter,
+                        )
                         for target in self.prepared_variable_names
                     ],
                     total=self.num_prepared_variables,
@@ -1365,9 +1422,13 @@ class LOGos:
 
         Printer.printv(all_candidates)
 
-        for candidates, target in zip(all_candidates, self.prepared_variable_names):
+        for candidates, target in zip(
+            all_candidates, self.prepared_variable_names
+        ):
             non_candidates = (
-                set(self._prepared_log.columns) - set(candidates) - set([target])
+                set(self._prepared_log.columns)
+                - set(candidates)
+                - set([target])
             )
             for nc in non_candidates:
                 self._edge_states.mark_edge(nc, target, "Rejected")
@@ -1398,7 +1459,9 @@ class LOGos:
 
         # Number of edges among the incident that have been considered
         assert self._edge_states is not None
-        graph_var_indices = [self._edge_states.idx(x) for x in list(self._graph.nodes)]
+        graph_var_indices = [
+            self._edge_states.idx(x) for x in list(self._graph.nodes)
+        ]
         other_indices = list(np.setdiff1d(np.arange(N), graph_var_indices))
         considered = np.sum(
             self._edge_states.m[graph_var_indices][:, graph_var_indices] != 0
@@ -1492,18 +1555,20 @@ class LOGos:
             self._edge_states.mark_edge(var, target, "Rejected")
 
         # Add fields to the returned dataframe
-        result_df["Candidate->Target Edge Status"] = result_df["Candidate"].apply(
-            lambda x: self._edge_states.get_edge_state(x, target)
-        )
-        result_df["Target->Candidate Edge Status"] = result_df["Candidate"].apply(
-            lambda x: self._edge_states.get_edge_state(target, x)
-        )
+        result_df["Candidate->Target Edge Status"] = result_df[
+            "Candidate"
+        ].apply(lambda x: self._edge_states.get_edge_state(x, target))
+        result_df["Target->Candidate Edge Status"] = result_df[
+            "Candidate"
+        ].apply(lambda x: self._edge_states.get_edge_state(target, x))
 
         ret_val = result_df[CandidateCauseRanker.COLUMN_ORDER]
 
         end_time = datetime.now()
         elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        Printer.printv(f"Candidate cause exploration complete in {elapsed} seconds!")
+        Printer.printv(
+            f"Candidate cause exploration complete in {elapsed} seconds!"
+        )
 
         return ret_val, elapsed
 
@@ -1570,16 +1635,24 @@ class LOGos:
         if edge:
             edge_tags = (
                 cast(
-                    str, TagUtils.tag_of(self._prepared_variables, edge[0], "prepared")
+                    str,
+                    TagUtils.tag_of(
+                        self._prepared_variables, edge[0], "prepared"
+                    ),
                 ),
                 cast(
-                    str, TagUtils.tag_of(self._prepared_variables, edge[1], "prepared")
+                    str,
+                    TagUtils.tag_of(
+                        self._prepared_variables, edge[1], "prepared"
+                    ),
                 ),
             )
 
         end_time = datetime.now()
         elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        Printer.printv(f"Candidate cause exploration complete in {elapsed} seconds!")
+        Printer.printv(
+            f"Candidate cause exploration complete in {elapsed} seconds!"
+        )
 
         return edge_tags, elapsed
 
@@ -1599,14 +1672,18 @@ class LOGos:
         node_names = list(self._graph.nodes)
         assert self._edge_states is not None
         graph_var_indices = [self._edge_states.idx(x) for x in node_names]
-        graph_var_incoming_edge_states = self._edge_states.m[:, graph_var_indices]
+        graph_var_incoming_edge_states = self._edge_states.m[
+            :, graph_var_indices
+        ]
         undecided_edges_per_col = (
             np.sum(graph_var_incoming_edge_states == 0, axis=0)
             if len(graph_var_incoming_edge_states) > 0
             else []
         )
         max_undecided = (
-            np.max(undecided_edges_per_col) if len(undecided_edges_per_col) > 0 else 0
+            np.max(undecided_edges_per_col)
+            if len(undecided_edges_per_col) > 0
+            else 0
         )
 
         if max_undecided > 0:
