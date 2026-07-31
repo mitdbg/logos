@@ -6,6 +6,7 @@ networkx==3.3
 pandas==2.2.3
 pgmpy==0.1.25
 psycopg2==2.9.9
+pyarrow>=14.0
 scikit_learn==1.5.2
 statsmodels==0.14.2
 streamlit==1.39.0
