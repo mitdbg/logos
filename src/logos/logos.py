@@ -1206,7 +1206,7 @@ class LOGos:
         self,
         src: str,
         dst: str,
-        also_fix: bool = False,
+        also_fix: bool = False,  # instructs ECCS to lock this edge permanently
         interactive: bool = True,
     ) -> Tuple[float, Optional[str], Optional[str]]:
         """
@@ -1263,7 +1263,7 @@ class LOGos:
         self,
         src: str,
         dst: str,
-        also_ban: bool,
+        also_ban: bool = False,  # instructs ECCS to never propose this edge again
         interactive: bool = True,
     ) -> Tuple[float, Optional[str], Optional[str]]:
         """
@@ -1303,7 +1303,7 @@ class LOGos:
         )
 
     def reject_undecided_incoming(
-        self, dst: str, also_ban: bool, interactive: bool = True
+        self, dst: str, also_ban: bool = False, interactive: bool = True
     ) -> Tuple[float, Optional[str], Optional[str]]:
         """
         Mark all undecided incoming edges to a variable as rejected.
@@ -1341,7 +1341,7 @@ class LOGos:
         )
 
     def reject_undecided_outgoing(
-        self, src: str, also_ban: bool, interactive: bool = True
+        self, src: str, also_ban: bool = False, interactive: bool = True
     ) -> Tuple[float, Optional[str], Optional[str]]:
         """
         Mark all undecided outgoing edges from a variable as rejected.
@@ -1380,7 +1380,7 @@ class LOGos:
 
     def reject_all_prunable_edges(
         self,
-        also_ban: bool,
+        also_ban: bool = False,  # instructs ECCS to never propose these edges again
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
     ) -> Tuple[float, Optional[str], Optional[str]]:

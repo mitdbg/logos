@@ -9,8 +9,8 @@ from typing import Optional, cast
 import networkx as nx
 import pandas as pd
 from eccs.eccs import ECCS
-from openai import OpenAI
 
+from src.logos.llm import get_openai_client
 from src.logos.regression import Regression
 from src.logos.tag_utils import TagUtils
 from src.logos.types import Types
@@ -126,7 +126,9 @@ class InteractiveCausalGraphRefiner:
             )
         elif method == InteractiveCausalGraphRefinerMethod.REGRESSION:
             assert graph is not None
-            return InteractiveCausalGraphRefiner._get_suggestion_regression(data, graph)
+            return InteractiveCausalGraphRefiner._get_suggestion_regression(
+                data, graph
+            )
         elif method == InteractiveCausalGraphRefinerMethod.LANGMODEL:
             assert treatment_name is not None
             assert outcome_name is not None
@@ -166,7 +168,9 @@ class InteractiveCausalGraphRefiner:
         edge_edits, _, _ = eccs.suggest_best_single_adjustment_set_change(
             max_results=1, use_optimized=True
         )
-        return edge_edits[0].edge if (edge_edits and len(edge_edits) > 0) else None
+        return (
+            edge_edits[0].edge if (edge_edits and len(edge_edits) > 0) else None
+        )
 
     most_recent_graph = None
     cache: list[Types.Edge] = []
@@ -232,7 +236,7 @@ class InteractiveCausalGraphRefiner:
         if len(cls.cache) > 0:
             return cls.cache.pop(0)
 
-        client = OpenAI()
+        client = get_openai_client()
 
         treatment_tag = TagUtils.tag_of(data_tags, treatment_name, "prepared")
         outcome_tag = TagUtils.tag_of(data_tags, outcome_name, "prepared")
@@ -249,7 +253,8 @@ class InteractiveCausalGraphRefiner:
             return TagUtils.tag_of(data_tags, x, "prepared")
 
         vars_to_examples = {
-            v: data[v].unique().tolist()[:num_samples_per_var] for v in data.columns
+            v: data[v].unique().tolist()[:num_samples_per_var]
+            for v in data.columns
         }
         vars_and_examples_s = ", ".join(
             [

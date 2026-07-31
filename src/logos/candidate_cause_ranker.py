@@ -8,8 +8,8 @@ from datetime import datetime
 from typing import Optional, Tuple, cast
 
 import pandas as pd
-from openai import OpenAI
 
+from src.logos.llm import get_openai_client
 from src.logos.printer import Printer
 from src.logos.pruner import Pruner
 from src.logos.regression import Regression
@@ -198,7 +198,10 @@ class CandidateCauseRanker:
         # Stop if there are no candidates
         if len(candidates) == 0:
             print("No candidates found.")
-            return pd.DataFrame(columns=CandidateCauseRanker.COLUMN_ORDER), pruned
+            return (
+                pd.DataFrame(columns=CandidateCauseRanker.COLUMN_ORDER),
+                pruned,
+            )
 
         # For each candidate, calculate the slope and p-value of
         # a linear regression with target (in parallel)
@@ -215,7 +218,9 @@ class CandidateCauseRanker:
             .sort_values(by="P-value", ascending=True)
             .reset_index(drop=True)
         )
-        result_df["Target Tag"] = TagUtils.tag_of(data_tags_df, target_name, "prepared")
+        result_df["Target Tag"] = TagUtils.tag_of(
+            data_tags_df, target_name, "prepared"
+        )
         result_df["Candidate Tag"] = result_df["Candidate"].apply(
             lambda x: TagUtils.tag_of(data_tags_df, x, "prepared")
         )
@@ -247,12 +252,16 @@ class CandidateCauseRanker:
             candidates, data[candidates], data[target_name]
         )
         result_df = (
-            result_df.sort_values(by="Absolute Normalized Slope", ascending=False)
+            result_df.sort_values(
+                by="Absolute Normalized Slope", ascending=False
+            )
             .drop(columns=["Normalized Slope", "Absolute Normalized Slope"])
             .reset_index(drop=True)
         )
 
-        result_df["Target Tag"] = TagUtils.tag_of(data_tags_df, target_name, "prepared")
+        result_df["Target Tag"] = TagUtils.tag_of(
+            data_tags_df, target_name, "prepared"
+        )
         result_df["Candidate Tag"] = result_df["Candidate"].apply(
             lambda x: TagUtils.tag_of(data_tags_df, x, "prepared")
         )
@@ -283,7 +292,7 @@ class CandidateCauseRanker:
             pruned: A list of pruned candidate causes, if any.
         """
 
-        client = OpenAI()
+        client = get_openai_client()
 
         target_tag = TagUtils.tag_of(data_tags_df, target_name, "prepared")
         nspv = 3  # Number of sample values to show per variable
@@ -352,7 +361,9 @@ class CandidateCauseRanker:
             for row in reply_rows
         ]
         candidate_tags = [
-            tag for tag in possibly_candidate_tags if tag in data_tags_df["Tag"].values
+            tag
+            for tag in possibly_candidate_tags
+            if tag in data_tags_df["Tag"].values
         ]
 
         d = {
@@ -361,9 +372,13 @@ class CandidateCauseRanker:
             "P-value": [None for _ in range(len(candidate_tags))],
         }
         result_df = pd.DataFrame(d)
-        result_df["Target Tag"] = TagUtils.tag_of(data_tags_df, target_name, "prepared")
+        result_df["Target Tag"] = TagUtils.tag_of(
+            data_tags_df, target_name, "prepared"
+        )
         result_df["Candidate"] = result_df["Candidate Tag"].apply(
-            lambda x: TagUtils.name_of(data_tags_df, x.split(":")[0], "prepared")
+            lambda x: TagUtils.name_of(
+                data_tags_df, x.split(":")[0], "prepared"
+            )
         )
         result_df = result_df[CandidateCauseRanker.INTERNAL_COLUMN_ORDER]
 

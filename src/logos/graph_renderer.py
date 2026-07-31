@@ -33,14 +33,18 @@ class GraphRenderer:
             return ""
 
         pos = nx.spring_layout(graph)
+        fig, ax = plt.subplots()
         nx.draw(
             graph,
             pos,
+            ax=ax,
             edgelist=graph.edges(),
             with_labels=False,
             width=2.0,
             node_color="#d3d3d3",
-            edge_color=[graph[u][v].get("color", "#7f9aba") for u, v in graph.edges()],
+            edge_color=[
+                graph[u][v].get("color", "#7f9aba") for u, v in graph.edges()
+            ],
         )
         node_labels = {
             n: (
@@ -50,7 +54,9 @@ class GraphRenderer:
             )
             for n in list(graph.nodes)
         }
-        text = nx.draw_networkx_labels(graph, pos, labels=node_labels, font_size=12)
+        text = nx.draw_networkx_labels(
+            graph, pos, labels=node_labels, font_size=12, ax=ax
+        )
         for _, t in text.items():
             t.set_rotation(30)
 
@@ -60,21 +66,22 @@ class GraphRenderer:
         y_max, y_min = max(y_values), min(y_values)
         if x_max != x_min:
             x_margin = (x_max - x_min) * 0.3
-            plt.xlim(x_min - x_margin, x_max + x_margin)
+            ax.set_xlim(x_min - x_margin, x_max + x_margin)
         if y_max != y_min:
             y_margin = (y_max - y_min) * 0.3
-            plt.ylim(y_min - y_margin, y_max + y_margin)
+            ax.set_ylim(y_min - y_margin, y_max + y_margin)
 
         buffer = BytesIO()
-        plt.savefig(buffer, format="png")
-        plt.clf()
+        fig.savefig(buffer, format="png")
+        plt.close(fig)
         img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
-        plt.close()
 
         return img_str
 
     @staticmethod
-    def save_graph(graph: nx.DiGraph, var_info: pd.DataFrame, filename: str) -> None:
+    def save_graph(
+        graph: nx.DiGraph, var_info: pd.DataFrame, filename: str
+    ) -> None:
         """
         Save the graph to a file as a png image.
 

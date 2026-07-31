@@ -2,26 +2,26 @@ from enum import IntEnum
 from typing import Optional
 
 import pandas as pd
-from openai import OpenAI
 
+from src.logos.llm import get_openai_client
 from src.logos.printer import Printer
 from src.logos.variable_name.parsed_variable_name import ParsedVariableName
 
 
 class TagOrigin(IntEnum):
-    PRECEDING: int = 0
+    PRECEDING = 0
     """Indicates that the tag was derived from the preceding tokens in the corresponding template."""
 
-    GPT_3POINT5_TURBO: int = 1
+    GPT_3POINT5_TURBO = 1
     """Indicates that the tag was derived using gpt-3.5-turbo."""
 
-    GPT_4: int = 2
+    GPT_4 = 2
     """Indicates that the tag was derived using gpt-4."""
 
-    NAME: int = 3
+    NAME = 3
     """Indicates that the tag was derived from the name of the variable."""
 
-    REGEX_VARIABLE: int = 4
+    REGEX_VARIABLE = 4
     """Indicates that the tag was derived from the name of the variable because the name was given by the user."""
 
 
@@ -43,7 +43,9 @@ class TagUtils:
             ValueError: If any of the columns are not present in the dataframe.
         """
         if not set(columns).issubset(set(df.columns)):
-            raise ValueError(f"Columns {columns} are not all present in the dataframe.")
+            raise ValueError(
+                f"Columns {columns} are not all present in the dataframe."
+            )
 
     @staticmethod
     def check_fields(series: pd.Series, fields: list) -> None:
@@ -58,7 +60,9 @@ class TagUtils:
             ValueError: If any of the fields are not present in the series.
         """
         if not set(fields).issubset(set(series.index)):
-            raise ValueError(f"Fields {fields} are not all present in the series.")
+            raise ValueError(
+                f"Fields {fields} are not all present in the series."
+            )
 
     @staticmethod
     def waterfall_tag(
@@ -96,18 +100,22 @@ class TagUtils:
             )
             if tag != name:
                 return (tag, TagOrigin.GPT_3POINT5_TURBO)
+        except EnvironmentError:
+            raise
         except Exception as e:
             print(f"Exception {e} came up while tagging {name} with GPT-3.5.")
-            pass
 
         # Try to derive a tag using GPT-4
         try:
-            tag = TagUtils.gpt_tag(templates_df, variable_row, "gpt-4", banned_values)
+            tag = TagUtils.gpt_tag(
+                templates_df, variable_row, "gpt-4", banned_values
+            )
             if tag != name:
                 return (tag, TagOrigin.GPT_4)
+        except EnvironmentError:
+            raise
         except Exception as e:
             print(f"Exception {e} came up while tagging {name} with GPT-4.")
-            pass
 
         return (name, TagOrigin.NAME)
 
@@ -204,7 +212,7 @@ class TagUtils:
             },
         ]
 
-        client = OpenAI()
+        client = get_openai_client()
 
         tag = (
             client.chat.completions.create(model=model, messages=messages)  # type: ignore
