@@ -6,7 +6,7 @@ import pandas as pd
 
 class Cache:
     """
-    Serialisation for LOGos artifacts. Writes Parquet/JSON; falls back to legacy 
+    Serialisation for LOGos artifacts. Writes Parquet/JSON; falls back to legacy
     .pkl on read.
     """
 
@@ -24,8 +24,11 @@ class Cache:
         """
         if os.path.isfile(path):
             return pd.read_parquet(path)
-        with open(_pkl_equivalent(path), "rb") as f:
-            return pickle.load(f)  # legacy read path only, no new .pkl files
+        for fallback in (_pkl_equivalent(path), _legacy_none_none_pkl(path)):
+            if os.path.isfile(fallback):
+                with open(fallback, "rb") as f:
+                    return pickle.load(f)  # noqa: S301 — legacy read path only
+        raise FileNotFoundError(f"No cache file found for {path}")
 
     @staticmethod
     def dump_metadata(df: pd.DataFrame, path: str) -> None:
@@ -40,15 +43,32 @@ class Cache:
         """
         if os.path.isfile(path):
             return pd.read_json(path, orient="records")
-        with open(_pkl_equivalent(path), "rb") as f:
-            return pickle.load(f)  # legacy read path only, no new .pkl files
+        for fallback in (_pkl_equivalent(path), _legacy_none_none_pkl(path)):
+            if os.path.isfile(fallback):
+                with open(fallback, "rb") as f:
+                    return pickle.load(f)  # noqa: S301 — legacy read path only
+        raise FileNotFoundError(f"No cache file found for {path}")
 
     @staticmethod
     def artifact_exists(path: str) -> bool:
         """
-        True if the artifact exists in the new format or as a legacy .pkl file.
+        True if the artifact exists in new format or as any legacy .pkl variant.
         """
-        return os.path.isfile(path) or os.path.isfile(_pkl_equivalent(path))
+        return (
+            os.path.isfile(path)
+            or os.path.isfile(_pkl_equivalent(path))
+            or os.path.isfile(_legacy_none_none_pkl(path))
+        )
+
+
+def _legacy_none_none_pkl(path: str) -> str:
+    """
+    Older parse artifact path (had _None_None suffix before extension).
+    """
+    for ext in (".parquet", ".json"):
+        if path.endswith(ext):
+            return path[: -len(ext)] + "_None_None.pkl"
+    return path + "_None_None.pkl"
 
 
 def _pkl_equivalent(path: str) -> str:

@@ -198,18 +198,30 @@ class LOGos:
         if self._eccs:
             self._eccs.set_verbose_to(val)
 
-    def _get_parquet_path(self, name: str) -> str:
+    def _get_parse_parquet_path(self, name: str) -> str:
         return os.path.join(
             self._workdir,
-            os.path.basename(self._filename)
-            + f"_{name}_{self._causal_unit_var}_{self._num_causal_units}.parquet",
+            f"{os.path.basename(self._filename)}_{name}.parquet",
         )
 
-    def _get_json_path(self, name: str) -> str:
+    def _get_parse_json_path(self, name: str) -> str:
         return os.path.join(
             self._workdir,
-            os.path.basename(self._filename)
-            + f"_{name}_{self._causal_unit_var}_{self._num_causal_units}.json",
+            f"{os.path.basename(self._filename)}_{name}.json",
+        )
+
+    def _get_prepare_parquet_path(self, name: str) -> str:
+        return os.path.join(
+            self._workdir,
+            f"{os.path.basename(self._filename)}"
+            f"_{name}_{self._causal_unit_var}_{self._num_causal_units}.parquet",
+        )
+
+    def _get_prepare_json_path(self, name: str) -> str:
+        return os.path.join(
+            self._workdir,
+            f"{os.path.basename(self._filename)}"
+            f"_{name}_{self._causal_unit_var}_{self._num_causal_units}.json",
         )
 
     def _find_type(self, row: pd.Series) -> str:
@@ -308,20 +320,26 @@ class LOGos:
         # Check if the parsed files already exist.
         files_exist = (
             not force
-            and Cache.artifact_exists(self._get_parquet_path("parsed_log"))
-            and Cache.artifact_exists(self._get_json_path("parsed_templates"))
-            and Cache.artifact_exists(self._get_json_path("parsed_variables"))
+            and Cache.artifact_exists(
+                self._get_parse_parquet_path("parsed_log")
+            )
+            and Cache.artifact_exists(
+                self._get_parse_json_path("parsed_templates")
+            )
+            and Cache.artifact_exists(
+                self._get_parse_json_path("parsed_variables")
+            )
         )
 
         if files_exist:
             self._parsed_log = Cache.load_dataframe(
-                self._get_parquet_path("parsed_log")
+                self._get_parse_parquet_path("parsed_log")
             )
             self._parsed_templates = Cache.load_metadata(
-                self._get_json_path("parsed_templates")
+                self._get_parse_json_path("parsed_templates")
             )
             self._parsed_variables = Cache.load_metadata(
-                self._get_json_path("parsed_variables")
+                self._get_parse_json_path("parsed_variables")
             )
         else:
             (
@@ -428,13 +446,15 @@ class LOGos:
         # Write out files if appropriate.
         if not self._skip_writeout and not files_exist:
             Cache.dump_dataframe(
-                self._parsed_log, self._get_parquet_path("parsed_log")
+                self._parsed_log, self._get_parse_parquet_path("parsed_log")
             )
             Cache.dump_metadata(
-                self._parsed_templates, self._get_json_path("parsed_templates")
+                self._parsed_templates,
+                self._get_parse_json_path("parsed_templates"),
             )
             Cache.dump_metadata(
-                self._parsed_variables, self._get_json_path("parsed_variables")
+                self._parsed_variables,
+                self._get_parse_json_path("parsed_variables"),
             )
 
         end_time = datetime.now()
@@ -581,13 +601,15 @@ class LOGos:
             skip_writeout = self._skip_writeout
         if not skip_writeout:
             Cache.dump_dataframe(
-                self._parsed_log, self._get_parquet_path("parsed_log")
+                self._parsed_log, self._get_parse_parquet_path("parsed_log")
             )
             Cache.dump_metadata(
-                self._parsed_templates, self._get_json_path("parsed_templates")
+                self._parsed_templates,
+                self._get_parse_json_path("parsed_templates"),
             )
             Cache.dump_metadata(
-                self._parsed_variables, self._get_json_path("parsed_variables")
+                self._parsed_variables,
+                self._get_parse_json_path("parsed_variables"),
             )
 
     def tag_parsed_variable(self, name: str, tag: str) -> None:
@@ -756,16 +778,20 @@ class LOGos:
         # Check if the prepared files already exist.
         files_exist = (
             not force
-            and Cache.artifact_exists(self._get_parquet_path("prepared_log"))
-            and Cache.artifact_exists(self._get_json_path("prepared_variables"))
+            and Cache.artifact_exists(
+                self._get_prepare_parquet_path("prepared_log")
+            )
+            and Cache.artifact_exists(
+                self._get_prepare_json_path("prepared_variables")
+            )
         )
 
         if files_exist:
             self._prepared_log = Cache.load_dataframe(
-                self._get_parquet_path("prepared_log")
+                self._get_prepare_parquet_path("prepared_log")
             )
             self._prepared_variables = Cache.load_metadata(
-                self._get_json_path("prepared_variables")
+                self._get_prepare_json_path("prepared_variables")
             )
         else:
             self._prepare_anew(
@@ -992,11 +1018,12 @@ class LOGos:
         # Write out prepared log and variables
         if not self._skip_writeout:
             Cache.dump_dataframe(
-                self._prepared_log, self._get_parquet_path("prepared_log")
+                self._prepared_log,
+                self._get_prepare_parquet_path("prepared_log"),
             )
             Cache.dump_metadata(
                 self._prepared_variables,
-                self._get_json_path("prepared_variables"),
+                self._get_prepare_json_path("prepared_variables"),
             )
 
         Printer.printv(
