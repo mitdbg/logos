@@ -6,6 +6,7 @@ sys.path.append("../")
 from streamlit_extras.app_logo import add_logo
 from src.logos.logos import LOGos
 from src.logos_webapp.logos_ui import LOGosUI
+from src.logos.cache import Cache
 from src.definitions import LOGOS_ROOT_DIR
 import os
 from io import StringIO
@@ -92,20 +93,20 @@ left_column, right_column = st.columns(2)
 
 with left_column:
     st.markdown("##### Tabular data per Causal Unit")
-    df = pd.read_pickle(
+    df = Cache.load_dataframe(
         os.path.join(
             LOGOS_ROOT_DIR,
             "demo",
             "workdir",
-            "demo.log_prepared_log_Timestamp_10000.pkl",
+            "demo.log_prepared_log_Timestamp_10000.parquet",
         )
     )
-    df_var = pd.read_pickle(
+    df_var = Cache.load_metadata(
         os.path.join(
             LOGOS_ROOT_DIR,
             "demo",
             "workdir",
-            "demo.log_prepared_variables_Timestamp_10000.pkl",
+            "demo.log_prepared_variables_Timestamp_10000.json",
         )
     )
     df.columns = df_var["Tag"].values

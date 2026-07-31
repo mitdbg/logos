@@ -1,5 +1,4 @@
 import os
-import pickle
 from typing import Any, Optional
 
 import networkx as nx
@@ -10,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from tqdm.auto import tqdm
 
 from src.logos.ate_calculator import ATECalculator
-from src.logos.pickler import Pickler
+from src.logos.cache import Cache
 from src.logos.printer import Printer
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 
@@ -63,7 +62,9 @@ class Pruner:
         for v in to_ignore:
             vp = PreparedVariableName(v)
             if vp.base_var() != "TemplateId":
-                drop_cols.extend([c for c in data.columns if vp.base_var() in c])
+                drop_cols.extend(
+                    [c for c in data.columns if vp.base_var() in c]
+                )
         drop_cols = list(set(drop_cols))
 
         # Iterate until multiple prepared variables with the same base variable are eliminated.
@@ -145,11 +146,12 @@ class Pruner:
 
         # Check whether we can use pre-calculated results
         filename = os.path.join(
-            work_dir, f"pickles/triangle_dags/{treatment_col}_{outcome_col}.pkl"
+            work_dir,
+            f"pickles/triangle_dags/{treatment_col}_{outcome_col}.parquet",
         )
-        if os.path.isfile(filename) and not force:
-            df = pickle.load(open(filename, "rb"))
-            Printer.printv("Found pickled file")
+        if Cache.artifact_exists(filename) and not force:
+            df = Cache.load_dataframe(filename)
+            Printer.printv("Found cached file")
             return list(df.index[:top_n].values)
 
         Printer.printv("Starting to prune using triangle method")
@@ -189,7 +191,9 @@ class Pruner:
                 )
             )
             # Mediator without direct path
-            graphs.append(nx.DiGraph([(treatment_col, var), (var, outcome_col)]))
+            graphs.append(
+                nx.DiGraph([(treatment_col, var), (var, outcome_col)])
+            )
 
             # Calculate the corrsponding ATEs
             ates = [base_ate]
@@ -209,9 +213,11 @@ class Pruner:
                     pass
             max_diffs[var] = max(ates) - min(ates)
         max_diffs = max_diffs
-        df = pd.DataFrame.from_dict(max_diffs, orient="index", columns=["max_diff"])
+        df = pd.DataFrame.from_dict(
+            max_diffs, orient="index", columns=["max_diff"]
+        )
         df = df.sort_values(by="max_diff", ascending=False)
 
-        Pickler.dump(df, filename)
+        Cache.dump_dataframe(df, filename)
 
         return list(df.index[:top_n].values)

@@ -80,7 +80,7 @@ nav:
     - "ATECalculator": reference/logos/ate_calculator.md
     - "InteractiveCausalGraphRefiner": reference/logos/interactive_causal_graph_refiner.md
     - "EdgeOccurrenceTree": reference/logos/edge_occurrence_tree.md
-    - "Pickler": reference/logos/pickler.md
+    - "Cache": reference/logos/cache.md
     - "Printer": reference/logos/printer.md
     - "Types": reference/logos/types.md
     - Variable Names: 
