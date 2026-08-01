@@ -1,0 +1,81 @@
+[
+  {
+    "Name":"Timestamp",
+    "Tag":"Timestamp",
+    "TagOrigin":4,
+    "Type":"num",
+    "IsUninteresting":false,
+    "Occurrences":15121,
+    "Preceding 3 tokens":[
+
+    ],
+    "Examples":[
+      "2023-03-14T20:55:49.165591Z",
+      "2023-03-14T20:55:49.166591Z",
+      "2023-03-14T20:55:49.167591Z",
+      "2023-03-14T20:55:49.168591Z",
+      "2023-03-14T20:55:49.169591Z"
+    ],
+    "From regex":true
+  },
+  {
+    "Name":"43e6c5b5_7",
+    "Tag":"x",
+    "TagOrigin":0,
+    "Type":"num",
+    "IsUninteresting":false,
+    "Occurrences":10000,
+    "Preceding 3 tokens":[
+      "with",
+      "x",
+      "="
+    ],
+    "Examples":[
+      "100.00285967800117",
+      "100.81229891323964",
+      "100.26016363495995",
+      "199.4482406365968",
+      "200.98748260974"
+    ],
+    "From regex":false
+  },
+  {
+    "Name":"f2e46af4_11",
+    "Tag":"y",
+    "TagOrigin":0,
+    "Type":"num",
+    "IsUninteresting":false,
+    "Occurrences":5006,
+    "Preceding 3 tokens":[
+      "reports",
+      "y",
+      "="
+    ],
+    "Examples":[
+      "200.1899632341074",
+      "200.45898567905772",
+      "399.6905765982258",
+      "400.22712382793407",
+      "400.08343040509993"
+    ],
+    "From regex":false
+  },
+  {
+    "Name":"f98340b4_12",
+    "Tag":"z",
+    "TagOrigin":0,
+    "Type":"num",
+    "IsUninteresting":false,
+    "Occurrences":115,
+    "Preceding 3 tokens":[
+      "of",
+      "z",
+      "="
+    ],
+    "Examples":[
+      "200.0",
+      "100.0"
+    ],
+    "From regex":false
+  }
+]

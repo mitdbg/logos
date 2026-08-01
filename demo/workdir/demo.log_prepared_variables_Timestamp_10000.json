@@ -1,0 +1,56 @@
+[
+  {
+    "Name":"43e6c5b5_7+mean",
+    "Base":"43e6c5b5_7",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"x mean",
+    "Base Variable Occurences":10000,
+    "Type":"num",
+    "Examples":[
+      "100.00285967800117",
+      "100.81229891323964",
+      "100.26016363495995",
+      "199.4482406365968",
+      "200.98748260974"
+    ],
+    "From regex":false,
+    "TemplateText":"<*0> DATA Short message with x = <*>"
+  },
+  {
+    "Name":"f2e46af4_11+mean",
+    "Base":"f2e46af4_11",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"y mean",
+    "Base Variable Occurences":5006,
+    "Type":"num",
+    "Examples":[
+      "200.1899632341074",
+      "200.45898567905772",
+      "399.6905765982258",
+      "400.22712382793407",
+      "400.08343040509993"
+    ],
+    "From regex":false,
+    "TemplateText":"<*0> DATA This is a log message that reports y = <*>"
+  },
+  {
+    "Name":"f98340b4_12+mean",
+    "Base":"f98340b4_12",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"z mean",
+    "Base Variable Occurences":115,
+    "Type":"num",
+    "Examples":[
+      "200.0",
+      "100.0"
+    ],
+    "From regex":false,
+    "TemplateText":"<*0> DATA The current line will include the value of z = <*>"
+  }
+]

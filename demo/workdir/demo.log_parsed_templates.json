@@ -1,0 +1,38 @@
+[
+  {
+    "TemplateText":"<*0> DATA Short message with x = <*>",
+    "TemplateId":"43e6c5b5",
+    "VariableIndices":[
+      7
+    ],
+    "RegexIndices":[
+      0
+    ],
+    "TemplateExample":"<*0> DATA Short message with x  =  100.00285967800117",
+    "Occurrences":10000
+  },
+  {
+    "TemplateText":"<*0> DATA This is a log message that reports y = <*>",
+    "TemplateId":"f2e46af4",
+    "VariableIndices":[
+      11
+    ],
+    "RegexIndices":[
+      0
+    ],
+    "TemplateExample":"<*0> DATA This is a log message that reports y  =  200.1899632341074",
+    "Occurrences":5006
+  },
+  {
+    "TemplateText":"<*0> DATA The current line will include the value of z = <*>",
+    "TemplateId":"f98340b4",
+    "VariableIndices":[
+      12
+    ],
+    "RegexIndices":[
+      0
+    ],
+    "TemplateExample":"<*0> DATA The current line will include the value of z  =  200.0",
+    "Occurrences":115
+  }
+]
