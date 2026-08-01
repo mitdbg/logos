@@ -12,7 +12,7 @@ In order to use the LLM-powered capabilites of LOGos, please add a `.env` file t
 
 For an introduction to our Python-based interface, you can turn to our demo notebook at [`demo/demo.ipynb`](demo/demo.ipynb).
 
-We also offer a simple UI built using [Streamlit](https://docs.streamlit.io/). You can launch it by running [`demo/run_ui_demo.sh`](demo/run_ui_demo.sh) and following the resulting URL.
+
 
 
 ### Reproducing our evaluation
