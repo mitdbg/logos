@@ -9,3 +9,6 @@ webapp/log_results
 
 **/__pycache__/
 **/scratch.*
+
+*.md
+draft.log
