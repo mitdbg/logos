@@ -3,6 +3,7 @@ Functionality for ranking candidate causes.
 """
 
 import enum
+import logging
 import multiprocessing
 from datetime import datetime
 from typing import Optional, Tuple, cast

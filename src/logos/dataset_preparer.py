@@ -177,7 +177,7 @@ class CausalDatasetPreparer:
         self,
         custom_agg: Optional[dict[str, list[str]]] = None,
         custom_imp: Optional[dict[str, str]] = None,
-        count_occurences: bool = False,
+        count_occurrences: bool = False,
         ignore_uninteresting: bool = True,
         force: bool = False,
         drop_bad_aggs: bool = True,
@@ -221,7 +221,7 @@ class CausalDatasetPreparer:
             self._prepare_anew(
                 custom_agg,
                 custom_imp,
-                count_occurences=count_occurences,
+                count_occurrences=count_occurrences,
                 ignore_uninteresting=ignore_uninteresting,
                 drop_bad_aggs=drop_bad_aggs,
             )
@@ -232,7 +232,7 @@ class CausalDatasetPreparer:
         self,
         custom_agg: Optional[dict[str, list[str]]] = None,
         custom_imp: Optional[dict[str, str]] = None,
-        count_occurences: bool = False,
+        count_occurrences: bool = False,
         ignore_uninteresting: bool = True,
         drop_bad_aggs: bool = True,
     ) -> None:
@@ -244,8 +244,8 @@ class CausalDatasetPreparer:
                 for specific variables.
             custom_imp: A dictionary of the custom imputation function to be
                 used for specific variables.
-            count_occurences: Whether to include extra variables counting the
-                occurence of each template.
+            count_occurrences: Whether to include extra variables counting the
+                occurrence of each template.
             ignore_uninteresting: Whether to ignore uninteresting variables.
             drop_bad_aggs: Whether to drop prepared variables that do not add
                 information compared to other variables based on the same base
@@ -279,7 +279,7 @@ class CausalDatasetPreparer:
 
         # Start with the parsed log, optionally with extra variables counting
         # the occurence of each template.
-        if count_occurences and "TemplateId" in self._parser.parsed_log.columns:
+        if count_occurrences and "TemplateId" in self._parser.parsed_log.columns:
             _logger.debug("Adding template occurrence count variables...")
             self._prepared_log = pd.concat(
                 [
@@ -294,7 +294,7 @@ class CausalDatasetPreparer:
                 axis=1,
             )
         else:
-            if count_occurences:
+            if count_occurrences:
                 _logger.debug(
                     "count_occurrences=True ignored: no TemplateId column."
                 )

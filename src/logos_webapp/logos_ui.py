@@ -451,7 +451,7 @@ class LOGosUI:
 
             force_prepare = st.checkbox(label="Force re-calculation")
 
-            count_occurences = st.checkbox(
+            count_occurrences = st.checkbox(
                 label="Count Occurences of each Log Template", value=False
             )
 
@@ -527,7 +527,7 @@ class LOGosUI:
             if submitted:
                 with st.spinner("Preparing log for analysis..."):
                     self.logos.prepare(
-                        count_occurences=count_occurences,
+                        count_occurrences=count_occurrences,
                         force=force_prepare,
                         custom_imp=imp_dict,
                         reject_prunable_edges=False,
@@ -537,7 +537,7 @@ class LOGosUI:
                             Successfully prepare log for analysis with   """
                         # Aggregation: {agg_option}
                         # Imputation: {imp_option}
-                        f""" Count Occurences: {count_occurences}
+                        f""" Count Occurrences: {count_occurrences}
                         """
                     )
 

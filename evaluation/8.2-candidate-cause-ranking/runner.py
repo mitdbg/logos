@@ -31,7 +31,7 @@ def setup_logos_for_postgresql(full_filename, workdir):
     # s.include_in_template('work_mem')
     s.set_causal_unit("sessionID")
     s.prepare(
-        count_occurences=True,
+        count_occurrences=True,
         custom_agg={"sessionID": ["mode"]},
     )
 
@@ -72,7 +72,7 @@ def setup_logos_for_xyz(full_filename, workdir):
         },
     )
     s.set_causal_unit("machine")
-    s.prepare(count_occurences=True)
+    s.prepare(count_occurrences=True)
 
     full_info_filename = full_filename[:-4] + ".json"
 

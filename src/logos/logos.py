@@ -293,7 +293,7 @@ class LOGos:
         self,
         custom_agg: Optional[dict[str, list[str]]] = None,
         custom_imp: Optional[dict[str, str]] = None,
-        count_occurences: bool = False,
+        count_occurrences: bool = False,
         ignore_uninteresting: bool = True,
         force: bool = False,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
@@ -339,7 +339,7 @@ class LOGos:
         if not preparer.prepare(
             custom_agg,
             custom_imp,
-            count_occurences,
+            count_occurrences,
             ignore_uninteresting,
             force,
             drop_bad_aggs,
