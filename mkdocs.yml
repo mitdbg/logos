@@ -83,6 +83,7 @@ nav:
     - "Cache": reference/logos/cache.md
     - "ParsedSource": reference/logos/parsed_source.md
     - "PreparedSource": reference/logos/prepared_source.md
+    - "Session": reference/logos/session.md
     - "Types": reference/logos/types.md
     - Variable Names: 
       - "ParsedVariableName": reference/logos/variable_name/parsed_variable_name.md

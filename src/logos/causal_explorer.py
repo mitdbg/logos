@@ -55,6 +55,33 @@ class CausalExplorer:
         self._eccs = ECCS(self._prepared_log, nx.DiGraph())
         self._eccs.set_verbose_to(_logger.isEnabledFor(logging.DEBUG))
 
+    def _restore_session_state(
+        self, graph: nx.DiGraph, edge_states_matrix: np.ndarray
+    ) -> None:
+        """Restore graph and edge-state matrix from a saved session.
+
+        Resets ECCS to match: accepted edges are added and fixed; all
+        rejected edges are banned so ECCS never re-proposes them.
+        """
+        self._graph = graph
+        self._edge_states.clear_and_set_from_matrix(edge_states_matrix)
+
+        if self._eccs:
+            self._eccs.clear_graph(True)
+            # Re-accept every edge present in the saved graph
+            for u, v in graph.edges:
+                self._eccs.add_edge(u, v)
+                self._eccs.fix_edge(u, v)
+            # Ban every edge that was rejected (skipping diagonal self-edges)
+            n = len(self._edge_states._variables)
+            for i in range(n):
+                for j in range(n):
+                    if i != j and edge_states_matrix[i, j] == -1:
+                        self._eccs.ban_edge(
+                            self._edge_states._variables[i],
+                            self._edge_states._variables[j],
+                        )
+
     # ------------------------------------------------------------------
     # Convenience properties
     # ------------------------------------------------------------------

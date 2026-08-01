@@ -2,9 +2,9 @@ import logging
 from datetime import datetime
 from typing import List, Optional, Tuple, Union
 
+import networkx as nx
 import numpy as np
 import pandas as pd
-import networkx as nx
 
 from src.logos.ate_calculator import ATECalculator
 from src.logos.causal_explorer import CausalExplorer
@@ -505,12 +505,16 @@ class LOGos:
                 pass
         if self._preparer is not None:
             try:
-                TagUtils.name_of(self._preparer.prepared_variables, var, "prepared")
+                TagUtils.name_of(
+                    self._preparer.prepared_variables, var, "prepared"
+                )
                 self._require_preparer().tag_prepared_variable(var, tag)
                 return
             except (ValueError, KeyError):
                 pass
-        raise ValueError(f"Variable '{var}' not found in parsed or prepared namespace.")
+        raise ValueError(
+            f"Variable '{var}' not found in parsed or prepared namespace."
+        )
 
     def get_tag(self, var: str) -> str:
         """
@@ -521,17 +525,32 @@ class LOGos:
         """
         if self._parser is not None:
             try:
-                return TagUtils.tag_of(self._parser.parsed_variables, var, "parsed") or var
+                return (
+                    TagUtils.tag_of(
+                        self._parser.parsed_variables, var, "parsed"
+                    )
+                    or var
+                )
             except (ValueError, KeyError):
                 pass
         if self._preparer is not None:
             try:
-                return TagUtils.tag_of(self._preparer.prepared_variables, var, "prepared") or var
+                return (
+                    TagUtils.tag_of(
+                        self._preparer.prepared_variables, var, "prepared"
+                    )
+                    or var
+                )
             except (ValueError, KeyError):
                 pass
         if self._explorer is not None:
             try:
-                return TagUtils.tag_of(self._explorer._prepared_variables, var, "prepared") or var
+                return (
+                    TagUtils.tag_of(
+                        self._explorer._prepared_variables, var, "prepared"
+                    )
+                    or var
+                )
             except (ValueError, KeyError):
                 pass
         raise ValueError(f"Variable '{var}' not found.")
