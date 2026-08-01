@@ -67,6 +67,30 @@ class CausalDatasetPreparer:
     def num_prepared_variables(self) -> int:
         return len(self._prepared_variables)
 
+    @property
+    def parsed_variables(self) -> pd.DataFrame:
+        """
+        Forward parsed_variables from the underlying parser 
+        (satisfies PreparedSource).
+        """
+        return self._parser.parsed_variables
+
+    @property
+    def parsed_templates(self) -> pd.DataFrame:
+        """
+        Forward parsed_templates from the underlying parser 
+        (satisfies PreparedSource).
+        """
+        return self._parser.parsed_templates
+
+    @property
+    def workdir(self) -> str:
+        """
+        Forward workdir from the underlying parser 
+        (satisfies PreparedSource).
+        """
+        return self._parser.workdir
+
     # ------------------------------------------------------------------
     # Cache path helpers
     # ------------------------------------------------------------------

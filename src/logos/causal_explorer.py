@@ -25,6 +25,7 @@ from src.logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
     InteractiveCausalGraphRefinerMethod,
 )
+from src.logos.prepared_source import PreparedSource
 from src.logos.pruner import Pruner
 from src.logos.tag_utils import TagUtils
 from src.logos.types import Types
@@ -40,19 +41,12 @@ class CausalExplorer:
     Call _init_eccs() once after any initial edge pruning is complete.
     """
 
-    def __init__(
-        self,
-        prepared_log: pd.DataFrame,
-        prepared_variables: pd.DataFrame,
-        parsed_variables: pd.DataFrame,
-        parsed_templates: pd.DataFrame,
-        workdir: str,
-    ) -> None:
-        self._prepared_log = prepared_log
-        self._prepared_variables = prepared_variables
-        self._parsed_variables = parsed_variables
-        self._parsed_templates = parsed_templates
-        self._workdir = workdir
+    def __init__(self, source: PreparedSource) -> None:
+        self._prepared_log = source.prepared_log
+        self._prepared_variables = source.prepared_variables
+        self._parsed_variables = source.parsed_variables
+        self._parsed_templates = source.parsed_templates
+        self._workdir = source.workdir
 
         self._graph: nx.DiGraph = nx.DiGraph()
         # ECCS is None until _init_eccs() is called after optional pruning.
