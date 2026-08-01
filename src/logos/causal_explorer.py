@@ -2,6 +2,7 @@
 Causal graph exploration: edge management, candidate ranking, ATE calculation.
 """
 
+import logging
 import multiprocessing
 import os
 from datetime import datetime
@@ -24,11 +25,12 @@ from src.logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
     InteractiveCausalGraphRefinerMethod,
 )
-from src.logos.printer import Printer
 from src.logos.pruner import Pruner
 from src.logos.tag_utils import TagUtils
 from src.logos.types import Types
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+
+_logger = logging.getLogger(__name__)
 
 
 class CausalExplorer:
@@ -63,7 +65,7 @@ class CausalExplorer:
     def _init_eccs(self) -> None:
         """Initialise ECCS from the current prepared log. Call after pruning."""
         self._eccs = ECCS(self._prepared_log, nx.DiGraph())
-        self._eccs.set_verbose_to(Printer.LOGOS_VERBOSE)
+        self._eccs.set_verbose_to(_logger.isEnabledFor(logging.DEBUG))
 
     # ------------------------------------------------------------------
     # Convenience properties
@@ -397,7 +399,7 @@ class CausalExplorer:
                 ),
             )
 
-        Printer.printv(all_candidates)
+        _logger.debug(all_candidates)
 
         for candidates, target in zip(
             all_candidates, self.prepared_variable_names
@@ -446,8 +448,8 @@ class CausalExplorer:
             self._edge_states.m[other_indices][:, graph_var_indices] != 0
         )
 
-        Printer.printv(f"Considered: {considered}")
-        Printer.printv(f"Incident: {incident}")
+        _logger.debug(f"Considered: {considered}")
+        _logger.debug(f"Incident: {incident}")
 
         return considered / incident
 
@@ -536,8 +538,8 @@ class CausalExplorer:
         start_time = datetime.now()
 
         if target is None and self._next_exploration is None:
-            Printer.printv("No target specified.")
-            return pd.DataFrame(columns=CandidateCauseRanker.COLUMN_ORDER), ""
+            _logger.debug("No target specified.")
+            return pd.DataFrame(columns=CandidateCauseRanker.COLUMN_ORDER)
         elif target is None:
             target = self._next_exploration
         assert target is not None
@@ -572,14 +574,9 @@ class CausalExplorer:
             "Candidate"
         ].apply(lambda x: self._edge_states.get_edge_state(target, x))
 
-        ret_val = result_df[CandidateCauseRanker.COLUMN_ORDER]
-
-        end_time = datetime.now()
-        elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        Printer.printv(
-            f"Candidate cause exploration complete in {elapsed} seconds!"
-        )
-        return ret_val, elapsed
+        elapsed = (datetime.now() - start_time).total_seconds()
+        _logger.debug(f"Candidate cause ranking complete in {elapsed:.6f}s")
+        return result_df[CandidateCauseRanker.COLUMN_ORDER]
 
     def get_causal_graph_refinement_suggestion(
         self,
@@ -654,9 +651,6 @@ class CausalExplorer:
                 ),
             )
 
-        end_time = datetime.now()
-        elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        Printer.printv(
-            f"Candidate cause exploration complete in {elapsed} seconds!"
-        )
+        elapsed = (datetime.now() - start_time).total_seconds()
+        _logger.debug(f"Graph refinement suggestion complete in {elapsed:.6f}s")
         return edge_tags, elapsed

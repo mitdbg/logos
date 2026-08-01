@@ -5,6 +5,7 @@ management.
 
 import importlib
 import inspect
+import logging
 import os
 from typing import Callable, Optional, Tuple
 
@@ -15,9 +16,10 @@ from src.logos.aggregate_selector import AggregateSelector
 from src.logos.cache import Cache
 from src.logos.causal_unit_suggester import CausalUnitSuggester
 from src.logos.parsed_source import ParsedSource
-from src.logos.printer import Printer
 from src.logos.tag_utils import TagUtils
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+
+_logger = logging.getLogger(__name__)
 
 
 class CausalDatasetPreparer:
@@ -162,8 +164,8 @@ class CausalDatasetPreparer:
         self._num_causal_units = num_units
 
         tag = self._parser.get_tag_of_parsed(var_name)
-        Printer.printv(
-            f"Causal unit set to {var_name} (tag: {tag}) "
+        _logger.debug(
+            f"Causal unit set to {var_name} (tag: {tag})"
             + (
                 ""
                 if not self._num_causal_units
@@ -255,7 +257,7 @@ class CausalDatasetPreparer:
         if custom_imp is None:
             custom_imp = {}
 
-        Printer.printv(f"Determining the causal unit assignment...")
+        _logger.debug(f"Determining the causal unit assignment...")
         causal_unit_assignment = CausalUnitSuggester.discretize(
             self._parser.parsed_log[self._causal_unit_var],
             self._parser.parsed_variables[
@@ -278,7 +280,7 @@ class CausalDatasetPreparer:
         # Start with the parsed log, optionally with extra variables counting
         # the occurence of each template.
         if count_occurences and "TemplateId" in self._parser.parsed_log.columns:
-            Printer.printv(f"Adding template occurrence count variables...")
+            _logger.debug("Adding template occurrence count variables...")
             self._prepared_log = pd.concat(
                 [
                     self._parser.parsed_log,
@@ -293,8 +295,8 @@ class CausalDatasetPreparer:
             )
         else:
             if count_occurences:
-                Printer.printv(
-                    "count_occurences=True ignored: no TemplateId column."
+                _logger.debug(
+                    "count_occurrences=True ignored: no TemplateId column."
                 )
             self._prepared_log = self._parser.parsed_log.copy(deep=True)
 
@@ -330,7 +332,7 @@ class CausalDatasetPreparer:
             )
             for col in ui_cols:
                 agg_dict.pop(col, None)
-            Printer.printv(
+            _logger.debug(
                 f"Dropped {len(ui_cols)} uninteresting columns, out of an "
                 f"original total of {len(self._parser.parsed_variables)}."
             )
@@ -340,7 +342,7 @@ class CausalDatasetPreparer:
         agg_dict[self._causal_unit_var] = agg_dict[self._causal_unit_var][:1]
 
         # Perform the aggregation
-        Printer.printv("Calculating aggregates for each causal unit...")
+        _logger.debug("Calculating aggregates for each causal unit...")
         agg_func_dict: dict[str, list[Callable]] = {
             name: [self._agg_funcs[f] for f in funcs]
             for name, funcs in agg_dict.items()
@@ -383,9 +385,7 @@ class CausalDatasetPreparer:
         # based on the same base variable but using a different aggregation 
         # function.
         if drop_bad_aggs:
-            Printer.printv(
-                f"Dropping aggregates that do not add information..."
-            )
+            _logger.debug("Dropping aggregates that do not add information...")
             cols_to_drop = AggregateSelector.find_uninformative_aggregates(
                 self._prepared_log,
                 self._parser.parsed_variables,
@@ -449,7 +449,7 @@ class CausalDatasetPreparer:
             )
 
         cuv = self._causal_unit_var
-        Printer.printv(
+        _logger.debug(
             f"Successfully prepared the log with causal unit {cuv} "
             f"(tag: {self._parser.get_tag_of_parsed(cuv)})"
             + (

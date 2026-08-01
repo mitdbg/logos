@@ -4,6 +4,7 @@ tagging.
 """
 
 import hashlib
+import logging
 import os
 import warnings
 from datetime import datetime
@@ -14,9 +15,10 @@ from tqdm.auto import tqdm
 
 from src.logos.cache import Cache
 from src.logos.drain import Drain
-from src.logos.printer import Printer
 from src.logos.tag_utils import TagUtils
 from src.logos.variable_name.parsed_variable_name import ParsedVariableName
+
+_logger = logging.getLogger(__name__)
 
 
 class LogParser:
@@ -40,7 +42,7 @@ class LogParser:
 
         if not os.path.exists(self._workdir):
             os.makedirs(self._workdir, exist_ok=True)
-        Printer.printv(f"Initialized LogParser with log file {filename}")
+        _logger.debug(f"Initialized LogParser with log file {filename}")
 
     # ------------------------------------------------------------------
     # Public properties
@@ -148,7 +150,7 @@ class LogParser:
         force: bool = False,
         message_prefix: str = DEFAULT_MESSAGE_PREFIX,
         enable_gpt_tagging: bool = False,
-    ) -> str:
+    ) -> None:
         """
         Parse the log file into a dataframe.
 
@@ -165,9 +167,6 @@ class LogParser:
                 concatenated to the previous log message.
             enable_gpt_tagging: A boolean indicating whether GPT tagging should
                 be enabled.
-
-        Returns:
-            The time elapsed for parsing, as a string.
         """
         start_time = datetime.now()
         parser = Drain(
@@ -320,9 +319,8 @@ class LogParser:
             )
 
         end_time = datetime.now()
-        elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        Printer.printv(f"Parsing complete in {elapsed} seconds!")
-        return elapsed
+        elapsed = (end_time - start_time).total_seconds()
+        _logger.debug(f"Parsing complete in {elapsed:.6f} seconds!")
 
     def include_in_template(
         self,

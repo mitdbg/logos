@@ -10,10 +10,11 @@ from typing import Optional, Tuple, cast
 import pandas as pd
 
 from src.logos.llm import get_openai_client
-from src.logos.printer import Printer
 from src.logos.pruner import Pruner
 from src.logos.regression import Regression
 from src.logos.tag_utils import TagUtils
+
+_logger = logging.getLogger(__name__)
 
 
 class CandidateCauseRankerMethod(enum.Enum):
@@ -192,7 +193,7 @@ class CandidateCauseRanker:
             if prune_candidates
             else [c for c in data.columns if c != target_name]
         )
-        Printer.printv(f"Candidates: {candidates}")
+        _logger.debug(f"Candidates: {candidates}")
         pruned = list(set(data.columns) - set(candidates) - set([target_name]))
 
         # Stop if there are no candidates

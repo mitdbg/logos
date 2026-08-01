@@ -16,13 +16,13 @@ from src.logos.interactive_causal_graph_refiner import (
 from src.logos.log_parser import LogParser
 from src.logos.parsed_table_input import ParsedTableInput
 from src.logos.prepared_table_input import PreparedTableInput
-from src.logos.printer import Printer
 from src.logos.pruner import Pruner
 from src.logos.types import Types
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 
-# Suppress logging below WARNING level
-logging.getLogger().setLevel(logging.WARNING)
+_logger = logging.getLogger(__name__)
+# Suppress LOGos debug messages by default; call set_verbose_to(True) to enable.
+logging.getLogger("src.logos").setLevel(logging.WARNING)
 
 
 class LOGos:
@@ -128,13 +128,9 @@ class LOGos:
         return instance
 
     def set_verbose_to(self, val: bool) -> None:
-        """
-        Set the verbosity of the printer.
-
-        Parameters:
-            val: The new verbosity value.
-        """
-        Printer.set_verbose(val)
+        """Set LOGos logging verbosity (True = DEBUG, False = WARNING)."""
+        level = logging.DEBUG if val else logging.WARNING
+        logging.getLogger("src.logos").setLevel(level)
         if self._explorer and self._explorer._eccs:
             self._explorer._eccs.set_verbose_to(val)
 
@@ -358,7 +354,7 @@ class LOGos:
             self._parser.workdir,
         )
         if reject_prunable_edges:
-            Printer.printv("Pruning edges...")
+            _logger.debug("Pruning edges...")
             self._explorer.reject_all_prunable_edges(
                 also_ban=True,
                 lasso_alpha=lasso_alpha,
@@ -366,10 +362,9 @@ class LOGos:
             )
         self._explorer._init_eccs()
 
-        end_time = datetime.now()
-        elapsed = "{:.6f}".format((end_time - start_time).total_seconds())
-        Printer.printv(
-            f"Preparation complete in {elapsed} seconds! "
+        elapsed = (datetime.now() - start_time).total_seconds()
+        _logger.debug(
+            f"Preparation complete in {elapsed:.6f}s! "
             f"{np.count_nonzero(self._explorer._edge_states.m == -1)} of the "
             f"{self._explorer.num_prepared_variables ** 2} possible edges were "
             "auto-rejected."

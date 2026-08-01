@@ -2,7 +2,7 @@
 A module for the interactive causal graph refiner functionality.
 """
 
-import enum
+import logging
 from datetime import datetime
 from typing import Optional, cast
 
@@ -14,6 +14,8 @@ from src.logos.llm import get_openai_client
 from src.logos.regression import Regression
 from src.logos.tag_utils import TagUtils
 from src.logos.types import Types
+
+_logger = logging.getLogger(__name__)
 
 
 class InteractiveCausalGraphRefinerMethod(str, enum.Enum):

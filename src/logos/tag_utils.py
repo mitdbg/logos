@@ -1,11 +1,13 @@
+import logging
 from enum import IntEnum
 from typing import Optional
 
 import pandas as pd
 
 from src.logos.llm import get_openai_client
-from src.logos.printer import Printer
 from src.logos.variable_name.parsed_variable_name import ParsedVariableName
+
+_logger = logging.getLogger(__name__)
 
 
 class TagOrigin(IntEnum):
@@ -281,7 +283,7 @@ class TagUtils:
         TagUtils.check_columns(df, ["Name", "Tag"])
         if name in df["Name"].values:
             df.loc[df["Name"] == name, "Tag"] = tag
-            Printer.printv(f"Variable {name} tagged as {tag}")
+            _logger.debug(f"Variable {name} tagged as {tag}")
         else:
             raise ValueError(f"{name} is not the name of a {info} variable.")
 

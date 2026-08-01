@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import Any, Optional
 
@@ -10,8 +11,9 @@ from tqdm.auto import tqdm
 
 from src.logos.ate_calculator import ATECalculator
 from src.logos.cache import Cache
-from src.logos.printer import Printer
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+
+_logger = logging.getLogger(__name__)
 
 
 class Pruner:
@@ -71,7 +73,7 @@ class Pruner:
         done = False
 
         while not done:
-            Printer.printv(f"Variables that Lasso will ignore: {drop_cols}")
+            _logger.debug(f"Variables that Lasso will ignore: {drop_cols}")
             X = data.drop(drop_cols, axis=1)
             X_cols = X.columns
             if X.empty:
@@ -83,11 +85,11 @@ class Pruner:
             # Fit a Lasso model to the data
             lasso = Lasso(alpha=alpha, max_iter=max_iter)
             lasso.fit(X, y)
-            Printer.printv(f"Lasso coefficients : {lasso.coef_}")
-            Printer.printv(f"Scale: {scaler.scale_}")
+            _logger.debug(f"Lasso coefficients : {lasso.coef_}")
+            _logger.debug(f"Scale: {scaler.scale_}")
             final_coefs = lasso.coef_ / scaler.scale_
             abs_coefs = np.abs(final_coefs)
-            Printer.printv(f"Lasso coefficients unscaled: {final_coefs}")
+            _logger.debug(f"Lasso coefficients unscaled: {final_coefs}")
 
             # Mask for nonzero elements
             nonzero_mask = final_coefs != 0
@@ -112,8 +114,8 @@ class Pruner:
                 else:
                     d.add(base_var)
 
-        Printer.printv("Lasso identified the following impactful variables:")
-        Printer.printv(selected_names)
+        _logger.debug("Lasso identified the following impactful variables:")
+        _logger.debug(selected_names)
 
         return selected_names
 
@@ -151,10 +153,10 @@ class Pruner:
         )
         if Cache.artifact_exists(filename) and not force:
             df = Cache.load_dataframe(filename)
-            Printer.printv("Found cached file")
+            _logger.debug("Found cached file")
             return list(df.index[:top_n].values)
 
-        Printer.printv("Starting to prune using triangle method")
+        _logger.debug("Starting to prune using triangle method")
         max_diffs = {}
         base_ate = ATECalculator.get_ate_and_confidence(
             data, vars, treatment_col, outcome_col, calculate_std_error=False

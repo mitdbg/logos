@@ -5,6 +5,7 @@ available under the MIT license
 """
 
 import hashlib
+import logging
 import os
 import re
 from typing import Any, Optional, Union, cast
@@ -12,7 +13,7 @@ from typing import Any, Optional, Union, cast
 import pandas as pd
 from tqdm.auto import tqdm
 
-from src.logos.printer import Printer
+_logger = logging.getLogger(__name__)
 
 
 class Cluster:  # pylint: disable=too-few-public-methods
@@ -115,7 +116,7 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
         """
 
         full_path = os.path.join(self.indir, filename)
-        Printer.printv(f"Parsing file: {full_path}")
+        _logger.debug(f"Parsing file: {full_path}")
         self.filename = filename
         self.logdf = self._to_df(full_path)
 

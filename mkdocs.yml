@@ -81,7 +81,6 @@ nav:
     - "InteractiveCausalGraphRefiner": reference/logos/interactive_causal_graph_refiner.md
     - "EdgeOccurrenceTree": reference/logos/edge_occurrence_tree.md
     - "Cache": reference/logos/cache.md
-    - "Printer": reference/logos/printer.md
     - "Types": reference/logos/types.md
     - Variable Names: 
       - "ParsedVariableName": reference/logos/variable_name/parsed_variable_name.md
