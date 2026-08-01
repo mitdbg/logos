@@ -9,10 +9,13 @@ from src.logos.ate_calculator import ATECalculator
 from src.logos.candidate_cause_ranker import CandidateCauseRankerMethod
 from src.logos.causal_explorer import CausalExplorer
 from src.logos.dataset_preparer import CausalDatasetPreparer
+from src.logos.exceptions import UnsupportedOperationError
 from src.logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefinerMethod,
 )
 from src.logos.log_parser import LogParser
+from src.logos.parsed_table_input import ParsedTableInput
+from src.logos.prepared_table_input import PreparedTableInput
 from src.logos.printer import Printer
 from src.logos.pruner import Pruner
 from src.logos.types import Types
@@ -44,9 +47,85 @@ class LOGos:
             skip_writeout: Whether to skip writing out the parsed and prepared
                 dataframes.
         """
-        self._parser = LogParser(filename, workdir, skip_writeout)
-        self._preparer = CausalDatasetPreparer(self._parser)
+        self._parser: Optional[LogParser | ParsedTableInput] = LogParser(
+            filename, workdir, skip_writeout
+        )
+        self._preparer: Optional[CausalDatasetPreparer] = CausalDatasetPreparer(
+            self._parser
+        )
         self._explorer: Optional[CausalExplorer] = None
+
+    @classmethod
+    def _create(cls) -> "LOGos":
+        """Return an uninitialised instance (used by factory methods)."""
+        instance = cls.__new__(cls)
+        instance._parser = None
+        instance._preparer = None
+        instance._explorer = None
+        return instance
+
+    @classmethod
+    def from_parsed_table(
+        cls,
+        data: pd.DataFrame,
+        workdir: str,
+        source_id: str = "parsed_input",
+        variable_tags: Optional[dict[str, str]] = None,
+        skip_writeout: bool = False,
+    ) -> "LOGos":
+        """
+        Create a LOGos instance from a pre-parsed DataFrame (EP-2).
+
+        The DataFrame is treated as if it were the output of parse():
+        one row per log event, one column per field.  Call
+        set_causal_unit() and prepare() as normal after construction.
+
+        Parameters:
+            data: Pre-parsed table (one row per event).
+            workdir: Directory for prepare-stage cache files.
+            source_id: Prefix for cache filenames (analogous to the log
+                filename).
+            variable_tags: Optional column-name → tag mapping.
+            skip_writeout: Whether to skip writing prepare cache files.
+        """
+        instance = cls._create()
+        instance._parser = ParsedTableInput(
+            data, workdir, source_id, variable_tags, skip_writeout
+        )
+        instance._preparer = CausalDatasetPreparer(instance._parser)
+        return instance
+
+    @classmethod
+    def from_prepared_table(
+        cls,
+        data: pd.DataFrame,
+        workdir: str,
+        variable_tags: Optional[dict[str, str]] = None,
+    ) -> "LOGos":
+        """
+        Create a LOGos instance from an already-prepared DataFrame (EP-3).
+
+        The DataFrame is treated as if it were the output of prepare():
+        one row per causal unit, one column per feature.  The instance is
+        ready for exploration immediately — no parse() or prepare() calls
+        are needed.
+
+        Parameters:
+            data: Prepared table (one row per causal unit).
+            workdir: Directory used for GPT log files during exploration.
+            variable_tags: Optional column-name → tag mapping.
+        """
+        instance = cls._create()
+        pti = PreparedTableInput(data, workdir, variable_tags)
+        instance._explorer = CausalExplorer(
+            pti.prepared_log,
+            pti.prepared_variables,
+            pti.parsed_variables,
+            pti.parsed_templates,
+            workdir,
+        )
+        instance._explorer._init_eccs()
+        return instance
 
     def set_verbose_to(self, val: bool) -> None:
         """
@@ -58,6 +137,25 @@ class LOGos:
         Printer.set_verbose(val)
         if self._explorer and self._explorer._eccs:
             self._explorer._eccs.set_verbose_to(val)
+
+    def _require_parser(self) -> LogParser:
+        """Raise if the instance was not created from a raw log file."""
+        if not isinstance(self._parser, LogParser):
+            raise UnsupportedOperationError(
+                "This operation requires a LOGos instance created from a raw "
+                "log file.  Use LOGos(filename=...) instead of "
+                "LOGos.from_parsed_table() or LOGos.from_prepared_table()."
+            )
+        return self._parser
+
+    def _require_preparer(self) -> CausalDatasetPreparer:
+        """Raise if the instance has no prepare stage (EP-3)."""
+        if self._preparer is None:
+            raise UnsupportedOperationError(
+                "This operation is not available for instances created via "
+                "LOGos.from_prepared_table()."
+            )
+        return self._preparer
 
     @property
     def parsed_log(self) -> pd.DataFrame:
@@ -122,7 +220,8 @@ class LOGos:
         enable_gpt_tagging: bool = False,
     ) -> str:
         """Parse the log file; see LogParser.parse() for full documentation."""
-        return self._parser.parse(
+        parser = self._require_parser()
+        return parser.parse(
             regex_dict,
             sim_thresh,
             depth,
@@ -141,26 +240,35 @@ class LOGos:
         Treat a parsed variable as part of its template; see
         LogParser.include_in_template().
         """
-        self._parser.include_in_template(var, enable_gpt_tagging, skip_writeout)
+        parser = self._require_parser()
+        return parser.include_in_template(
+            var, enable_gpt_tagging, skip_writeout
+        )
 
     def tag_parsed_variable(self, name: str, tag: str) -> None:
         """Tag a parsed variable."""
-        return self._parser.tag_parsed_variable(name, tag)
+        parser = self._require_parser()
+        return parser.tag_parsed_variable(name, tag)
 
     def get_tag_of_parsed(self, name: str) -> str:
         """Get the tag of a parsed variable."""
-        return self._parser.get_tag_of_parsed(name)
+        parser = self._require_parser()
+        return parser.get_tag_of_parsed(name)
 
     def tag_prepared_variable(self, name: str, tag: str) -> None:
         """Tag a prepared variable."""
-        return self._preparer.tag_prepared_variable(name, tag)
+        preparer = self._require_preparer()
+        return preparer.tag_prepared_variable(name, tag)
 
     def get_tag_of_prepared(self, name: str) -> str:
         """Get the tag of a prepared variable."""
-        return self._preparer.get_tag_of_prepared(name)
+        preparer = self._require_preparer()
+        return preparer.get_tag_of_prepared(name)
 
     def get_causal_unit_info(self) -> Tuple[Optional[str], Optional[int]]:
         """Get the causal unit variable and number of causal units."""
+        self._require_preparer()
+        assert self._preparer is not None
         return self._preparer.get_causal_unit_info()
 
     def suggest_causal_unit_defs(
@@ -169,6 +277,8 @@ class LOGos:
         num_suggestions: int = 10,
     ) -> Optional[pd.DataFrame]:
         """Suggest causal unit definitions based on IUS maximization."""
+        self._require_preparer()
+        assert self._preparer is not None
         return self._preparer.suggest_causal_unit_defs(
             min_causal_units, num_suggestions
         )
@@ -179,6 +289,8 @@ class LOGos:
         num_units: Optional[int] = None,
     ) -> None:
         """Set the variable used to define causal units."""
+        self._require_preparer()
+        assert self._preparer is not None
         return self._preparer.set_causal_unit(var, num_units)
 
     def prepare(
@@ -225,8 +337,10 @@ class LOGos:
             custom_agg = {}
         if custom_imp is None:
             custom_imp = {}
+        preparer = self._require_preparer()
+        assert self._parser is not None
 
-        if not self._preparer.prepare(
+        if not preparer.prepare(
             custom_agg,
             custom_imp,
             count_occurences,
@@ -237,8 +351,8 @@ class LOGos:
             return None
 
         self._explorer = CausalExplorer(
-            self._preparer.prepared_log,
-            self._preparer.prepared_variables,
+            preparer.prepared_log,
+            preparer.prepared_variables,
             self._parser.parsed_variables,
             self._parser.parsed_templates,
             self._parser.workdir,
@@ -404,12 +518,14 @@ class LOGos:
             treatment: The name or tag of the treatment variable.
             outcome: The name or tag of the outcome variable.
             confounder: The name or tag of a confounder variable. If specified,
-                overrides the current partial causal graph in favor of a 
+                overrides the current partial causal graph in favor of a
                 three-node graph with `treatment`, `outcome` and `confounder`.
 
         Returns:
             The adjusted ATE of `treatment` on `outcome`.
         """
+        self._require_preparer()
+        assert self._preparer is not None
         return ATECalculator.get_ate_and_confidence(
             self._preparer.prepared_log,
             self._preparer.prepared_variables,
@@ -427,8 +543,8 @@ class LOGos:
         outcome: str,
     ) -> float:
         """
-        Calculate the unadjusted ATE of `treatment` on `outcome`, ignoring the 
-        current partial causal graph in favor of a two-node graph with just 
+        Calculate the unadjusted ATE of `treatment` on `outcome`, ignoring the
+        current partial causal graph in favor of a two-node graph with just
         `treatment` and `outcome`.
 
         Parameters:
@@ -438,6 +554,8 @@ class LOGos:
         Returns:
             The unadjusted ATE of `treatment` on `outcome`.
         """
+        self._require_preparer()
+        assert self._preparer is not None
         return ATECalculator.get_ate_and_confidence(
             self._preparer.prepared_log,
             self._preparer.prepared_variables,

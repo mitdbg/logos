@@ -116,7 +116,11 @@ class CausalExplorer:
             base_var_info_df = self._parsed_variables[
                 self._parsed_variables["Name"] == base_var
             ]
-            from_regex = base_var_info_df["From regex"].values[0]
+            from_regex = (
+                base_var_info_df["From regex"].values[0]
+                if not base_var_info_df.empty
+                else True
+            )
             display(base_var_info_df)
 
         template_info_df = pd.DataFrame()

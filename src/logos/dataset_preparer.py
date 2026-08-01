@@ -14,9 +14,8 @@ from tqdm.auto import tqdm
 from src.logos.aggregate_selector import AggregateSelector
 from src.logos.cache import Cache
 from src.logos.causal_unit_suggester import CausalUnitSuggester
-from src.logos.log_parser import LogParser
+from src.logos.parsed_source import ParsedSource
 from src.logos.printer import Printer
-from src.logos.pruner import Pruner
 from src.logos.tag_utils import TagUtils
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 
@@ -24,7 +23,7 @@ from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 class CausalDatasetPreparer:
     """Owns data-preparation state and all prepare-stage operations."""
 
-    def __init__(self, parser: LogParser) -> None:
+    def __init__(self, parser: ParsedSource) -> None:
         self._parser = parser
 
         self._causal_unit_var: Optional[str] = None
@@ -278,7 +277,7 @@ class CausalDatasetPreparer:
 
         # Start with the parsed log, optionally with extra variables counting
         # the occurence of each template.
-        if count_occurences:
+        if count_occurences and "TemplateId" in self._parser.parsed_log.columns:
             Printer.printv(f"Adding template occurrence count variables...")
             self._prepared_log = pd.concat(
                 [
@@ -293,10 +292,15 @@ class CausalDatasetPreparer:
                 axis=1,
             )
         else:
+            if count_occurences:
+                Printer.printv(
+                    "count_occurences=True ignored: no TemplateId column."
+                )
             self._prepared_log = self._parser.parsed_log.copy(deep=True)
 
-        # No longer need the column storing the actual template IDs
-        self._prepared_log.drop(columns="TemplateId", inplace=True)
+        # Drop the TemplateId column if present.
+        if "TemplateId" in self._prepared_log.columns:
+            self._prepared_log.drop(columns="TemplateId", inplace=True)
 
         # Build dictionary of aggregation functions
         agg_dict: dict[str, list[str]] = {
@@ -534,20 +538,19 @@ class CausalDatasetPreparer:
             )
         )
 
+        def _get_template_text(row: pd.Series) -> str:
+            if row["From regex"]:
+                return ""
+            tpl_id = PreparedVariableName(row["Name"]).template_id()
+            matches = self._parser.parsed_templates.loc[
+                self._parser.parsed_templates["TemplateId"] == tpl_id,
+                "TemplateText",
+            ]
+            return matches.values[0] if len(matches) > 0 else ""
+
         # Bring in template text, only for appropriate base variables.
         self._prepared_variables["TemplateText"] = (
-            self._prepared_variables.apply(
-                lambda x: (
-                    self._parser.parsed_templates.loc[
-                        self._parser.parsed_templates["TemplateId"]
-                        == PreparedVariableName(x["Name"]).template_id(),
-                        "TemplateText",
-                    ].values[0]
-                    if x["From regex"] == False
-                    else ""
-                ),
-                axis=1,
-            )
+            self._prepared_variables.apply(_get_template_text, axis=1)
         )
 
     def tag_prepared_variable(self, name: str, tag: str) -> None:
