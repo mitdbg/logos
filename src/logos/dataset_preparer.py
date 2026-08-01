@@ -155,22 +155,31 @@ class CausalDatasetPreparer:
 
     def set_causal_unit(
         self,
-        var: str,
+        var: Optional[str] = None,
         num_units: Optional[int] = None,
-    ) -> None:
+    ) -> Optional[pd.DataFrame]:
         """
-        Set the variable used to define causal units and optionally the number
-            of causal units. The latter will be ignored if the variable is
-            categorical, but it must be specified if the variable is numerical.
+        Set the variable used to define causal units.
+
+        When called with no `var`, runs the IUS maximizer and returns a ranked
+        DataFrame of suggestions. Call again with a chosen `var` to set the unit.
 
         Parameters:
-            var: The name or tag of the variable to be used as the causal unit.
-            num_units: The number of causal units to be created.
+            var: The name or tag of the variable to use as the causal unit.
+                If None, suggestions are returned without setting anything.
+            num_units: The number of causal units to create (required for
+                numerical variables).
+
+        Returns:
+            A suggestion DataFrame when `var` is None; None otherwise.
 
         Raises:
             ValueError: If the variable is numerical and `num_units` is not
                 specified.
         """
+        if var is None:
+            return self.suggest_causal_unit_defs()
+
         var_name = TagUtils.name_of(
             self._parser.parsed_variables, var, "parsed"
         )
@@ -196,6 +205,7 @@ class CausalDatasetPreparer:
                 else f" with {self._num_causal_units} causal units."
             )
         )
+        return None
 
     def prepare(
         self,

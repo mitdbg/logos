@@ -4,19 +4,18 @@ from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+import networkx as nx
 
 from src.logos.ate_calculator import ATECalculator
-from src.logos.candidate_cause_ranker import CandidateCauseRankerMethod
 from src.logos.causal_explorer import CausalExplorer
 from src.logos.dataset_preparer import CausalDatasetPreparer
 from src.logos.exceptions import UnsupportedOperationError
-from src.logos.interactive_causal_graph_refiner import (
-    InteractiveCausalGraphRefinerMethod,
-)
 from src.logos.log_parser import LogParser
+from src.logos.parsed_source import ParsedSource
 from src.logos.parsed_table_input import ParsedTableInput
 from src.logos.prepared_table_input import PreparedTableInput
 from src.logos.pruner import Pruner
+from src.logos.tag_utils import TagUtils
 from src.logos.types import Types
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
 
@@ -47,7 +46,7 @@ class LOGos:
             skip_writeout: Whether to skip writing out the parsed and prepared
                 dataframes.
         """
-        self._parser: Optional[LogParser | ParsedTableInput] = LogParser(
+        self._parser: Optional[ParsedSource] = LogParser(
             filename, workdir, skip_writeout
         )
         self._preparer: Optional[CausalDatasetPreparer] = CausalDatasetPreparer(
@@ -117,13 +116,7 @@ class LOGos:
         """
         instance = cls._create()
         pti = PreparedTableInput(data, workdir, variable_tags)
-        instance._explorer = CausalExplorer(
-            pti.prepared_log,
-            pti.prepared_variables,
-            pti.parsed_variables,
-            pti.parsed_templates,
-            workdir,
-        )
+        instance._explorer = CausalExplorer(pti)
         instance._explorer._init_eccs()
         return instance
 
@@ -152,6 +145,15 @@ class LOGos:
                 "LOGos.from_prepared_table()."
             )
         return self._preparer
+
+    def _require_explorer(self) -> CausalExplorer:
+        """Raise if the exploration stage has not been initialized yet."""
+        if self._explorer is None:
+            raise UnsupportedOperationError(
+                "This operation requires a prepared LOGos instance. "
+                "Call prepare() before using exploration methods."
+            )
+        return self._explorer
 
     @property
     def parsed_log(self) -> pd.DataFrame:
@@ -214,10 +216,10 @@ class LOGos:
         force: bool = False,
         message_prefix: str = DEFAULT_MESSAGE_PREFIX,
         enable_gpt_tagging: bool = False,
-    ) -> str:
+    ) -> None:
         """Parse the log file; see LogParser.parse() for full documentation."""
         parser = self._require_parser()
-        return parser.parse(
+        parser.parse(
             regex_dict,
             sim_thresh,
             depth,
@@ -263,9 +265,7 @@ class LOGos:
 
     def get_causal_unit_info(self) -> Tuple[Optional[str], Optional[int]]:
         """Get the causal unit variable and number of causal units."""
-        self._require_preparer()
-        assert self._preparer is not None
-        return self._preparer.get_causal_unit_info()
+        return self._require_preparer().get_causal_unit_info()
 
     def suggest_causal_unit_defs(
         self,
@@ -273,21 +273,22 @@ class LOGos:
         num_suggestions: int = 10,
     ) -> Optional[pd.DataFrame]:
         """Suggest causal unit definitions based on IUS maximization."""
-        self._require_preparer()
-        assert self._preparer is not None
-        return self._preparer.suggest_causal_unit_defs(
+        return self._require_preparer().suggest_causal_unit_defs(
             min_causal_units, num_suggestions
         )
 
     def set_causal_unit(
         self,
-        var: str,
+        var: Optional[str] = None,
         num_units: Optional[int] = None,
-    ) -> None:
-        """Set the variable used to define causal units."""
-        self._require_preparer()
-        assert self._preparer is not None
-        return self._preparer.set_causal_unit(var, num_units)
+    ) -> Optional[pd.DataFrame]:
+        """
+        Set the variable used to define causal units.
+
+        If `var` is None, runs the IUS maximizer and returns ranked suggestions;
+        call again with a chosen `var` to set the unit.
+        """
+        return self._require_preparer().set_causal_unit(var, num_units)
 
     def prepare(
         self,
@@ -300,34 +301,23 @@ class LOGos:
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
         drop_bad_aggs: bool = True,
         reject_prunable_edges: bool = False,
-    ) -> Optional[str]:
+    ) -> None:
         """
-        Prepare the log parsed from the table for causal analysis, using
-        aggregation and imputation as needed.
+        Prepare the log for causal analysis.
 
         Parameters:
-            custom_agg: A dictionary of custom aggregation functions to be used
-                for specific variables.
-            custom_imp: A dictionary of custom imputation functions to be used
-                for specific variables.
-            count_occurences: Whether to include extra variables counting the
-                occurence of each template.
-            ignore_uninteresting: Whether to ignore uninteresting variables.
-            force: Whether to force re-preparation of the log.
-            lasso_alpha: The alpha parameter to be used for LASSO regression.
-            lasso_max_iter: The maximum number of iterations to be used for
-                LASSO regression.
-            drop_bad_aggs: Whether to drop prepared variables that do not add
-                information compared to other variables based on the same base
-                variable but using a different aggregation function.
-            reject_prunable_edges: Whether to reject edges that are prunable
-            based on LASSO application.
-
-        Returns:
-            The time elapsed for preparation, as a string, or `None` if the
-                preparation was aborted.
+            custom_agg: Custom aggregation functions per variable.
+            custom_imp: Custom imputation functions per variable.
+            count_occurrences: Whether to add template occurrence count columns.
+                Evaluation-only feature — not part of the primary workflow.
+            ignore_uninteresting: Whether to drop uninteresting variables.
+            force: Force re-preparation even if cached results exist.
+            lasso_alpha: LASSO regularization parameter (used when
+                reject_prunable_edges=True).
+            lasso_max_iter: Maximum LASSO iterations.
+            drop_bad_aggs: Whether to drop uninformative aggregate columns.
+            reject_prunable_edges: Whether to pre-reject LASSO-prunable edges.
         """
-
         start_time = datetime.now()
         if custom_agg is None:
             custom_agg = {}
@@ -344,15 +334,9 @@ class LOGos:
             force,
             drop_bad_aggs,
         ):
-            return None
+            return
 
-        self._explorer = CausalExplorer(
-            preparer.prepared_log,
-            preparer.prepared_variables,
-            self._parser.parsed_variables,
-            self._parser.parsed_templates,
-            self._parser.workdir,
-        )
+        self._explorer = CausalExplorer(preparer)
         if reject_prunable_edges:
             _logger.debug("Pruning edges...")
             self._explorer.reject_all_prunable_edges(
@@ -369,7 +353,6 @@ class LOGos:
             f"{self._explorer.num_prepared_variables ** 2} possible edges were "
             "auto-rejected."
         )
-        return elapsed
 
     def inspect(
         self,
@@ -377,126 +360,97 @@ class LOGos:
         ref_var: Optional[str] = None,
         row_limit: Optional[int] = 10,
     ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-        """Print information about a specific prepared variable."""
-        assert self._explorer is not None
-        return self._explorer.inspect(var, ref_var, row_limit)
+        """Return information DataFrames about a specific prepared variable."""
+        return self._require_explorer().inspect(var, ref_var, row_limit)
 
     def clear_graph(self, clear_edge_states: bool = True) -> None:
         """Clear the graph and possibly edge states."""
-        assert self._explorer is not None
-        return self._explorer.clear_graph(clear_edge_states)
+        return self._require_explorer().clear_graph(clear_edge_states)
 
-    def display_graph(self) -> None:
-        """Display the current graph."""
-        assert self._explorer is not None
-        self._explorer.display_graph()
+    @property
+    def graph(self) -> nx.DiGraph:
+        """The current partial causal graph as a NetworkX DiGraph."""
+        return self._require_explorer().graph
+
+    def get_graph_dict(self) -> dict:
+        """Return the graph as a JSON-serializable dict (for UI/API consumers)."""
+        return self._require_explorer().get_graph_dict()
 
     def save_graph(self, filename: str) -> None:
-        """Save the current graph to a file."""
-        assert self._explorer is not None
-        self._explorer.save_graph(filename)
+        """Save the current graph to a PNG file."""
+        return self._require_explorer().save_graph(filename)
 
     def accept(
         self,
         src: str,
         dst: str,
-        also_fix: bool = False,
-        interactive: bool = True,
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        also_fix: bool = True,
+    ) -> Tuple[float, Optional[str]]:
         """Mark a causal graph edge as accepted."""
-        assert self._explorer is not None
-        return self._explorer.accept(src, dst, also_fix, interactive)
+        return self._require_explorer().accept(src, dst, also_fix)
 
     def reject(
         self,
         src: str,
         dst: str,
-        also_ban: bool = False,
-        interactive: bool = True,
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        also_ban: bool = True,
+    ) -> Tuple[float, Optional[str]]:
         """Mark a causal graph edge as rejected."""
-        assert self._explorer is not None
-        return self._explorer.reject(src, dst, also_ban, interactive)
+        return self._require_explorer().reject(src, dst, also_ban)
 
     def reject_undecided_incoming(
-        self, dst: str, also_ban: bool = False, interactive: bool = True
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        self, dst: str, also_ban: bool = True
+    ) -> Tuple[float, Optional[str]]:
         """Mark all undecided incoming edges to a variable as rejected."""
-        assert self._explorer is not None
-        return self._explorer.reject_undecided_incoming(
-            dst, also_ban, interactive
-        )
+        return self._require_explorer().reject_undecided_incoming(dst, also_ban)
 
     def reject_undecided_outgoing(
-        self, src: str, also_ban: bool = False, interactive: bool = True
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        self, src: str, also_ban: bool = True
+    ) -> Tuple[float, Optional[str]]:
         """Mark all undecided outgoing edges from a variable as rejected."""
-        assert self._explorer is not None
-        return self._explorer.reject_undecided_outgoing(
-            src, also_ban, interactive
-        )
+        return self._require_explorer().reject_undecided_outgoing(src, also_ban)
 
     def reject_all_prunable_edges(
         self,
-        also_ban: bool = False,
+        also_ban: bool = True,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+    ) -> Tuple[float, Optional[str]]:
         """Reject all edges prunable by LASSO."""
-        assert self._explorer is not None
-        return self._explorer.reject_all_prunable_edges(
+        return self._require_explorer().reject_all_prunable_edges(
             also_ban, lasso_alpha, lasso_max_iter
         )
 
     @property
     def exploration_score(self) -> float:
         """Exploration score of the current partial causal graph."""
-        assert self._explorer is not None
-        return self._explorer.exploration_score
+        return self._require_explorer().exploration_score
 
     def suggest_next_exploration(self) -> Optional[str]:
         """Suggest the variable that should be explored next."""
-        assert self._explorer is not None
-        return self._explorer.suggest_next_exploration()
+        return self._require_explorer().suggest_next_exploration()
 
     def rank_candidate_causes(
         self,
         target: Optional[str] = None,
         ignore: Optional[List[str]] = None,
-        method: CandidateCauseRankerMethod = CandidateCauseRankerMethod.LOGOS,
         prune_candidates: bool = True,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
-        model: str = "gpt-4o-mini-2024-07-18",
-        gpt_log_path: Optional[str] = None,
-    ) -> Tuple[pd.DataFrame, str]:
-        """Present the user with ranked candidate causes for `target`."""
-        assert self._explorer is not None
-        return self._explorer.rank_candidate_causes(
-            target,
-            ignore,
-            method,
-            prune_candidates,
-            lasso_alpha,
-            lasso_max_iter,
-            model,
-            gpt_log_path,
+    ) -> pd.DataFrame:
+        """Return ranked candidate causes for `target` using the LOGOS method."""
+        return self._require_explorer().rank_candidate_causes(
+            target, ignore, prune_candidates, lasso_alpha, lasso_max_iter
         )
 
     def get_causal_graph_refinement_suggestion(
         self,
-        method: InteractiveCausalGraphRefinerMethod = (
-            InteractiveCausalGraphRefinerMethod.LOGOS
-        ),
-        treatment: Optional[str] = None,
-        outcome: Optional[str] = None,
-        model: str = "gpt-4o-mini-2024-07-18",
-        gpt_log_path: Optional[str] = None,
-    ) -> Tuple[Optional[Types.Edge], str]:
-        """Present the user with an edge to assess."""
-        assert self._explorer is not None
-        return self._explorer.get_causal_graph_refinement_suggestion(
-            method, treatment, outcome, model, gpt_log_path
+        treatment: str,
+        outcome: str,
+    ) -> Optional[Types.Edge]:
+        """Suggest the next edge to assess using the LOGOS (ECCS) method."""
+        return self._require_explorer().get_causal_graph_refinement_suggestion(
+            treatment, outcome
         )
 
     def get_adjusted_ate(
@@ -506,56 +460,78 @@ class LOGos:
         confounder: Optional[str] = None,
     ) -> float:
         """
-        Calculate the adjusted ATE of `treatment` on `outcome`, given the
-        current partial causal graph.
+        Calculate the adjusted ATE of `treatment` on `outcome` using the
+        current partial causal graph for confounding adjustment.
 
         Parameters:
             treatment: The name or tag of the treatment variable.
             outcome: The name or tag of the outcome variable.
-            confounder: The name or tag of a confounder variable. If specified,
-                overrides the current partial causal graph in favor of a
-                three-node graph with `treatment`, `outcome` and `confounder`.
+            confounder: Optional explicit confounder; overrides the graph with
+                a three-node treatment→outcome←confounder structure.
 
         Returns:
-            The adjusted ATE of `treatment` on `outcome`.
+            The adjusted ATE.
         """
-        self._require_preparer()
-        assert self._preparer is not None
+        preparer = self._require_preparer()
+        explorer = self._require_explorer()
         return ATECalculator.get_ate_and_confidence(
-            self._preparer.prepared_log,
-            self._preparer.prepared_variables,
+            preparer.prepared_log,
+            preparer.prepared_variables,
             treatment,
             outcome,
             confounder,
-            graph=self._explorer._graph if self._explorer else None,
+            graph=explorer.graph,
             calculate_p_value=False,
             calculate_std_error=False,
         )["ATE"]
 
-    def get_unadjusted_ate(
-        self,
-        treatment: str,
-        outcome: str,
-    ) -> float:
-        """
-        Calculate the unadjusted ATE of `treatment` on `outcome`, ignoring the
-        current partial causal graph in favor of a two-node graph with just
-        `treatment` and `outcome`.
+    # ------------------------------------------------------------------
+    # Tag management
+    # ------------------------------------------------------------------
 
-        Parameters:
-            treatment: The name or tag of the treatment variable.
-            outcome: The name or tag of the outcome variable.
-
-        Returns:
-            The unadjusted ATE of `treatment` on `outcome`.
+    def set_tag(self, var: str, tag: str) -> None:
         """
-        self._require_preparer()
-        assert self._preparer is not None
-        return ATECalculator.get_ate_and_confidence(
-            self._preparer.prepared_log,
-            self._preparer.prepared_variables,
-            treatment,
-            outcome,
-            calculate_p_value=False,
-            calculate_std_error=False,
-        )["ATE"]
+        Set the human-readable tag for a parsed or prepared variable.
+
+        Resolves `var` against the parsed namespace first, then the prepared
+        namespace.  Raises ValueError if `var` is not found in either.
+        """
+        if self._parser is not None:
+            try:
+                TagUtils.name_of(self._parser.parsed_variables, var, "parsed")
+                self._require_parser().tag_parsed_variable(var, tag)
+                return
+            except (ValueError, KeyError):
+                pass
+        if self._preparer is not None:
+            try:
+                TagUtils.name_of(self._preparer.prepared_variables, var, "prepared")
+                self._require_preparer().tag_prepared_variable(var, tag)
+                return
+            except (ValueError, KeyError):
+                pass
+        raise ValueError(f"Variable '{var}' not found in parsed or prepared namespace.")
+
+    def get_tag(self, var: str) -> str:
+        """
+        Get the human-readable tag for a parsed or prepared variable.
+
+        Resolves `var` against the parsed namespace first, then the prepared
+        namespace.  Raises ValueError if `var` is not found in either.
+        """
+        if self._parser is not None:
+            try:
+                return TagUtils.tag_of(self._parser.parsed_variables, var, "parsed") or var
+            except (ValueError, KeyError):
+                pass
+        if self._preparer is not None:
+            try:
+                return TagUtils.tag_of(self._preparer.prepared_variables, var, "prepared") or var
+            except (ValueError, KeyError):
+                pass
+        if self._explorer is not None:
+            try:
+                return TagUtils.tag_of(self._explorer._prepared_variables, var, "prepared") or var
+            except (ValueError, KeyError):
+                pass
+        raise ValueError(f"Variable '{var}' not found.")

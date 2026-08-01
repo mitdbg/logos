@@ -1,18 +1,16 @@
-from __future__ import annotations
+import json
+import os
+import re
+
+import pandas as pd
 import streamlit as st
 from streamlit_extras.no_default_selectbox import selectbox
-from src.logos.interactive_causal_graph_refiner import (
-    InteractiveCausalGraphRefinerMethod,
-)
+
+from src.definitions import LOGOS_ROOT_DIR
+from src.logos.graph_renderer import GraphRenderer
 from src.logos.logos import LOGos
 from src.logos.tag_utils import TagUtils
 from src.logos.variable_name.prepared_variable_name import PreparedVariableName
-from src.definitions import LOGOS_ROOT_DIR
-import pandas as pd
-from functools import reduce
-import re
-import os
-import json
 
 
 class LOGosUI:
@@ -27,7 +25,9 @@ class LOGosUI:
             pd.set_option(option, config)
 
         with open(
-            os.path.join(LOGOS_ROOT_DIR, "src", "logos_webapp", "conf_datasets.json"),
+            os.path.join(
+                LOGOS_ROOT_DIR, "src", "logos_webapp", "conf_datasets.json"
+            ),
             encoding="utf-8",
         ) as f:
             self.dataset_info = json.load(f)
@@ -39,7 +39,9 @@ class LOGosUI:
         with st.form("select_file_form"):
             st.subheader("Choose a log file to analyze:")
 
-            file_names = [dataset["dataset_name"] for dataset in self.dataset_info]
+            file_names = [
+                dataset["dataset_name"] for dataset in self.dataset_info
+            ]
 
             file_selection = st.selectbox(
                 "Select a log file:", file_names, key="file_choice"
@@ -61,7 +63,9 @@ class LOGosUI:
 
                     self.logos = LOGos(
                         filename=self.dataset_info[self.dataset_index]["path"],
-                        workdir=self.dataset_info[self.dataset_index]["workdir"],
+                        workdir=self.dataset_info[self.dataset_index][
+                            "workdir"
+                        ],
                     )
                     st.session_state["is_file_chosen"] = True
 
@@ -116,7 +120,9 @@ class LOGosUI:
             """
             st.markdown(background_text)
 
-            submitted = st.form_submit_button("Show Log File", on_click=on_click)
+            submitted = st.form_submit_button(
+                "Show Log File", on_click=on_click
+            )
             if submitted:
                 with st.spinner("Showing log file..."):
                     # Open the chosen log file and display the first 15 lines
@@ -179,10 +185,14 @@ class LOGosUI:
 
                     if len(edited_rows) != 0:
                         for idx, new_mapping in edited_rows.items():
-                            regex_list[int(idx)]["_index"] = new_mapping["_index"]
+                            regex_list[int(idx)]["_index"] = new_mapping[
+                                "_index"
+                            ]
 
                             if "value" in new_mapping:
-                                regex_list[int(idx)]["value"] = new_mapping["value"]
+                                regex_list[int(idx)]["value"] = new_mapping[
+                                    "value"
+                                ]
                             else:
                                 regex_list[int(idx)]["value"] = None
 
@@ -216,7 +226,8 @@ class LOGosUI:
                     label="Message Prefix",
                     value=(
                         self.dataset_info[self.dataset_index]["message_prefix"]
-                        if "message_prefix" in self.dataset_info[self.dataset_index]
+                        if "message_prefix"
+                        in self.dataset_info[self.dataset_index]
                         else LOGos.DEFAULT_MESSAGE_PREFIX
                     ),
                     key="message_prefix",
@@ -262,11 +273,9 @@ class LOGosUI:
             )
             if submitted:
                 if not is_valid_submission(regex_dict):
-                    st.error(
-                        """
+                    st.error("""
                             Regex dictionary must be non-empty and each regex pattern must be non-empty
-                        """
-                    )
+                        """)
                 else:
                     with st.spinner("Parsing log file..."):
                         self.logos.parse(
@@ -275,15 +284,13 @@ class LOGosUI:
                             depth=depth,
                             force=force_parse,
                         )
-                        st.success(
-                            f"""
+                        st.success(f"""
                                 Successfully parsed log file with  
                                 Message Prefix: {message_prefix}         
                                 Custom Regex: ```{regex_dict}```    
                                 Simulation Threshold: {sim_thresh}   
                                 Depth: {depth}
-                            """
-                        )
+                            """)
                         st.session_state["is_parsed"] = True
 
     def show_parsed(self):
@@ -348,12 +355,10 @@ class LOGosUI:
                 with st.spinner("Modifying Parsing..."):
                     self.logos.include_in_template(to_separate)
 
-                    st.success(
-                        f"""
+                    st.success(f"""
                             Successfully included variable {to_separate} in template.  
 
-                        """
-                    )
+                        """)
 
     def set_causal_unit(self):
         """
@@ -401,7 +406,9 @@ class LOGosUI:
                 )
 
             submitted = st.form_submit_button(
-                label="Set Causal Unit", on_click=on_click, disabled=is_set_causal_unit
+                label="Set Causal Unit",
+                on_click=on_click,
+                disabled=is_set_causal_unit,
             )
             if submitted:
                 with st.spinner("Setting causal unit..."):
@@ -577,7 +584,9 @@ class LOGosUI:
                 key="inspect_var",
             )
 
-            submitted = st.form_submit_button("Inspect", on_click=on_click_inspect)
+            submitted = st.form_submit_button(
+                "Inspect", on_click=on_click_inspect
+            )
             if submitted:
                 with st.spinner(f"Inspecting {inspect_var}..."):
                     (
@@ -622,7 +631,7 @@ class LOGosUI:
             )
             if submitted:
                 with st.spinner("Finding candidate cause(s)..."):
-                    self.candidate_causes, time = self.logos.rank_candidate_causes(
+                    self.candidate_causes = self.logos.rank_candidate_causes(
                         self.outcome
                     )
                     st.session_state["causes_dataframe"] = self.candidate_causes
@@ -641,9 +650,12 @@ class LOGosUI:
             st.session_state["ate_treatment"] = str(
                 st.session_state["selected_treatment"]
             )
-            st.session_state["ate_outcome"] = str(st.session_state["selected_outcome"])
+            st.session_state["ate_outcome"] = str(
+                st.session_state["selected_outcome"]
+            )
             st.session_state["ate"] = self.logos.get_adjusted_ate(
-                st.session_state["ate_treatment"], st.session_state["ate_outcome"]
+                st.session_state["ate_treatment"],
+                st.session_state["ate_outcome"],
             )
 
         with st.form("ate_form"):
@@ -673,103 +685,89 @@ class LOGosUI:
         """
 
         def on_click_accept():
-            (
-                expl_score,
-                next_exploration,
-                st.session_state["graph"],
-            ) = self.logos.accept(
+            expl_score, next_exploration = self.logos.accept(
                 src=st.session_state["source_node"],
                 dst=st.session_state["destination_node"],
-                interactive=False,
             )
-
+            st.session_state["graph"] = GraphRenderer.draw_graph(
+                self.logos.graph, self.logos.prepared_variables
+            )
             st.session_state["exploration_score"] = expl_score
             st.session_state["next_exploration"] = TagUtils.tag_of(
                 self.logos.prepared_variables, next_exploration, "prepared"
             )
-
             self.clear_next(["source_node", "destination_node"])
-
             if (
                 "ate_treatment" in st.session_state
                 and "ate_outcome" in st.session_state
             ):
                 st.session_state["ate"] = self.logos.get_adjusted_ate(
-                    st.session_state["ate_treatment"], st.session_state["ate_outcome"]
+                    st.session_state["ate_treatment"],
+                    st.session_state["ate_outcome"],
                 )
 
         def on_click_reject():
-            (
-                expl_score,
-                next_exploration,
-                st.session_state["graph"],
-            ) = self.logos.reject(
+            expl_score, next_exploration = self.logos.reject(
                 src=st.session_state["source_node"],
                 dst=st.session_state["destination_node"],
-                interactive=False,
             )
-
+            st.session_state["graph"] = GraphRenderer.draw_graph(
+                self.logos.graph, self.logos.prepared_variables
+            )
             st.session_state["exploration_score"] = expl_score
             st.session_state["next_exploration"] = TagUtils.tag_of(
                 self.logos.prepared_variables, next_exploration, "prepared"
             )
-
             self.clear_next(["source_node", "destination_node"])
-
             if (
                 "ate_treatment" in st.session_state
                 and "ate_outcome" in st.session_state
             ):
                 st.session_state["ate"] = self.logos.get_adjusted_ate(
-                    st.session_state["ate_treatment"], st.session_state["ate_outcome"]
+                    st.session_state["ate_treatment"],
+                    st.session_state["ate_outcome"],
                 )
 
         def on_click_reject_undecided_outgoing():
-            (
-                expl_score,
-                next_exploration,
-                st.session_state["graph"],
-            ) = self.logos.reject_undecided_outgoing(
-                src=st.session_state["source_node"], interactive=False
+            expl_score, next_exploration = self.logos.reject_undecided_outgoing(
+                src=st.session_state["source_node"]
             )
-
+            st.session_state["graph"] = GraphRenderer.draw_graph(
+                self.logos.graph, self.logos.prepared_variables
+            )
             st.session_state["exploration_score"] = expl_score
             st.session_state["next_exploration"] = TagUtils.tag_of(
                 self.logos.prepared_variables, next_exploration, "prepared"
             )
-
             self.clear_next(["source_node", "destination_node"])
-
             if (
                 "ate_treatment" in st.session_state
                 and "ate_outcome" in st.session_state
             ):
                 st.session_state["ate"] = self.logos.get_adjusted_ate(
-                    st.session_state["ate_treatment"], st.session_state["ate_outcome"]
+                    st.session_state["ate_treatment"],
+                    st.session_state["ate_outcome"],
                 )
 
         def on_click_reject_undecided_incoming():
-            (
-                expl_score,
-                next_exploration,
-                st.session_state["graph"],
-            ) = self.logos.reject_undecided_incoming(
-                dst=st.session_state["destination_node"], interactive=False
+            expl_score, next_exploration = self.logos.reject_undecided_incoming(
+                dst=st.session_state["destination_node"]
             )
-
+            st.session_state["graph"] = GraphRenderer.draw_graph(
+                self.logos.graph, self.logos.prepared_variables
+            )
             st.session_state["exploration_score"] = expl_score
             st.session_state["next_exploration"] = TagUtils.tag_of(
                 self.logos.prepared_variables, next_exploration, "prepared"
             )
-
             self.clear_next(["source_node", "destination_node"])
-
             if (
                 "ate_treatment" in st.session_state
                 and "ate_outcome" in st.session_state
             ):
                 st.session_state["ate"] = self.logos.get_adjusted_ate(
-                    st.session_state["ate_treatment"], st.session_state["ate_outcome"]
+                    st.session_state["ate_treatment"],
+                    st.session_state["ate_outcome"],
                 )
 
         # Present two fields side by side, for each of which there is a dropdown that the user can select from
@@ -784,11 +782,10 @@ class LOGosUI:
                 st.session_state["eccs_error"] = True
                 return
 
-            impactful_edit, _ = self.logos.get_causal_graph_refinement_suggestion(
+            impactful_edit = self.logos.get_causal_graph_refinement_suggestion(
                 treatment=st.session_state["ate_treatment"],
                 outcome=st.session_state["ate_outcome"],
             )
-
             st.session_state["impactful_edit"] = impactful_edit
 
         with st.form("decide_edge_form"):
@@ -834,4 +831,6 @@ class LOGosUI:
             if "impactful_edit" in st.session_state:
                 st.write(st.session_state["impactful_edit"])
             elif "eccs_error" in st.session_state:
-                st.error("Please specify the ATE of interest first, in the next panel.")
+                st.error(
+                    "Please specify the ATE of interest first, in the next panel."
+                )

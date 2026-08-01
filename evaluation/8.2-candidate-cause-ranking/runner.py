@@ -1,15 +1,16 @@
+import argparse
+import json
+import os
 import sys
+from datetime import datetime
+
 import pandas as pd
 
 sys.path.append("../..")
-from src.logos.logos import LOGos
 from src.definitions import LOGOS_ROOT_DIR
-from src.logos.candidate_cause_ranker import CandidateCauseRankerMethod
-import datetime
-import os
-import argparse
-import json
-from datetime import datetime
+from src.logos.candidate_cause_ranker import CandidateCauseRanker
+from src.logos.logos import LOGos
+from src.logos.tag_utils import TagUtils
 
 ALL_METHODS = ["logos", "regression", "langmodel"]
 ALL_DATASETS = ["postgresql", "proprietary", "xyz"]
@@ -115,7 +116,9 @@ def candidate_cause_ranking(dataset: str, methods: list[str]):
             print(f"{datetime.now()} Processing {filename}")
             sys.stderr.write(f"{datetime.now()} Processing {filename}...\n")
 
-            s, info = globals()[f"setup_logos_for_{dataset}"](full_filename, workdir)
+            s, info = globals()[f"setup_logos_for_{dataset}"](
+                full_filename, workdir
+            )
             gpt_log_path = os.path.join(outdir, f"{filename[:-4]}_gpt_log.txt")
 
             # Print statistics as a sanity check
@@ -125,19 +128,40 @@ def candidate_cause_ranking(dataset: str, methods: list[str]):
             print("number of prepared variables:", len(s.prepared_variables))
 
             for method in methods:
-                method_obj = CandidateCauseRankerMethod.from_str(method)
-                cands, latency = s.rank_candidate_causes(
-                    conf["outcome"], method=method_obj, gpt_log_path=gpt_log_path
-                )
+                start = datetime.now()
+                if method == "logos":
+                    cands = s.rank_candidate_causes(
+                        conf["outcome"], gpt_log_path=gpt_log_path
+                    )
+                elif method == "regression":
+                    target_name = TagUtils.name_of(
+                        s.prepared_variables, conf["outcome"], "prepared"
+                    )
+                    cands, _ = CandidateCauseRanker.rank_regression(
+                        s.prepared_log, s.prepared_variables, target_name
+                    )
+                elif method == "langmodel":
+                    target_name = TagUtils.name_of(
+                        s.prepared_variables, conf["outcome"], "prepared"
+                    )
+                    cands, _ = CandidateCauseRanker.rank_langmodel(
+                        s.prepared_log,
+                        s.prepared_variables,
+                        target_name,
+                        gpt_log_path=gpt_log_path,
+                    )
+                else:
+                    raise ValueError(f"Unknown method: {method}")
+                latency = (datetime.now() - start).total_seconds()
                 print(cands)
 
                 for i, tag in enumerate(list(cands["Candidate Tag"])):
                     d = info.copy()
-                    d['rank'] = i + 1
-                    d['candidate'] = tag
+                    d["rank"] = i + 1
+                    d["candidate"] = tag
                     df_ranks[method].loc[len(df_ranks[method])] = d
                 d = info.copy()
-                d['latency'] = latency
+                d["latency"] = latency
                 df_lats[method].loc[len(df_lats[method])] = d
 
     # Close all files
@@ -161,7 +185,9 @@ if __name__ == "__main__":
     parser.add_argument("--all_datasets", action="store_true")
     args = parser.parse_args()
     methods = [
-        method for method in ALL_METHODS if (getattr(args, method) or args.all_methods)
+        method
+        for method in ALL_METHODS
+        if (getattr(args, method) or args.all_methods)
     ]
     datasets = [
         dataset

@@ -2,7 +2,6 @@
 A module for the interactive causal graph refiner functionality.
 """
 
-import logging
 from datetime import datetime
 from typing import Optional, cast
 
@@ -15,140 +14,29 @@ from src.logos.regression import Regression
 from src.logos.tag_utils import TagUtils
 from src.logos.types import Types
 
-_logger = logging.getLogger(__name__)
-
-
-class InteractiveCausalGraphRefinerMethod(str, enum.Enum):
-    """
-    An enumeration of the methods that can be used to suggest the next edge for
-    which the user should produce a judgment, in the process of refining a causal
-    graph.
-    """
-
-    LOGOS = "logos"
-    REGRESSION = "regression"
-    LANGMODEL = "langmodel"
-
-    @staticmethod
-    def from_str(method: str) -> "InteractiveCausalGraphRefinerMethod":
-        """
-        Convert a string to an `InteractiveCausalGraphRefinerMethod`.
-
-        Parameters:
-            method: The string to convert.
-
-        Returns:
-            The corresponding `InteractiveCausalGraphRefinerMethod`.
-
-        Raises:
-            ValueError: If the string does not correspond to any
-                `InteractiveCausalGraphRefinerMethod`.
-        """
-
-        if method == InteractiveCausalGraphRefinerMethod.LOGOS.value:
-            return InteractiveCausalGraphRefinerMethod.LOGOS
-        if method == InteractiveCausalGraphRefinerMethod.REGRESSION.value:
-            return InteractiveCausalGraphRefinerMethod.REGRESSION
-        if method == InteractiveCausalGraphRefinerMethod.LANGMODEL.value:
-            return InteractiveCausalGraphRefinerMethod.LANGMODEL
-
-        raise ValueError(f"Unknown method: {method}")
-
-    @staticmethod
-    def methods() -> list["InteractiveCausalGraphRefinerMethod"]:
-        """
-        Return a list of all `InteractiveCausalGraphRefinerMethod`s.
-
-        Returns:
-            A list of all `InteractiveCausalGraphRefinerMethod`s.
-        """
-
-        return list(InteractiveCausalGraphRefinerMethod)
-
-    @staticmethod
-    def methods_str() -> list[str]:
-        """
-        Return a list of all `InteractiveCausalGraphRefinerMethod` values.
-
-        Returns:
-            A list of all `InteractiveCausalGraphRefinerMethod` values.
-        """
-
-        return [method.value for method in InteractiveCausalGraphRefinerMethod]
 
 
 class InteractiveCausalGraphRefiner:
 
     @staticmethod
     def get_suggestion(
-        data: pd.DataFrame,
-        method: InteractiveCausalGraphRefinerMethod,
-        eccs: Optional[ECCS] = None,
-        treatment_name: Optional[str] = None,
-        outcome_name: Optional[str] = None,
-        graph: Optional[nx.DiGraph] = None,
-        model: Optional[str] = None,
-        gpt_log_path: Optional[str] = None,
-        data_tags: Optional[pd.DataFrame] = None,
-    ) -> Types.Edge:
-        """
-        Get the next edge for which the user should porduce a judgment, in the
-        process of refining a causal graph.
+        eccs: ECCS,
+        treatment_name: str,
+        outcome_name: str,
+    ) -> Optional[Types.Edge]:
+        """Suggest the next edge to assess using the LOGOS (ECCS) method.
 
         Parameters:
-            data: The dataframe containing the data.
-            method: The method to use for suggesting the next edge.
-            eccs: The ECCS object to use for suggesting the next edge. Only applies
-                if `method` is `InteractiveCausalGraphRefinerMethod.LOGOS`.
-            treatment_name: The name of the treatment variable. Only applies if
-                `method` is `InteractiveCausalGraphRefinerMethod.LOGOS` or
-                `InteractiveCausalGraphRefinerMethod.LANGMODEL`.
-            outcome_name: The name of the outcome variable. Only applies if
-                `method` is `InteractiveCausalGraphRefinerMethod.LOGOS` or
-                `InteractiveCausalGraphRefinerMethod.LANGMODEL`.
-            graph: The graph to use for suggesting the next edge. Only applies if
-                `method` is `InteractiveCausalGraphRefinerMethod.REGRESSION` or
-                `InteractiveCausalGraphRefinerMethod.LANGMODEL`.
-            model: The model to use for suggesting the next edge. Only applies if
-                `method` is not `InteractiveCausalGraphRefinerMethod.LANGMODEL`.
-            gpt_log_path: The path to the GPT log file. Only applies if `method` is
-                `InteractiveCausalGraphRefinerMethod.LANGMODEL`.
-            data_tags: The dataframe containing the data tags. Only applies if `method`
-                is `InteractiveCausalGraphRefinerMethod.LANGMODEL`.
+            eccs: The ECCS object.
+            treatment_name: The name of the treatment variable.
+            outcome_name: The name of the outcome variable.
 
         Returns:
-            The next edge for which the user should produce a judgment.
+            The next edge for which the user should produce a judgment, or None.
         """
-        if method == InteractiveCausalGraphRefinerMethod.LOGOS:
-            assert eccs is not None
-            assert treatment_name is not None
-            assert outcome_name is not None
-            return InteractiveCausalGraphRefiner._get_suggestion_logos(
-                eccs, treatment_name, outcome_name
-            )
-        elif method == InteractiveCausalGraphRefinerMethod.REGRESSION:
-            assert graph is not None
-            return InteractiveCausalGraphRefiner._get_suggestion_regression(
-                data, graph
-            )
-        elif method == InteractiveCausalGraphRefinerMethod.LANGMODEL:
-            assert treatment_name is not None
-            assert outcome_name is not None
-            assert graph is not None
-            assert model is not None
-            assert gpt_log_path is not None
-            assert data_tags is not None
-            return InteractiveCausalGraphRefiner._get_suggestion_langmodel(
-                data,
-                data_tags,
-                treatment_name,
-                outcome_name,
-                graph,
-                model,
-                gpt_log_path,
-            )
-        else:
-            raise ValueError(f"Unknown method: {method}")
+        return InteractiveCausalGraphRefiner._get_suggestion_logos(
+            eccs, treatment_name, outcome_name
+        )
 
     @staticmethod
     def _get_suggestion_logos(
@@ -178,36 +66,71 @@ class InteractiveCausalGraphRefiner:
     cache: list[Types.Edge] = []
 
     @classmethod
-    def _get_suggestion_regression(
-        cls, data: pd.DataFrame, graph: nx.DiGraph
-    ) -> Types.Edge:
-        """
-        Implement `get_suggestion()` for the `REGRESSION` method.
+    def get_suggestion_regression(
+        cls,
+        data: pd.DataFrame,
+        graph: nx.DiGraph,
+        data_tags: Optional[pd.DataFrame] = None,
+    ) -> Optional[Types.Edge]:
+        """For evaluation: suggest next edge using OLS regression.
 
-        Parameters:
-            data: The dataframe containing the data.
-            graph: The graph to use for suggesting the next edge.
+        Recomputes a full pairwise ranking on every call.  Pass `data_tags` to
+        receive the edge expressed as human-readable tags; omit it for raw
+        variable names.
         """
         if graph != cls.most_recent_graph:
             cls.most_recent_graph = graph
             cls.cache = []
-        if len(cls.cache) > 0:
-            return cls.cache.pop(0)
+        if cls.cache:
+            edge = cls.cache.pop(0)
+        else:
+            pairs: list[tuple[Types.Edge, float]] = []
+            data_norm, _ = Regression.get_normalized_copy(data)
+            for v in graph.nodes:
+                for w in set(data_norm.columns) - set(graph.neighbors(v)) - {v}:
+                    d = Regression.ols(w, data_norm[w], data_norm[v])
+                    slope = d["Slope"]
+                    abs_slope = abs(slope) if slope is not None else 0.0
+                    pairs.append((cast(Types.Edge, (w, v)), abs_slope))
+            if not pairs:
+                return None
+            pairs.sort(key=lambda x: x[1], reverse=True)
+            cls.cache = [row[0] for row in pairs[1:]]
+            edge = pairs[0][0]
 
-        l = []
+        if data_tags is not None:
+            return (
+                cast(str, TagUtils.tag_of(data_tags, edge[0], "prepared")),
+                cast(str, TagUtils.tag_of(data_tags, edge[1], "prepared")),
+            )
+        return edge
 
-        data, _ = Regression.get_normalized_copy(data)
+    @classmethod
+    def get_suggestion_langmodel(
+        cls,
+        data: pd.DataFrame,
+        data_tags: pd.DataFrame,
+        treatment_name: str,
+        outcome_name: str,
+        graph: nx.DiGraph,
+        model: str = "gpt-4o-mini-2024-07-18",
+        gpt_log_path: Optional[str] = None,
+        return_tags: bool = True,
+    ) -> Optional[Types.Edge]:
+        """For evaluation: suggest next edge using an LLM.
 
-        for v in graph.nodes:
-            for w in set(data.columns) - set(graph.neighbors(v)) - set([v]):
-                d = Regression.ols(w, data[w], data[v])
-                abs_slope = abs(d["Slope"])
-                l.append((cast(Types.Edge, (w, v)), abs_slope))
-
-        l.sort(key=lambda x: x[1], reverse=True)
-        cls.cache = [row[0] for row in l[1:]]
-
-        return l[0][0]
+        Set `return_tags=False` to receive raw variable names instead of tags.
+        """
+        return InteractiveCausalGraphRefiner._get_suggestion_langmodel(
+            data,
+            data_tags,
+            treatment_name,
+            outcome_name,
+            graph,
+            model,
+            gpt_log_path,
+            return_tags=return_tags,
+        )
 
     @classmethod
     def _get_suggestion_langmodel(
@@ -219,23 +142,13 @@ class InteractiveCausalGraphRefiner:
         graph: nx.DiGraph,
         model: str = "gpt-4o-mini-2024-07-18",
         gpt_log_path: Optional[str] = None,
-    ) -> Types.Edge:
-        """
-        Implement `get_suggestion()` for the `LANGMODEL` method.
-
-        Parameters:
-            data: The dataframe containing the data.
-            treatment_name: The name of the treatment variable.
-            outcome_name: The name of the outcome variable.
-            graph: The graph to use for suggesting the next edge.
-            model: The model to use for suggesting the next edge.
-            gpt_log_path: The path to the GPT log file.
-            data_tags: The dataframe containing the data tags.
-        """
+        return_tags: bool = True,
+    ) -> Optional[Types.Edge]:
+        """Implementation of the LANGMODEL suggestion method."""
         if graph != cls.most_recent_graph:
             cls.most_recent_graph = graph
             cls.cache = []
-        if len(cls.cache) > 0:
+        if cls.cache:
             return cls.cache.pop(0)
 
         client = get_openai_client()
@@ -312,7 +225,6 @@ class InteractiveCausalGraphRefiner:
             f.write(f"Reply: {reply}\n\n")
             f.write("================\n")
             f.flush()
-            f.close()
 
         # Combat hallucinations
         reply_rows = cast(str, reply).split("\n")
@@ -345,5 +257,13 @@ class InteractiveCausalGraphRefiner:
             if left is not None and right is not None:
                 ranked_edges.append(cast(Types.Edge, (left, right)))
 
-        cls.cache = ranked_edges[1:]
-        return ranked_edges[0]
+        if not ranked_edges:
+            return None
+        cls.cache = list(ranked_edges[1:])
+        edge = ranked_edges[0]
+        if not return_tags:
+            return (
+                cast(str, TagUtils.name_of(data_tags, edge[0], "prepared")),
+                cast(str, TagUtils.name_of(data_tags, edge[1], "prepared")),
+            )
+        return edge

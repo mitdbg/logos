@@ -8,7 +8,6 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-from IPython.display import HTML, display
 
 
 class GraphRenderer:
@@ -96,29 +95,17 @@ class GraphRenderer:
             f.write(base64.b64decode(img_str))
 
     @staticmethod
-    def graph_string_to_html(graph: str) -> HTML:
+    def graph_string_to_html(graph: str) -> str:
         """
-        Convert the string representation of the rgaph to an HTML object
+        Convert the base64 graph string to an HTML image tag.
 
         Parameters:
-            graph: The graph to be displayed.
-        """
-        return HTML(
-            f'<img src="data:image/png;base64,{graph}" style="max-width: 100%; height: auto;">'
-        )
+            graph: The base64-encoded graph string.
 
-    @staticmethod
-    def display_graph(graph: nx.DiGraph, var_info: pd.DataFrame) -> None:
+        Returns:
+            An HTML <img> tag embedding the graph.
         """
-        Display the graph.
-
-        Parameters:
-            graph: The graph to be displayed.
-            var_info: A dataframe containing the tags of the variables in the
-                graph.
-        """
-        display(
-            GraphRenderer.graph_string_to_html(
-                GraphRenderer.draw_graph(graph, var_info)
-            )
+        return (
+            f'<img src="data:image/png;base64,{graph}" '
+            'style="max-width: 100%; height: auto;">'
         )

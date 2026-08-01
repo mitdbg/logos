@@ -4,7 +4,6 @@ Causal graph exploration: edge management, candidate ranking, ATE calculation.
 
 import logging
 import multiprocessing
-import os
 from datetime import datetime
 from typing import List, Optional, Tuple, cast
 
@@ -12,18 +11,13 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 from eccs.eccs import ECCS
-from IPython.display import display
 from tqdm.auto import tqdm
 
-from src.logos.candidate_cause_ranker import (
-    CandidateCauseRanker,
-    CandidateCauseRankerMethod,
-)
+from src.logos.candidate_cause_ranker import CandidateCauseRanker
 from src.logos.edge_state_matrix import EdgeStateMatrix
 from src.logos.graph_renderer import GraphRenderer
 from src.logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
-    InteractiveCausalGraphRefinerMethod,
 )
 from src.logos.prepared_source import PreparedSource
 from src.logos.pruner import Pruner
@@ -73,6 +67,28 @@ class CausalExplorer:
     def num_prepared_variables(self) -> int:
         return len(self._prepared_variables)
 
+    @property
+    def graph(self) -> nx.DiGraph:
+        """The current partial causal graph."""
+        return self._graph
+
+    def get_graph_dict(self) -> dict:
+        """Return the graph as a JSON-serializable dict for UI/API consumers."""
+        vars_df = self._prepared_variables
+        nodes = [
+            {
+                "id": n,
+                "tag": (
+                    vars_df.loc[vars_df["Name"] == n, "Tag"].values[0]
+                    if n in vars_df["Name"].values
+                    else n
+                ),
+            }
+            for n in self._graph.nodes
+        ]
+        edges = [{"src": u, "dst": v} for u, v in self._graph.edges]
+        return {"nodes": nodes, "edges": edges}
+
     # ------------------------------------------------------------------
     # Graph management
     # ------------------------------------------------------------------
@@ -84,31 +100,25 @@ class CausalExplorer:
         row_limit: Optional[int] = 10,
     ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
-        Print information about a specific prepared variable.
+        Return information DataFrames about a specific prepared variable.
 
         Parameters:
             var: The name or tag of the variable.
             ref_var: The name or tag of a reference variable.
-            row_limit: The number of rows of the prepared log to print out,
-                to illustrate example values of this variable.
+            row_limit: The number of rows of the prepared log to include.
 
         Returns:
-            A tuple containing:
-                (1) Information about the base variable of `var`, if `var` is
-                    not related to the occurrence count of a template.
-                (2) Information about the template of `var`, if `var` was not
-                    created from a regex.
-                (3) A sample of the prepared log, with `row_limit` rows.
+            A tuple of:
+                (1) Base-variable metadata from parsed_variables (empty if from regex).
+                (2) Template metadata from parsed_templates (empty if from regex).
+                (3) A sample of the prepared log with `row_limit` rows.
         """
         name = TagUtils.name_of(self._prepared_variables, var, "prepared")
-
-        print(f"Information about prepared variable {name}:\n")
         base_var = PreparedVariableName(name).base_var()
         from_regex = False
 
         base_var_info_df = pd.DataFrame()
         if base_var != "TemplateId":
-            print(f"--> Variable Information about {base_var}:")
             base_var_info_df = self._parsed_variables[
                 self._parsed_variables["Name"] == base_var
             ]
@@ -117,29 +127,24 @@ class CausalExplorer:
                 if not base_var_info_df.empty
                 else True
             )
-            display(base_var_info_df)
 
         template_info_df = pd.DataFrame()
         if not from_regex:
             template_id = PreparedVariableName(name).template_id()
-            print(f"--> Template Information about {template_id}:")
             template_info_df = self._parsed_templates[
                 self._parsed_templates["TemplateId"] == template_id
             ]
-            display(template_info_df)
 
-        print("--> Causal Unit Partial Information:")
         if row_limit is None:
             row_limit = len(self._prepared_log)
-        col_list = [name]
-        col_list.extend([ref_var] if ref_var is not None else [])
-        prepared_log_info_df = self._prepared_log[col_list].head(row_limit)
-        col_names = [f"{name} (candidate)"]
-        col_names.extend(
+        col_list = [name] + ([ref_var] if ref_var is not None else [])
+        prepared_log_info_df = (
+            self._prepared_log[col_list].head(row_limit).copy()
+        )
+        col_names = [f"{name} (candidate)"] + (
             [f"{ref_var} (outcome)"] if ref_var is not None else []
         )
         prepared_log_info_df.columns = col_names
-        display(prepared_log_info_df)
 
         return base_var_info_df, template_info_df, prepared_log_info_df
 
@@ -156,16 +161,12 @@ class CausalExplorer:
         if self._eccs:
             self._eccs.clear_graph(clear_edge_states)
 
-    def display_graph(self) -> None:
-        """Display the current graph."""
-        GraphRenderer.display_graph(self._graph, self._prepared_variables)
-
     def save_graph(self, filename: str) -> None:
         """
-        Save the current graph to a file.
+        Save the current graph to a PNG file.
 
         Parameters:
-            filename: The name of the file to save to.
+            filename: Destination file path.
         """
         GraphRenderer.save_graph(
             self._graph, self._prepared_variables, filename
@@ -175,9 +176,8 @@ class CausalExplorer:
         self,
         src: str,
         dst: str,
-        also_fix: bool = False,  # instructs ECCS to lock this edge permanently
-        interactive: bool = True,
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        also_fix: bool = True,  # instructs ECCS to lock this edge permanently
+    ) -> Tuple[float, Optional[str]]:
         """
         Mark a causal graph edge as accepted.
 
@@ -188,16 +188,11 @@ class CausalExplorer:
         Parameters:
             src: The name or tag of the source variable.
             dst: The name or tag of the destination variable.
-            also_fix: Whether to also fix the edge, for ECCS.
-            interactive: Whether to display the graph interactively after
-                accepting the edge.
+            also_fix: Whether to permanently lock this edge in ECCS so it is
+                never proposed for removal. Advanced parameter — ECCS internal.
 
         Returns:
-            A tuple containing:
-                (1) the exploration score after the edge addition,
-                (2) the max-impact variable to explore next, if any,
-                (3) optionally a string representation of the graph, if
-                    `interactive` is False.
+            A tuple of (exploration_score, suggested_next_variable).
         """
         src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
         dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
@@ -211,47 +206,31 @@ class CausalExplorer:
         self._graph.add_edge(src_name, dst_name)
         if (dst_name, src_name) in self._graph.edges:
             self._graph.remove_edge(dst_name, src_name)
-        if interactive:
-            GraphRenderer.display_graph(self._graph, self._prepared_variables)
         if self._eccs:
             self._eccs.remove_edge(dst_name, src_name)
             self._eccs.add_edge(src_name, dst_name)
             if also_fix:
                 self._eccs.fix_edge(src_name, dst_name)
 
-        return (
-            self.exploration_score,
-            self.suggest_next_exploration(),
-            (
-                GraphRenderer.draw_graph(self._graph, self._prepared_variables)
-                if not interactive
-                else ""
-            ),
-        )
+        return (self.exploration_score, self.suggest_next_exploration())
 
     def reject(
         self,
         src: str,
         dst: str,
-        also_ban: bool = False,  # instructs ECCS to never propose this edge again
-        interactive: bool = True,
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        also_ban: bool = True,  # instructs ECCS to never propose this edge again
+    ) -> Tuple[float, Optional[str]]:
         """
         Mark a causal graph edge as rejected.
 
         Parameters:
             src: The name or tag of the source variable.
             dst: The name or tag of the destination variable.
-            also_ban: Whether to also ban the edge, for ECCS.
-            interactive: Whether to display the graph interactively after
-                rejecting the edge.
+            also_ban: Whether to permanently ban this edge in ECCS so it is
+                never proposed again. Advanced parameter — ECCS internal.
 
         Returns:
-            A tuple containing:
-                (1) the exploration score after the edge rejection,
-                (2) the max-impact variable to explore next, if any,
-                (3) optionally a string representation of the graph, if
-                    `interactive` is False.
+            A tuple of (exploration_score, suggested_next_variable).
         """
         src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
         dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
@@ -259,37 +238,21 @@ class CausalExplorer:
         if self._eccs and also_ban:
             self._eccs.ban_edge(src_name, dst_name)
 
-        if interactive:
-            GraphRenderer.display_graph(self._graph, self._prepared_variables)
-
-        return (
-            self.exploration_score,
-            self.suggest_next_exploration(),
-            (
-                GraphRenderer.draw_graph(self._graph, self._prepared_variables)
-                if not interactive
-                else ""
-            ),
-        )
+        return (self.exploration_score, self.suggest_next_exploration())
 
     def reject_undecided_incoming(
-        self, dst: str, also_ban: bool = False, interactive: bool = True
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        self, dst: str, also_ban: bool = True
+    ) -> Tuple[float, Optional[str]]:
         """
         Mark all undecided incoming edges to a variable as rejected.
 
         Parameters:
             dst: The name or tag of the destination variable.
-            also_ban: Whether to also ban the edges, for ECCS.
-            interactive: Whether to display the graph interactively after
-                rejecting the edges.
+            also_ban: Whether to permanently ban these edges in ECCS.
+                Advanced parameter — ECCS internal.
 
         Returns:
-            A tuple containing:
-                (1) the exploration score after the edge rejections,
-                (2) the max-impact variable to explore next, if any,
-                (3) optionally a string representation of the graph, if
-                    `interactive` is False.
+            A tuple of (exploration_score, suggested_next_variable).
         """
         dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
         for v in self.prepared_variable_names:
@@ -298,37 +261,21 @@ class CausalExplorer:
                 if self._eccs and also_ban:
                     self._eccs.ban_edge(v, dst_name)
 
-        if interactive:
-            GraphRenderer.display_graph(self._graph, self._prepared_variables)
-
-        return (
-            self.exploration_score,
-            self.suggest_next_exploration(),
-            (
-                GraphRenderer.draw_graph(self._graph, self._prepared_variables)
-                if not interactive
-                else ""
-            ),
-        )
+        return (self.exploration_score, self.suggest_next_exploration())
 
     def reject_undecided_outgoing(
-        self, src: str, also_ban: bool = False, interactive: bool = True
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+        self, src: str, also_ban: bool = True
+    ) -> Tuple[float, Optional[str]]:
         """
         Mark all undecided outgoing edges from a variable as rejected.
 
         Parameters:
             src: The name or tag of the source variable.
-            also_ban: Whether to also ban the edges, for ECCS.
-            interactive: Whether to display the graph interactively after
-                rejecting the edges.
+            also_ban: Whether to permanently ban these edges in ECCS.
+                Advanced parameter — ECCS internal.
 
         Returns:
-            A tuple containing:
-                (1) the exploration score after the edge rejections,
-                (2) the max-impact variable to explore next, if any,
-                (3) optionally a string representation of the graph, if
-                    `interactive` is False.
+            A tuple of (exploration_score, suggested_next_variable).
         """
         src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
         for v in self.prepared_variable_names:
@@ -337,42 +284,25 @@ class CausalExplorer:
                 if self._eccs and also_ban:
                     self._eccs.ban_edge(src_name, v)
 
-        if interactive:
-            GraphRenderer.display_graph(self._graph, self._prepared_variables)
-
-        return (
-            self.exploration_score,
-            self.suggest_next_exploration(),
-            (
-                GraphRenderer.draw_graph(self._graph, self._prepared_variables)
-                if not interactive
-                else ""
-            ),
-        )
+        return (self.exploration_score, self.suggest_next_exploration())
 
     def reject_all_prunable_edges(
         self,
-        also_ban: bool = False,  # instructs ECCS to never propose these edges again
+        also_ban: bool = True,  # instructs ECCS to never propose these edges again
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
-    ) -> Tuple[float, Optional[str], Optional[str]]:
+    ) -> Tuple[float, Optional[str]]:
         """
-        For every prepared variable, reject all incoming edges that start at a
-        variable that is pruned by our pruning approach. This may be
-        time-consuming depending on the number of variables.
+        Reject all incoming edges that LASSO identifies as non-predictive.
 
         Parameters:
-            also_ban: Whether to also ban the edges, for ECCS.
-            lasso_alpha: The alpha parameter to be used for Lasso regression.
-            lasso_max_iter: The maximum number of iterations to be used for
-                Lasso regression.
+            also_ban: Whether to permanently ban rejected edges in ECCS.
+                Advanced parameter — ECCS internal.
+            lasso_alpha: LASSO regularization parameter.
+            lasso_max_iter: Maximum LASSO iterations.
 
         Returns:
-            A tuple containing:
-                (1) the exploration score after the edge rejections,
-                (2) the max-impact variable to explore next, if any,
-                (3) optionally a string representation of the graph, if
-                    `interactive` is False.
+            A tuple of (exploration_score, suggested_next_variable).
         """
         num_processors = multiprocessing.cpu_count()
         with multiprocessing.Pool(processes=num_processors) as pool:
@@ -406,11 +336,7 @@ class CausalExplorer:
                 if self._eccs and also_ban:
                     self._eccs.ban_edge(nc, target)
 
-        return (
-            self.exploration_score,
-            self.suggest_next_exploration(),
-            GraphRenderer.draw_graph(self._graph, self._prepared_variables),
-        )
+        return (self.exploration_score, self.suggest_next_exploration())
 
     @property
     def exploration_score(self) -> float:
@@ -501,33 +427,25 @@ class CausalExplorer:
         self,
         target: Optional[str] = None,
         ignore: Optional[List[str]] = None,
-        method: CandidateCauseRankerMethod = CandidateCauseRankerMethod.LOGOS,
         prune_candidates: bool = True,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
-        model: str = "gpt-4o-mini-2024-07-18",
-        gpt_log_path: Optional[str] = None,
-    ) -> Tuple[pd.DataFrame, str]:
+    ) -> pd.DataFrame:
         """
-        Present the user with ranked candidate causes for `target`.
+        Return ranked candidate causes for `target` using the LOGOS method.
 
         Parameters:
-            target: The name or tag of the target variable.
-            ignore: A list of variables to ignore.
-            method: The method to use for ranking candidate causes.
-            prune_candidates: Whether to prune the candidate causes using Lasso
-                regression. Only applies if `method` is
-                `CandidateCauseRankerMethod.LOGOS`.
-            lasso_alpha: The alpha parameter to be used for Lasso regression.
-            lasso_max_iter: The maximum number of iterations to be used for
-                Lasso regression.
-            model: The model to use for the langmodel method.
-            gpt_log_path: The path to the log file to use for the langmodel
-                method.
+            target: The name or tag of the target variable. If None, uses the
+                variable most recently suggested by suggest_next_exploration().
+            ignore: Variables to exclude from consideration.
+            prune_candidates: Whether to apply LASSO pruning before ranking.
+            lasso_alpha: LASSO regularization parameter.
+            lasso_max_iter: Maximum LASSO iterations.
+
         Returns:
-            A tuple containing:
-            (1) A dataframe containing the candidate causes for `target` and
-            (2) The time elapsed for exploration, as a string.
+            A DataFrame of ranked candidates with columns: Candidate,
+            Candidate Tag, Target Tag, Slope, P-value,
+            Candidate->Target Edge Status, Target->Candidate Edge Status.
         """
         start_time = datetime.now()
 
@@ -546,16 +464,9 @@ class CausalExplorer:
             self._prepared_variables,
             target,
             ignore,
-            method,
             prune_candidates,
             lasso_alpha,
             lasso_max_iter,
-            model,
-            (
-                gpt_log_path
-                if (gpt_log_path is not None)
-                else os.path.join(self._workdir, lfn)
-            ),
         )
 
         for var in pruned:
@@ -574,58 +485,32 @@ class CausalExplorer:
 
     def get_causal_graph_refinement_suggestion(
         self,
-        method: InteractiveCausalGraphRefinerMethod = (
-            InteractiveCausalGraphRefinerMethod.LOGOS
-        ),
-        treatment: Optional[str] = None,
-        outcome: Optional[str] = None,
-        model: str = "gpt-4o-mini-2024-07-18",
-        gpt_log_path: Optional[str] = None,
-    ) -> Tuple[Optional[Types.Edge], str]:
+        treatment: str,
+        outcome: str,
+    ) -> Optional[Types.Edge]:
         """
-        Present the user with an edge, the presence and direction of which they
-            should assess.
+        Suggest the next edge to assess using the LOGOS (ECCS) method.
 
         Parameters:
-            method: The method to use for producing a causal graph refinement
-                suggestion.
             treatment: The name or tag of the treatment variable.
             outcome: The name or tag of the outcome variable.
-            model: The model to use for the langmodel method.
-            gpt_log_path: The path to the log file to use for the langmodel
-                method.
+
         Returns:
-            A tuple containing:
-            (1) The edge to assess, as an Edge object, and
-            (2) The time elapsed for generating the suggestion, as a string.
+            The suggested edge as a tuple of human-readable tags, or None.
         """
         start_time = datetime.now()
+        assert (
+            self._eccs is not None
+        ), "ECCS not initialized. Call _init_eccs() before refinement."
+        treatment_name = TagUtils.name_of(
+            self._prepared_variables, treatment, "prepared"
+        )
+        outcome_name = TagUtils.name_of(
+            self._prepared_variables, outcome, "prepared"
+        )
 
-        if method == InteractiveCausalGraphRefinerMethod.LOGOS:
-            assert treatment is not None
-            assert outcome is not None
-            treatment_name = TagUtils.name_of(
-                self._prepared_variables, treatment, "prepared"
-            )
-            outcome_name = TagUtils.name_of(
-                self._prepared_variables, outcome, "prepared"
-            )
-
-        lfn = f"refiner-gpt-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.log"
         edge = InteractiveCausalGraphRefiner.get_suggestion(
-            self._prepared_log,
-            method,
-            self._eccs,
-            treatment_name,
-            outcome_name,
-            self._graph,
-            model,
-            (
-                gpt_log_path
-                if (gpt_log_path is not None)
-                else os.path.join(self._workdir, lfn)
-            ),
-            self._prepared_variables,
+            self._eccs, treatment_name, outcome_name
         )
 
         edge_tags: Optional[tuple[str, str]] = None
@@ -647,4 +532,4 @@ class CausalExplorer:
 
         elapsed = (datetime.now() - start_time).total_seconds()
         _logger.debug(f"Graph refinement suggestion complete in {elapsed:.6f}s")
-        return edge_tags, elapsed
+        return edge_tags

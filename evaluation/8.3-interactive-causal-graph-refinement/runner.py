@@ -1,17 +1,19 @@
+import argparse
+import json
+import os
 import sys
+from datetime import datetime
+
 import pandas as pd
 
 sys.path.append("../..")
-from src.logos.logos import LOGos
+
+
 from src.definitions import LOGOS_ROOT_DIR
 from src.logos.interactive_causal_graph_refiner import (
-    InteractiveCausalGraphRefinerMethod,
+    InteractiveCausalGraphRefiner,
 )
-import datetime
-import os
-import argparse
-import json
-from datetime import datetime
+from src.logos.logos import LOGos
 
 ALL_METHODS = ["logos", "regression", "langmodel"]
 ALL_DATASETS = ["postgresql", "xyz"]
@@ -61,7 +63,9 @@ def setup_logos_for_xyz(full_filename, workdir):
 
 def get_are_ate(current, true):
     res = abs((current - true) / true) if true != 0 else 0
-    print("Calculating ARE_ATE. Current:", current, "True:", true, "Result:", res)
+    print(
+        "Calculating ARE_ATE. Current:", current, "True:", true, "Result:", res
+    )
     return res
 
 
@@ -71,7 +75,9 @@ def interactive_causal_graph_refinement(dataset: str, methods: list[str]):
     indir = os.path.join(dataset_files_dir, "datasets_raw")
     workdir = os.path.join(dataset_files_dir, "datasets")
     outdir = os.path.join(
-        dataset_files_dir, "repro_evaluation", "8.3-interactive-causal-graph-refinement"
+        dataset_files_dir,
+        "repro_evaluation",
+        "8.3-interactive-causal-graph-refinement",
     )
     if not os.path.exists(outdir):
         os.makedirs(outdir)
@@ -100,7 +106,9 @@ def interactive_causal_graph_refinement(dataset: str, methods: list[str]):
             gpt_log_path = os.path.join(outdir, f"{filename[:-4]}_gpt_log.txt")
 
             # Do it once for the ground truth
-            s, info = globals()[f"setup_logos_for_{dataset}"](full_filename, workdir)
+            s, info = globals()[f"setup_logos_for_{dataset}"](
+                full_filename, workdir
+            )
 
             print("----------------------------------------")
             print("number of parsed templates:", len(s.parsed_templates))
@@ -109,7 +117,9 @@ def interactive_causal_graph_refinement(dataset: str, methods: list[str]):
 
             for edge in conf["true_graph_edges"]:
                 s.accept(edge[0], edge[1], also_fix=False)
-            ground_truth_ate = s.get_adjusted_ate(conf["treatment"], conf["outcome"])
+            ground_truth_ate = s.get_adjusted_ate(
+                conf["treatment"], conf["outcome"]
+            )
 
             for method in methods:
                 # Now do it once for real
@@ -120,10 +130,12 @@ def interactive_causal_graph_refinement(dataset: str, methods: list[str]):
                 print("----------------------------------------")
                 print("number of parsed templates:", len(s.parsed_templates))
                 print("number of parsed variables:", len(s.parsed_variables))
-                print("number of prepared variables:", len(s.prepared_variables))
+                print(
+                    "number of prepared variables:", len(s.prepared_variables)
+                )
 
                 for edge in conf["starting_graph_edges"]:
-                    s.accept(edge[0], edge[1], also_fix=False, interactive=False)
+                    s.accept(edge[0], edge[1], also_fix=False)
 
                 ate = s.get_adjusted_ate(conf["treatment"], conf["outcome"])
                 d = info.copy()
@@ -133,39 +145,65 @@ def interactive_causal_graph_refinement(dataset: str, methods: list[str]):
                 d["ARE_ATE"] = get_are_ate(ate, ground_truth_ate)
                 df_ranks[method].loc[len(df_ranks[method])] = d
 
-                method_obj = InteractiveCausalGraphRefinerMethod.from_str(method)
 
                 j = 0
 
                 while (
-                    df_ranks[method].loc[len(df_ranks[method]) - 1, "ARE_ATE"] > 10e-5
+                    df_ranks[method].loc[len(df_ranks[method]) - 1, "ARE_ATE"]
+                    > 10e-5
                 ):
-                    edge, latency = s.get_causal_graph_refinement_suggestion(
-                        method_obj,
-                        conf["treatment"],
-                        conf["outcome"],
-                        gpt_log_path=gpt_log_path,
-                    )
+                    start = datetime.now()
+                    if method == "logos":
+                        edge = s.get_causal_graph_refinement_suggestion(
+                            conf["treatment"],
+                            conf["outcome"],
+                        )
+                    elif method == "regression":
+                        edge = InteractiveCausalGraphRefiner.get_suggestion_regression(
+                            s.prepared_log,
+                            s.graph,
+                            data_tags=s.prepared_variables,
+                        )
+                    elif method == "langmodel":
+                        treatment_name = s.prepared_variables.loc[
+                            s.prepared_variables["Tag"] == conf["treatment"],
+                            "Name",
+                        ].values[0]
+                        outcome_name = s.prepared_variables.loc[
+                            s.prepared_variables["Tag"] == conf["outcome"],
+                            "Name",
+                        ].values[0]
+                        edge = InteractiveCausalGraphRefiner.get_suggestion_langmodel(
+                            s.prepared_log,
+                            s.prepared_variables,
+                            treatment_name,
+                            outcome_name,
+                            s.graph,
+                            gpt_log_path=gpt_log_path,
+                        )
+                    else:
+                        raise ValueError(f"Unknown method: {method}")
+                    latency = (datetime.now() - start).total_seconds()
                     print(f"Edge: {edge}")
 
                     if edge is not None:
                         if list(edge) in conf["true_graph_edges"]:
                             print("This edge is in the ground truth graph")
-                            s.accept(edge[0], edge[1], also_fix=True, interactive=False)
-                            s.reject(edge[1], edge[0], also_ban=True, interactive=False)
+                            s.accept(edge[0], edge[1], also_fix=True)
+                            s.reject(edge[1], edge[0], also_ban=True)
                         elif list(edge)[::-1] in conf["true_graph_edges"]:
                             print(
                                 "The inverse of this edge is in the ground truth graph"
                             )
-                            s.reject(edge[0], edge[1], also_ban=True, interactive=False)
-                            s.accept(edge[1], edge[0], also_fix=True, interactive=False)
+                            s.reject(edge[0], edge[1], also_ban=True)
+                            s.accept(edge[1], edge[0], also_fix=True)
                         else:
                             print("This edge is not in the ground truth graph")
-                            s.reject(edge[0], edge[1], also_ban=True, interactive=False)
-                            s.reject(edge[1], edge[0], also_ban=True, interactive=False)
+                            s.reject(edge[0], edge[1], also_ban=True)
+                            s.reject(edge[1], edge[0], also_ban=True)
 
                     print("After updating the graph, it now has edges:")
-                    print(s._graph.edges)
+                    print(s.graph.edges)
 
                     ate = s.get_adjusted_ate(conf["treatment"], conf["outcome"])
 
@@ -204,7 +242,9 @@ if __name__ == "__main__":
     parser.add_argument("--all_datasets", action="store_true")
     args = parser.parse_args()
     methods = [
-        method for method in ALL_METHODS if (getattr(args, method) or args.all_methods)
+        method
+        for method in ALL_METHODS
+        if (getattr(args, method) or args.all_methods)
     ]
     datasets = [
         dataset

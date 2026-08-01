@@ -5,7 +5,6 @@ Functionality for ranking candidate causes.
 import enum
 import logging
 import multiprocessing
-from datetime import datetime
 from typing import Optional, Tuple, cast
 
 import pandas as pd
@@ -16,59 +15,6 @@ from src.logos.regression import Regression
 from src.logos.tag_utils import TagUtils
 
 _logger = logging.getLogger(__name__)
-
-
-class CandidateCauseRankerMethod(enum.Enum):
-    """
-    An enumeration of the methods available for ranking candidate causes.
-    """
-
-    LOGOS = "logos"
-    REGRESSION = "regression"
-    LANGMODEL = "langmodel"
-
-    @staticmethod
-    def from_str(method: str) -> "CandidateCauseRankerMethod":
-        """
-        Convert a string to a CandidateCauseRankerMethod.
-
-        Parameters:
-            method: The string to convert.
-
-        Returns:
-            The corresponding CandidateCauseRankerMethod.
-        """
-
-        if method == CandidateCauseRankerMethod.LOGOS.value:
-            return CandidateCauseRankerMethod.LOGOS
-        elif method == CandidateCauseRankerMethod.REGRESSION.value:
-            return CandidateCauseRankerMethod.REGRESSION
-        elif method == CandidateCauseRankerMethod.LANGMODEL.value:
-            return CandidateCauseRankerMethod.LANGMODEL
-        else:
-            raise ValueError(f"Unknown method: {method}")
-
-    @staticmethod
-    def methods() -> list["CandidateCauseRankerMethod"]:
-        """
-        A list of all available methods for ranking candidate causes.
-
-        Returns:
-            A list of all available methods for ranking candidate causes.
-        """
-
-        return [method for method in CandidateCauseRankerMethod]
-
-    @staticmethod
-    def methods_str() -> list[str]:
-        """
-        A list of the string representations of all available methods for ranking candidate causes.
-
-        Returns:
-            A list of the string representations of all available methods for ranking
-                candidate causes.
-        """
-        return [method.value for method in CandidateCauseRankerMethod]
 
 
 class CandidateCauseRanker:
@@ -95,68 +41,41 @@ class CandidateCauseRanker:
     ]
 
     @staticmethod
-    def rank(  # pylint: disable=too-many-arguments
+    def rank(
         data: pd.DataFrame,
         data_tags_df: pd.DataFrame,
         target_name: str,
         ignore: Optional[list[str]] = None,
-        method: CandidateCauseRankerMethod = CandidateCauseRankerMethod.LOGOS,
         prune_candidates: bool = True,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
-        model: str = "gpt-4o-mini-2024-07-18",
-        gpt_log_path: Optional[str] = None,
     ) -> Tuple[pd.DataFrame, list[str]]:
-        """
-        Present the user with candidate causal graph neighbors for `target`. If no `target`
-        is specified, the most recent suggestion of `suggest_next_exploration()` is used, if any.
-        If `ignore` is specified, the variables in `ignore` are not considered as candidate causes.
+        """Rank candidate causes for `target_name` using the LOGOS method.
 
         Parameters:
             data: The data based on which to explore candidate causes.
             data_tags_df: A dataframe containing tags for the data.
             target_name: The name of the target variable.
             ignore: A list of variables to ignore.
-            method: The method to use for ranking candidate causes.
-            prune_candidates: Whether to prune the candidate causes using Lasso regression. Only
-                applies if `method` is `CandidateCauseRankerMethod.LOGOS`.
-            lasso_alpha: The alpha parameter to be used for Lasso regression. Only applies if
-                `method` is `CandidateCauseRankerMethod.LOGOS` and `prune_candidates` is True.
-            lasso_max_iter: The maximum number of iterations to be used for Lasso regression. Only
-                applies if `method` is `CandidateCauseRankerMethod.LOGOS` and `prune_candidates` is
-                True.
-            model: The model to use for the langmodel method. Only applies if the method is
-                `CandidateCauseRankerMethod.LANGMODEL`.
-            gpt_log_path: The path to the log file for the prompt and reply. Only applies if the
-                method is `CandidateCauseRankerMethod.LANGMODEL`.
+            prune_candidates: Whether to prune candidates by Lasso regression.
+            lasso_alpha: The Lasso regularization parameter.
+            lasso_max_iter: The maximum number of Lasso iterations.
 
         Returns:
-            results_df: A dataframe containing the candidate causal graph neighbors for `target`
-            pruned: A list of pruned candidate causes, if any.
+            results_df: A dataframe of ranked candidate causes.
+            pruned: A list of pruned (Lasso-rejected) variables.
         """
         if ignore is None:
             ignore = []
         non_ignore = [col for col in data.columns if col not in ignore]
-
-        if method == CandidateCauseRankerMethod.LOGOS:
-            return CandidateCauseRanker._rank_logos(
-                data[non_ignore],
-                data_tags_df,
-                target_name,
-                prune_candidates,
-                lasso_alpha,
-                lasso_max_iter,
-            )
-        elif method == CandidateCauseRankerMethod.REGRESSION:
-            return CandidateCauseRanker._rank_regression(
-                data[non_ignore], data_tags_df, target_name
-            )
-        elif method == CandidateCauseRankerMethod.LANGMODEL:
-            return CandidateCauseRanker._rank_langmodel(
-                data[non_ignore], data_tags_df, target_name, model, gpt_log_path
-            )
-        else:
-            raise ValueError(f"Unknown method: {method}")
+        return CandidateCauseRanker._rank_logos(
+            data[non_ignore],
+            data_tags_df,
+            target_name,
+            prune_candidates,
+            lasso_alpha,
+            lasso_max_iter,
+        )
 
     @staticmethod
     def _rank_logos(
@@ -231,7 +150,7 @@ class CandidateCauseRanker:
         return result_df, pruned
 
     @staticmethod
-    def _rank_regression(
+    def rank_regression(
         data: pd.DataFrame,
         data_tags_df: pd.DataFrame = None,
         target_name: Optional[str] = None,
@@ -272,7 +191,7 @@ class CandidateCauseRanker:
         return result_df, []
 
     @staticmethod
-    def _rank_langmodel(
+    def rank_langmodel(
         data: pd.DataFrame,
         data_tags_df: pd.DataFrame = None,
         target_name: Optional[str] = None,
