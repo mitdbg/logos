@@ -1,0 +1,82 @@
+ExploreScreen {
+    layout: vertical;
+}
+
+/* ── Header ──────────────────────────────────────── */
+#explore-header {
+    height: 3;
+    background: $primary-darken-2;
+    padding: 0 1;
+    align: left middle;
+}
+
+#explore-title {
+    width: 1fr;
+    content-align: left middle;
+    color: $accent;
+    text-style: bold;
+}
+
+/* ── 2×2 grid rows ───────────────────────────────── */
+#top-row {
+    height: 1fr;
+}
+
+#bottom-row {
+    height: 1fr;
+}
+
+/* ── Shared pane style ───────────────────────────── */
+.pane {
+    width: 1fr;
+    border: solid $primary-darken-2;
+    padding: 0 1;
+    margin: 0 1;
+    overflow-y: auto;
+}
+
+.pane-title {
+    text-style: bold;
+    color: $accent;
+    padding: 0 0 1 0;
+}
+
+/* ── Rank pane ───────────────────────────────────── */
+#causes-table {
+    height: 1fr;
+    min-height: 4;
+}
+
+/* ── Graph pane ──────────────────────────────────── */
+#graph-scroll {
+    height: 1fr;
+    min-height: 4;
+}
+
+/* ── Edge pane ───────────────────────────────────── */
+#suggestion-label {
+    color: $warning;
+    height: auto;
+    margin: 1 0;
+}
+
+/* ── ATE pane ────────────────────────────────────── */
+#ate-result {
+    text-style: bold;
+    height: auto;
+    margin-top: 1;
+}
+
+#ate-error {
+    color: $error;
+    height: auto;
+}
+
+/* ── Loading indicators (hidden until active) ─────── */
+#rank-loading,
+#edge-loading,
+#refine-loading,
+#ate-loading {
+    display: none;
+    height: 2;
+}

@@ -1,0 +1,56 @@
+ParseScreen {
+    padding: 1 2;
+}
+
+#title {
+    text-style: bold;
+    color: $accent;
+    padding-bottom: 1;
+}
+
+#params-row {
+    height: 2fr;
+}
+
+#params-left {
+    width: 1fr;
+    margin-right: 1;
+}
+
+#params-right {
+    width: 2fr;
+}
+
+#results-section {
+    height: 1fr;
+    margin-top: 1;
+}
+
+#tables-row {
+    height: 1fr;
+}
+
+#table-vars {
+    width: 2fr;
+    margin-right: 1;
+    border: solid $primary-darken-2;
+}
+
+#table-templates {
+    width: 3fr;
+    border: solid $primary-darken-2;
+}
+
+#loading {
+    display: none;
+}
+
+#error-label {
+    color: $error;
+    height: auto;
+}
+
+#include-section {
+    height: auto;
+    margin-top: 1;
+}

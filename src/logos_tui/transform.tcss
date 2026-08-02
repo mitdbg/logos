@@ -1,0 +1,78 @@
+TransformScreen {
+    padding: 1 2;
+    overflow-y: auto;
+}
+
+#title {
+    text-style: bold;
+    color: $accent;
+    padding-bottom: 1;
+}
+
+#causal-unit-section {
+    height: auto;
+    max-height: 26;
+    border: solid $primary-darken-2;
+    padding: 1;
+    margin-bottom: 1;
+}
+
+#suggestions-table {
+    height: 8;
+    margin-bottom: 1;
+}
+
+#cu-inputs {
+    height: auto;
+    margin-bottom: 1;
+}
+
+#cu-var-pane {
+    width: 2fr;
+    margin-right: 1;
+    height: auto;
+}
+
+#cu-bins-pane {
+    width: 1fr;
+    height: auto;
+}
+
+#aggimp-row {
+    height: auto;
+    margin-bottom: 1;
+}
+
+#agg-pane {
+    width: 1fr;
+    margin-right: 1;
+    border: solid $primary-darken-2;
+    padding: 1;
+    height: auto;
+}
+
+#imp-pane {
+    width: 1fr;
+    border: solid $primary-darken-2;
+    padding: 1;
+    height: auto;
+}
+
+#agg-pane TextArea,
+#imp-pane TextArea {
+    height: 12;
+}
+
+#loading {
+    display: none;
+}
+
+#error-label {
+    color: $error;
+    height: auto;
+}
+
+#summary-label {
+    color: $success;
+    height: auto;
+}

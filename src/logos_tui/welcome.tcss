@@ -1,0 +1,40 @@
+WelcomeScreen {
+    align: center middle;
+}
+
+#welcome-box {
+    width: 60;
+    height: auto;
+    border: double $primary;
+    background: $surface;
+    padding: 2 4;
+    align: center middle;
+}
+
+#logo-title {
+    text-style: bold;
+    color: $accent;
+    content-align: center middle;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1;
+}
+
+#logo-subtitle {
+    color: $text-muted;
+    content-align: center middle;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 2;
+}
+
+#btn-row {
+    align: center middle;
+    height: auto;
+    width: 100%;
+}
+
+Button {
+    margin: 0 1;
+    min-width: 20;
+}

@@ -1,0 +1,39 @@
+FileSelectScreen {
+    padding: 1 2;
+}
+
+#layout {
+    height: 1fr;
+}
+
+#tree-pane {
+    width: 2fr;
+    border: solid $primary-darken-2;
+    padding: 0 1;
+    margin-right: 1;
+}
+
+#tree-label {
+    text-style: bold;
+    color: $accent;
+    padding: 0 0 1 0;
+}
+
+#file-tree {
+    height: 1fr;
+}
+
+#form-pane {
+    width: 3fr;
+}
+
+#title {
+    text-style: bold;
+    color: $accent;
+    padding-bottom: 1;
+}
+
+#error-label {
+    color: $error;
+    height: 1;
+}

@@ -1,0 +1,60 @@
+Screen {
+    background: $surface;
+}
+
+.screen-title {
+    text-style: bold;
+    color: $accent;
+    padding: 1 2;
+}
+
+.section-title {
+    text-style: bold;
+    color: $text;
+    padding: 0 1;
+    margin-top: 1;
+}
+
+.pane {
+    border: solid $primary-darken-2;
+    padding: 0 1;
+    margin: 0 1;
+}
+
+.pane-title {
+    text-style: bold;
+    color: $accent;
+    padding: 0 0 1 0;
+}
+
+.error-label {
+    color: $error;
+}
+
+.success-label {
+    color: $success;
+}
+
+.muted {
+    color: $text-muted;
+}
+
+Button {
+    margin: 0 1 1 0;
+}
+
+Input {
+    margin-bottom: 1;
+}
+
+Select {
+    margin-bottom: 1;
+}
+
+DataTable {
+    height: 1fr;
+}
+
+LoadingIndicator {
+    height: 3;
+}
