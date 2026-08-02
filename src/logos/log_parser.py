@@ -13,10 +13,10 @@ from typing import Any, Optional
 import pandas as pd
 from tqdm.auto import tqdm
 
-from src.logos.cache import Cache
-from src.logos.drain import Drain
-from src.logos.tag_utils import TagUtils
-from src.logos.variable_name.parsed_variable_name import ParsedVariableName
+from logos.cache import Cache
+from logos.drain import Drain
+from logos.tag_utils import TagUtils
+from logos.variable_name.parsed_variable_name import ParsedVariableName
 
 _logger = logging.getLogger(__name__)
 

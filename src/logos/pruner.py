@@ -9,9 +9,9 @@ from sklearn.linear_model import Lasso
 from sklearn.preprocessing import StandardScaler
 from tqdm.auto import tqdm
 
-from src.logos.ate_calculator import ATECalculator
-from src.logos.cache import Cache
-from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.ate_calculator import ATECalculator
+from logos.cache import Cache
+from logos.variable_name.prepared_variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 

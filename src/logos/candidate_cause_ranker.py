@@ -9,10 +9,10 @@ from typing import Optional, Tuple, cast
 
 import pandas as pd
 
-from src.logos.llm import get_openai_client
-from src.logos.pruner import Pruner
-from src.logos.regression import Regression
-from src.logos.tag_utils import TagUtils
+from logos.llm import get_openai_client
+from logos.pruner import Pruner
+from logos.regression import Regression
+from logos.tag_utils import TagUtils
 
 _logger = logging.getLogger(__name__)
 

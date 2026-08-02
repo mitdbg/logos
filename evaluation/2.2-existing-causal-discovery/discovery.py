@@ -19,7 +19,7 @@ from causallearn.search.PermutationBased.GRaSP import grasp
 from causallearn.search.ScoreBased.ExactSearch import bic_exact_search
 from causallearn.search.ScoreBased.GES import ges
 
-from src.logos.graph_renderer import GraphRenderer
+from logos.graph_renderer import GraphRenderer
 
 TIMEOUT_SECONDS = 30 * 60
 

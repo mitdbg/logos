@@ -13,17 +13,17 @@ import pandas as pd
 from eccs.eccs import ECCS
 from tqdm.auto import tqdm
 
-from src.logos.candidate_cause_ranker import CandidateCauseRanker
-from src.logos.edge_state_matrix import EdgeStateMatrix
-from src.logos.graph_renderer import GraphRenderer
-from src.logos.interactive_causal_graph_refiner import (
+from logos.candidate_cause_ranker import CandidateCauseRanker
+from logos.edge_state_matrix import EdgeStateMatrix
+from logos.graph_renderer import GraphRenderer
+from logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
 )
-from src.logos.prepared_source import PreparedSource
-from src.logos.pruner import Pruner
-from src.logos.tag_utils import TagUtils
-from src.logos.types import Types
-from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.prepared_source import PreparedSource
+from logos.pruner import Pruner
+from logos.tag_utils import TagUtils
+from logos.types import Types
+from logos.variable_name.prepared_variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 

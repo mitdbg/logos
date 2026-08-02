@@ -9,10 +9,10 @@ import networkx as nx
 import pandas as pd
 from eccs.eccs import ECCS
 
-from src.logos.llm import get_openai_client
-from src.logos.regression import Regression
-from src.logos.tag_utils import TagUtils
-from src.logos.types import Types
+from logos.llm import get_openai_client
+from logos.regression import Regression
+from logos.tag_utils import TagUtils
+from logos.types import Types
 
 
 

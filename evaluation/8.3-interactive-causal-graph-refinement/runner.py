@@ -10,10 +10,10 @@ sys.path.append("../..")
 
 
 from src.definitions import LOGOS_ROOT_DIR
-from src.logos.interactive_causal_graph_refiner import (
+from logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
 )
-from src.logos.logos import LOGos
+from logos.logos import LOGos
 
 ALL_METHODS = ["logos", "regression", "langmodel"]
 ALL_DATASETS = ["postgresql", "xyz"]

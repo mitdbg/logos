@@ -12,12 +12,12 @@ from typing import Callable, Optional, Tuple
 import pandas as pd
 from tqdm.auto import tqdm
 
-from src.logos.aggregate_selector import AggregateSelector
-from src.logos.cache import Cache
-from src.logos.causal_unit_suggester import CausalUnitSuggester
-from src.logos.parsed_source import ParsedSource
-from src.logos.tag_utils import TagUtils
-from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.aggregate_selector import AggregateSelector
+from logos.cache import Cache
+from logos.causal_unit_suggester import CausalUnitSuggester
+from logos.parsed_source import ParsedSource
+from logos.tag_utils import TagUtils
+from logos.variable_name.prepared_variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 
@@ -34,11 +34,11 @@ class CausalDatasetPreparer:
         self._prepared_log: pd.DataFrame = pd.DataFrame()
         self._prepared_variables: pd.DataFrame = pd.DataFrame()
 
-        agg_module = importlib.import_module("src.logos.aggimp.agg_funcs")
+        agg_module = importlib.import_module("logos.aggimp.agg_funcs")
         self._agg_funcs: dict[str, Callable] = {
             n: f for n, f in inspect.getmembers(agg_module, inspect.isfunction)
         }
-        imp_module = importlib.import_module("src.logos.aggimp.imp_funcs")
+        imp_module = importlib.import_module("logos.aggimp.imp_funcs")
         self._imp_funcs: dict[str, Callable] = {
             n: f for n, f in inspect.getmembers(imp_module, inspect.isfunction)
         }

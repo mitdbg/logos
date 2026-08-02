@@ -4,8 +4,8 @@ from typing import Optional
 
 import pandas as pd
 
-from src.logos.llm import get_openai_client
-from src.logos.variable_name.parsed_variable_name import ParsedVariableName
+from logos.llm import get_openai_client
+from logos.variable_name.parsed_variable_name import ParsedVariableName
 
 _logger = logging.getLogger(__name__)
 

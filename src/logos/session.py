@@ -12,9 +12,9 @@ from typing import Optional
 import networkx as nx
 import numpy as np
 
-from src.logos.cache import Cache
-from src.logos.log_parser import LogParser
-from src.logos.logos import LOGos
+from logos.cache import Cache
+from logos.log_parser import LogParser
+from logos.logos import LOGos
 
 _logger = logging.getLogger(__name__)
 

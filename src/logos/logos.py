@@ -6,18 +6,18 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from src.logos.ate_calculator import ATECalculator
-from src.logos.causal_explorer import CausalExplorer
-from src.logos.dataset_preparer import CausalDatasetPreparer
-from src.logos.exceptions import UnsupportedOperationError
-from src.logos.log_parser import LogParser
-from src.logos.parsed_source import ParsedSource
-from src.logos.parsed_table_input import ParsedTableInput
-from src.logos.prepared_table_input import PreparedTableInput
-from src.logos.pruner import Pruner
-from src.logos.tag_utils import TagUtils
-from src.logos.types import Types
-from src.logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.ate_calculator import ATECalculator
+from logos.causal_explorer import CausalExplorer
+from logos.dataset_preparer import CausalDatasetPreparer
+from logos.exceptions import UnsupportedOperationError
+from logos.log_parser import LogParser
+from logos.parsed_source import ParsedSource
+from logos.parsed_table_input import ParsedTableInput
+from logos.prepared_table_input import PreparedTableInput
+from logos.pruner import Pruner
+from logos.tag_utils import TagUtils
+from logos.types import Types
+from logos.variable_name.prepared_variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 # Suppress LOGos debug messages by default; call set_verbose_to(True) to enable.
@@ -169,19 +169,27 @@ class LOGos:
 
     @property
     def prepared_log(self) -> pd.DataFrame:
-        return self._preparer.prepared_log
+        if self._preparer is not None:
+            return self._preparer.prepared_log
+        return self._require_explorer()._prepared_log
 
     @property
     def prepared_variables(self) -> pd.DataFrame:
-        return self._preparer.prepared_variables
+        if self._preparer is not None:
+            return self._preparer.prepared_variables
+        return self._require_explorer()._prepared_variables
 
     @property
     def prepared_variable_names(self) -> list[str]:
-        return self._preparer.prepared_variable_names
+        if self._preparer is not None:
+            return self._preparer.prepared_variable_names
+        return self._require_explorer().prepared_variable_names
 
     @property
     def prepared_variable_tags(self) -> list[str]:
-        return self._preparer.prepared_variable_tags
+        if self._preparer is not None:
+            return self._preparer.prepared_variable_tags
+        return self._require_explorer()._prepared_variables["Tag"].tolist()
 
     def prepared_variable_names_with_base_x_and_no_pre_post_agg(
         self, x: Union[str, PreparedVariableName]
@@ -199,14 +207,16 @@ class LOGos:
         """
         return [
             var
-            for var in self._preparer.prepared_variable_names
+            for var in self.prepared_variable_names
             if PreparedVariableName(var).has_base_var(x)
             and PreparedVariableName(var).no_pre_post_aggs()
         ]
 
     @property
     def num_prepared_variables(self) -> int:
-        return self._preparer.num_prepared_variables
+        if self._preparer is not None:
+            return self._preparer.num_prepared_variables
+        return self._require_explorer().num_prepared_variables
 
     def parse(
         self,
@@ -472,11 +482,12 @@ class LOGos:
         Returns:
             The adjusted ATE.
         """
-        preparer = self._require_preparer()
+        preparer_log = self.prepared_log
+        preparer_vars = self.prepared_variables
         explorer = self._require_explorer()
         return ATECalculator.get_ate_and_confidence(
-            preparer.prepared_log,
-            preparer.prepared_variables,
+            preparer_log,
+            preparer_vars,
             treatment,
             outcome,
             confounder,

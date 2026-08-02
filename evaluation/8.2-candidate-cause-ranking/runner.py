@@ -8,9 +8,9 @@ import pandas as pd
 
 sys.path.append("../..")
 from src.definitions import LOGOS_ROOT_DIR
-from src.logos.candidate_cause_ranker import CandidateCauseRanker
-from src.logos.logos import LOGos
-from src.logos.tag_utils import TagUtils
+from logos.candidate_cause_ranker import CandidateCauseRanker
+from logos.logos import LOGos
+from logos.tag_utils import TagUtils
 
 ALL_METHODS = ["logos", "regression", "langmodel"]
 ALL_DATASETS = ["postgresql", "proprietary", "xyz"]

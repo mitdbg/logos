@@ -8,7 +8,7 @@ from typing import Optional
 
 import pandas as pd
 
-from src.logos.tag_utils import TagOrigin, TagUtils
+from logos.tag_utils import TagOrigin, TagUtils
 
 
 class ParsedTableInput:

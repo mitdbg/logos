@@ -4,7 +4,7 @@ Represents a prepared variable name.
 
 from typing import Optional, Self, Union
 
-from src.logos.variable_name.parsed_variable_name import ParsedVariableName
+from logos.variable_name.parsed_variable_name import ParsedVariableName
 
 
 class PreparedVariableName:
