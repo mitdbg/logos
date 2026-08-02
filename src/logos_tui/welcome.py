@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from textual.app import ComposeResult
-from textual.containers import Center, Middle, Vertical
+from textual.containers import Center, Horizontal, Middle, Vertical
 from textual.screen import Screen
 from textual.widgets import Button, Label, Static
 
@@ -32,6 +32,9 @@ class WelcomeScreen(Screen):
                         yield Button(
                             "Load Session", id="btn_load", variant="default"
                         )
+        with Horizontal(classes="exit-bar"):
+            yield Button("💾 Save & Exit", id="btn_save_exit", variant="success", disabled=True)
+            yield Button("✗ Exit", id="btn_exit_no_save", variant="error")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "btn_new":

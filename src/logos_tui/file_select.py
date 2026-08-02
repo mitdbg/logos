@@ -48,10 +48,9 @@ class FileSelectScreen(Screen):
                 with Horizontal():
                     yield Button("Start", variant="primary", id="btn_start")
                     yield Button("\u2190 Back", variant="default", id="btn_back")
-
-    def on_directory_tree_file_selected(
-        self, event: DirectoryTree.FileSelected
-    ) -> None:
+        with Horizontal(classes="exit-bar"):
+            yield Button("\U0001f4be Save & Exit", id="btn_save_exit", variant="success", disabled=True)
+            yield Button("\u2717 Exit", id="btn_exit_no_save", variant="error")
         """Clicking a file fills the path input."""
         self.query_one("#path_input", Input).value = str(event.path)
 

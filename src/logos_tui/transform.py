@@ -89,6 +89,9 @@ class TransformScreen(Screen):
             yield Button("Next →", variant="success", id="btn_next", disabled=True)
             yield Button("← Back", variant="default", id="btn_back")
             yield Button("💾 Save Session", id="btn_save_session")
+        with Horizontal(classes="exit-bar"):
+            yield Button("💾 Save & Exit", id="btn_save_exit", variant="success")
+            yield Button("✗ Exit without saving", id="btn_exit_no_save", variant="error")
 
     def on_mount(self) -> None:
         st = self.query_one("#suggestions-table", DataTable)

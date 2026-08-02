@@ -76,6 +76,9 @@ class ParseScreen(Screen):
                 id="include_select",
             )
             yield Button("Apply", id="btn_include", disabled=True)
+        with Horizontal(classes="exit-bar"):
+            yield Button("\U0001f4be Save & Exit", id="btn_save_exit", variant="success")
+            yield Button("\u2717 Exit without saving", id="btn_exit_no_save", variant="error")
 
     def on_mount(self) -> None:
         # Set up DataTable columns

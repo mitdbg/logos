@@ -58,3 +58,18 @@ DataTable {
 LoadingIndicator {
     height: 3;
 }
+
+/* Exit bar — docked to the bottom of every screen */
+.exit-bar {
+    dock: bottom;
+    height: 3;
+    background: $surface-darken-1;
+    border-top: solid $primary-darken-2;
+    align: right middle;
+    padding: 0 1;
+}
+
+.exit-bar Button {
+    margin: 0 0 0 1;
+    min-width: 22;
+}

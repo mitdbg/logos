@@ -179,6 +179,9 @@ class ExploreScreen(Screen):
                     yield LoadingIndicator(id="ate-loading")
                 yield Label("", id="ate-result")
                 yield Label("", id="ate-error")
+        with Horizontal(classes="exit-bar"):
+            yield Button("\U0001f4be Save & Exit", id="btn_save_exit", variant="success")
+            yield Button("\u2717 Exit without saving", id="btn_exit_no_save", variant="error")
 
     # ------------------------------------------------------------------
     # Lifecycle

@@ -97,7 +97,6 @@ nav:
     - "ParseScreen": reference/logos_tui/parse.md
     - "TransformScreen": reference/logos_tui/transform.md
     - "ExploreScreen": reference/logos_tui/explore.md
-    - "ATEScreen": reference/logos_tui/ate.md
     - "LoadSessionModal": reference/logos_tui/load_modal.md
     - "SaveSessionModal": reference/logos_tui/save_modal.md
 
