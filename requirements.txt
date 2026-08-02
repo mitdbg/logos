@@ -2,11 +2,12 @@ causal_learn==0.1.3.8
 dowhy==0.11.1
 eccs==0.1.4
 mkdocs_gen_files==0.5.0
+netext>=0.5.0
 networkx==3.3
 pandas==2.2.3
 pgmpy==0.1.25
 pyarrow>=14.0
 scikit_learn==1.5.2
 statsmodels==0.14.2
-
+textual>=0.80.0
 tqdm==4.66.4

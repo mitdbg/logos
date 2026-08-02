@@ -1,7 +1,36 @@
+# pyproject.toml
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "logos"
-version = "0.1.0"
+version = "0.2.0"
 requires-python = ">=3.11"
+dependencies = [
+    "causal_learn==0.1.3.8",
+    "dowhy==0.11.1",
+    "eccs==0.1.4",
+    "mkdocs_gen_files==0.5.0",
+    "networkx==3.3",
+    "pandas==2.2.3",
+    "pgmpy==0.1.25",
+    "pyarrow>=14.0",
+    "scikit_learn==1.5.2",
+    "statsmodels==0.14.2",
+    "textual>=0.80.0",
+    "tqdm==4.66.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"logos" = ["py.typed"]
+"logos_tui" = ["*.tcss"]
 
 [tool.black]
 line-length = 80
+
+[tool.deptry]
+known_first_party = ["logos", "logos_tui"]

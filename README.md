@@ -12,7 +12,7 @@ In order to use the LLM-powered capabilites of LOGos, please add a `.env` file t
 
 For an introduction to our Python-based interface, you can turn to our demo notebook at [`demo/demo.ipynb`](demo/demo.ipynb).
 
-
+We also offer a terminal UI (TUI) built using [Textual](https://textual.textualize.io/). You can launch it from the repository root by running [`demo/run_ui_demo.sh`](demo/run_ui_demo.sh), or directly with `python -m src.logos_tui`.
 
 
 ### Reproducing our evaluation

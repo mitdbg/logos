@@ -79,7 +79,6 @@ nav:
     - "GraphRenderer": reference/logos/graph_renderer.md
     - "ATECalculator": reference/logos/ate_calculator.md
     - "InteractiveCausalGraphRefiner": reference/logos/interactive_causal_graph_refiner.md
-    - "EdgeOccurrenceTree": reference/logos/edge_occurrence_tree.md
     - "Cache": reference/logos/cache.md
     - "ParsedSource": reference/logos/parsed_source.md
     - "PreparedSource": reference/logos/prepared_source.md
@@ -91,6 +90,16 @@ nav:
     - Aggregation/Imputation Functions: 
       - "Aggregation Functions": reference/logos/aggimp/agg_funcs.md
       - "Imputation Functions": reference/logos/aggimp/imp_funcs.md
+  - TUI:
+    - "App": reference/logos_tui/app.md
+    - "WelcomeScreen": reference/logos_tui/welcome.md
+    - "FileSelectScreen": reference/logos_tui/file_select.md
+    - "ParseScreen": reference/logos_tui/parse.md
+    - "TransformScreen": reference/logos_tui/transform.md
+    - "ExploreScreen": reference/logos_tui/explore.md
+    - "ATEScreen": reference/logos_tui/ate.md
+    - "LoadSessionModal": reference/logos_tui/load_modal.md
+    - "SaveSessionModal": reference/logos_tui/save_modal.md
 
   
 markdown_extensions:

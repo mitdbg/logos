@@ -9,6 +9,7 @@ webapp/log_results
 
 **/__pycache__/
 **/scratch.*
+src/*egg*/
 
 *.md
 draft.log
