@@ -1,4 +1,5 @@
 """File selection screen: path input + entry-point chooser."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -8,16 +9,18 @@ from textual.containers import Horizontal, Vertical
 from textual.screen import Screen
 from textual.widgets import Button, DirectoryTree, Input, Label, Select, Static
 
-from logos.logos import LOGos
+from logos import Logos
 from logos_tui.explore import ExploreScreen
 from logos_tui.parse import ParseScreen
 from logos_tui.transform import TransformScreen
 
-
 _EP_OPTIONS = [
     ("Raw log file (EP-1): run Drain parsing", "EP-1"),
     ("Pre-parsed table (EP-2): skip Drain, provide one row per event", "EP-2"),
-    ("Pre-prepared table (EP-3): skip parse & prepare, ready for exploration", "EP-3"),
+    (
+        "Pre-prepared table (EP-3): skip parse & prepare, ready for exploration",
+        "EP-3",
+    ),
 ]
 
 
@@ -43,13 +46,22 @@ class FileSelectScreen(Screen):
                     value="EP-1",
                 )
                 yield Label("Workdir (click a folder in the tree to fill):")
-                yield Input(placeholder="/tmp/logos_workdir", id="workdir_input")
+                yield Input(
+                    placeholder="/tmp/logos_workdir", id="workdir_input"
+                )
                 yield Label("", id="error-label")
                 with Horizontal():
                     yield Button("Start", variant="primary", id="btn_start")
-                    yield Button("\u2190 Back", variant="default", id="btn_back")
+                    yield Button(
+                        "\u2190 Back", variant="default", id="btn_back"
+                    )
         with Horizontal(classes="exit-bar"):
-            yield Button("\U0001f4be Save & Exit", id="btn_save_exit", variant="success", disabled=True)
+            yield Button(
+                "\U0001f4be Save & Exit",
+                id="btn_save_exit",
+                variant="success",
+                disabled=True,
+            )
             yield Button("\u2717 Exit", id="btn_exit_no_save", variant="error")
         """Clicking a file fills the path input."""
         self.query_one("#path_input", Input).value = str(event.path)
@@ -98,9 +110,7 @@ class FileSelectScreen(Screen):
                     self.query_one("#error-label", Label).update,
                     f"[red]{exc}[/red]",
                 )
-                self.app.call_from_thread(
-                    setattr, btn, "disabled", False
-                )
+                self.app.call_from_thread(setattr, btn, "disabled", False)
                 return
             self.app.logos = logos
             self.app.call_from_thread(self._navigate, str(ep))
@@ -118,25 +128,27 @@ class FileSelectScreen(Screen):
     @staticmethod
     def _create_logos(path: str, workdir: str, ep: str):
         import os
+
         import pandas as pd
 
         if ep == "EP-1":
             if not os.path.exists(path):
                 raise FileNotFoundError(f"File not found: {path!r}")
-            return LOGos(filename=path, workdir=workdir)
+            return Logos(filename=path, workdir=workdir)
 
         elif ep == "EP-2":
             # Load CSV/Parquet as parsed table
             df = _load_table(path)
-            return LOGos.from_parsed_table(df, workdir=workdir, source_id=path)
+            return Logos.from_parsed_table(df, workdir=workdir, source_id=path)
 
         else:  # EP-3
             df = _load_table(path)
-            return LOGos.from_prepared_table(df, workdir=workdir)
+            return Logos.from_prepared_table(df, workdir=workdir)
 
 
 def _load_table(path: str):
     import pandas as pd
+
     if path.endswith(".parquet"):
         return pd.read_parquet(path)
     elif path.endswith(".csv"):

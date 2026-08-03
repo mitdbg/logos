@@ -10,102 +10,94 @@ import networkx as nx
 import pandas as pd
 
 
-class GraphRenderer:
+def draw_graph(graph: nx.DiGraph, var_info: pd.DataFrame) -> str:
     """
-    Render a digraph with appropriate margins and node tags.
+    Draw a graph with appropriate margins and node tags.
+
+    Parameters:
+        graph: The graph to be drawn.
+        var_info: A dataframe containing the tags of the variables in the
+            graph.
+
+    Returns:
+        A base64-encoded string representation of the graph.
     """
+    if graph.number_of_nodes() == 0:
+        return ""
 
-    @staticmethod
-    def draw_graph(graph: nx.DiGraph, var_info: pd.DataFrame) -> str:
-        """
-        Draw a graph with appropriate margins and node tags.
-
-        Parameters:
-            graph: The graph to be drawn.
-            var_info: A dataframe containing the tags of the variables in the
-                graph.
-
-        Returns:
-            A base64-encoded string representation of the graph.
-        """
-        if graph.number_of_nodes() == 0:
-            return ""
-
-        pos = nx.spring_layout(graph)
-        fig, ax = plt.subplots()
-        nx.draw(
-            graph,
-            pos,
-            ax=ax,
-            edgelist=graph.edges(),
-            with_labels=False,
-            width=2.0,
-            node_color="#d3d3d3",
-            edge_color=[
-                graph[u][v].get("color", "#7f9aba") for u, v in graph.edges()
-            ],
+    pos = nx.spring_layout(graph)
+    fig, ax = plt.subplots()
+    nx.draw(
+        graph,
+        pos,
+        ax=ax,
+        edgelist=graph.edges(),
+        with_labels=False,
+        width=2.0,
+        node_color="#d3d3d3",
+        edge_color=[
+            graph[u][v].get("color", "#7f9aba") for u, v in graph.edges()
+        ],
+    )
+    node_labels = {
+        n: (
+            n
+            if len(var_info.loc[var_info["Name"] == n, "Tag"].values) == 0
+            else var_info.loc[var_info["Name"] == n, "Tag"].values[0]
         )
-        node_labels = {
-            n: (
-                n
-                if len(var_info.loc[var_info["Name"] == n, "Tag"].values) == 0
-                else var_info.loc[var_info["Name"] == n, "Tag"].values[0]
-            )
-            for n in list(graph.nodes)
-        }
-        text = nx.draw_networkx_labels(
-            graph, pos, labels=node_labels, font_size=12, ax=ax
-        )
-        for _, t in text.items():
-            t.set_rotation(30)
+        for n in list(graph.nodes)
+    }
+    text = nx.draw_networkx_labels(
+        graph, pos, labels=node_labels, font_size=12, ax=ax
+    )
+    for _, t in text.items():
+        t.set_rotation(30)
 
-        # Fix margins
-        x_values, y_values = zip(*pos.values())
-        x_max, x_min = max(x_values), min(x_values)
-        y_max, y_min = max(y_values), min(y_values)
-        if x_max != x_min:
-            x_margin = (x_max - x_min) * 0.3
-            ax.set_xlim(x_min - x_margin, x_max + x_margin)
-        if y_max != y_min:
-            y_margin = (y_max - y_min) * 0.3
-            ax.set_ylim(y_min - y_margin, y_max + y_margin)
+    # Fix margins
+    x_values, y_values = zip(*pos.values())
+    x_max, x_min = max(x_values), min(x_values)
+    y_max, y_min = max(y_values), min(y_values)
+    if x_max != x_min:
+        x_margin = (x_max - x_min) * 0.3
+        ax.set_xlim(x_min - x_margin, x_max + x_margin)
+    if y_max != y_min:
+        y_margin = (y_max - y_min) * 0.3
+        ax.set_ylim(y_min - y_margin, y_max + y_margin)
 
-        buffer = BytesIO()
-        fig.savefig(buffer, format="png")
-        plt.close(fig)
-        img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    buffer = BytesIO()
+    fig.savefig(buffer, format="png")
+    plt.close(fig)
+    img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
-        return img_str
+    return img_str
 
-    @staticmethod
-    def save_graph(
-        graph: nx.DiGraph, var_info: pd.DataFrame, filename: str
-    ) -> None:
-        """
-        Save the graph to a file as a png image.
+def save_graph(
+    graph: nx.DiGraph, var_info: pd.DataFrame, filename: str
+) -> None:
+    """
+    Save the graph to a file as a png image.
 
-        Parameters:
-            graph: The graph to be saved.
-            var_info: A dataframe containing the tags of the variables in the
-                graph.
-            filename: The name of the file to which the graph should be saved.
-        """
-        img_str = GraphRenderer.draw_graph(graph, var_info)
-        with open(filename, "wb") as f:
-            f.write(base64.b64decode(img_str))
+    Parameters:
+        graph: The graph to be saved.
+        var_info: A dataframe containing the tags of the variables in the
+            graph.
+        filename: The name of the file to which the graph should be saved.
+    """
+    img_str = draw_graph(graph, var_info)
+    with open(filename, "wb") as f:
+        f.write(base64.b64decode(img_str))
 
-    @staticmethod
-    def graph_string_to_html(graph: str) -> str:
-        """
-        Convert the base64 graph string to an HTML image tag.
+def graph_string_to_html(graph: str) -> str:
+    """
+    Convert the base64 graph string to an HTML image tag.
 
-        Parameters:
-            graph: The base64-encoded graph string.
+    Parameters:
+        graph: The base64-encoded graph string.
 
-        Returns:
-            An HTML <img> tag embedding the graph.
-        """
-        return (
-            f'<img src="data:image/png;base64,{graph}" '
-            'style="max-width: 100%; height: auto;">'
-        )
+    Returns:
+        An HTML <img> tag embedding the graph.
+    """
+    return (
+        f'<img src="data:image/png;base64,{graph}" '
+        'style="max-width: 100%; height: auto;">'
+    )

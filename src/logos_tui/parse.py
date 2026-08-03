@@ -1,4 +1,5 @@
 """Parse screen (EP-1): configure Drain parameters and run parsing."""
+
 from __future__ import annotations
 
 import json
@@ -17,7 +18,7 @@ from textual.widgets import (
     TextArea,
 )
 
-from logos.logos import LOGos
+from logos import Logos
 from logos_tui.transform import TransformScreen
 
 
@@ -27,7 +28,7 @@ class ParseScreen(Screen):
     CSS_PATH = "parse.tcss"
 
     def compose(self) -> ComposeResult:
-        logos: LOGos = self.app.logos
+        logos: Logos = self.app.logos
         default_regex = json.dumps(logos.DEFAULT_REGEX_DICT, indent=2)
         default_prefix = logos.DEFAULT_MESSAGE_PREFIX
 
@@ -54,7 +55,9 @@ class ParseScreen(Screen):
         with Horizontal():
             yield Button("Parse", variant="primary", id="btn_parse")
             yield Button("Force re-parse", variant="default", id="btn_force")
-            yield Button("Next →", variant="success", id="btn_next", disabled=True)
+            yield Button(
+                "Next →", variant="success", id="btn_next", disabled=True
+            )
             yield Button("← Back", variant="default", id="btn_back")
             yield Button("💾 Save Session", id="btn_save_session")
         yield LoadingIndicator(id="loading")
@@ -69,7 +72,9 @@ class ParseScreen(Screen):
                 yield DataTable(id="templates_table", cursor_type="row")
 
         with Horizontal(id="include-section"):
-            yield Label("Include variable in template (corrects over-segmentation):")
+            yield Label(
+                "Include variable in template (corrects over-segmentation):"
+            )
             yield Select(
                 options=[],
                 prompt="Select parsed variable",
@@ -77,8 +82,14 @@ class ParseScreen(Screen):
             )
             yield Button("Apply", id="btn_include", disabled=True)
         with Horizontal(classes="exit-bar"):
-            yield Button("\U0001f4be Save & Exit", id="btn_save_exit", variant="success")
-            yield Button("\u2717 Exit without saving", id="btn_exit_no_save", variant="error")
+            yield Button(
+                "\U0001f4be Save & Exit", id="btn_save_exit", variant="success"
+            )
+            yield Button(
+                "\u2717 Exit without saving",
+                id="btn_exit_no_save",
+                variant="error",
+            )
 
     def on_mount(self) -> None:
         # Set up DataTable columns
@@ -110,7 +121,9 @@ class ParseScreen(Screen):
             regex_dict = json.loads(regex_text)
             sim_thresh = float(self.query_one("#sim_thresh", Input).value)
             depth = int(self.query_one("#depth", Input).value)
-            message_prefix = self.query_one("#message_prefix", Input).value.strip()
+            message_prefix = self.query_one(
+                "#message_prefix", Input
+            ).value.strip()
         except Exception as exc:
             error_lbl.update(f"[red]Invalid parameters: {exc}[/red]")
             return
@@ -139,7 +152,9 @@ class ParseScreen(Screen):
         self.query_one("#loading").display = False
         for btn_id in ("btn_parse", "btn_force", "btn_back"):
             self.query_one(f"#{btn_id}", Button).disabled = False
-        self.query_one("#error-label", Label).update(f"[red]Parse failed: {msg}[/red]")
+        self.query_one("#error-label", Label).update(
+            f"[red]Parse failed: {msg}[/red]"
+        )
 
     def _on_parse_done(self) -> None:
         self.query_one("#loading").display = False
@@ -149,7 +164,7 @@ class ParseScreen(Screen):
         self.notify("Parsing complete!", severity="information")
 
     def _refresh_tables(self) -> None:
-        logos: LOGos = self.app.logos
+        logos: Logos = self.app.logos
         pv = logos.parsed_variables
         pt = logos.parsed_templates
 
@@ -190,4 +205,6 @@ class ParseScreen(Screen):
             self.notify(str(exc), severity="error")
             return
         self._refresh_tables()
-        self.notify(f"Included '{var}' in its template.", severity="information")
+        self.notify(
+            f"Included '{var}' in its template.", severity="information"
+        )

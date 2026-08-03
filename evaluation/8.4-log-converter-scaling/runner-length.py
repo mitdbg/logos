@@ -1,11 +1,11 @@
-import sys
 import os
+import sys
 import time
 
-sys.path.append("../../../")
-from logos.logos import LOGos
-from definitions import LOGOS_ROOT_DIR
 from gen_scaling_logs import gen_log
+
+from logos.logos import LOGos
+from logos.paths import LOGOS_ROOT_DIR
 
 
 def main():
@@ -36,7 +36,7 @@ def main():
         S = 10
         V = 1
         C = 10
-        filename = os.path.join(indir, f"length_log_{l}.log") 
+        filename = os.path.join(indir, f"length_log_{l}.log")
         if not os.path.exists(filename):
             gen_log(L, S, V, C, filename)
         print(f"Generated log of length {l}")

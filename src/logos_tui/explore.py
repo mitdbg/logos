@@ -2,16 +2,16 @@
 Explore screen: 2×2 grid — rank candidates | causal graph
                             edge decisions  | ATE
 """
+
 from __future__ import annotations
 
 from typing import Optional
 
-import networkx as nx
 import netext
+import networkx as nx
 from netext import ArrowTip, EdgeProperties, NodeProperties
 from netext.edge_rendering.modes import EdgeSegmentDrawingMode
 from rich.style import Style
-
 from textual.app import ComposeResult
 from textual.containers import Horizontal, ScrollableContainer, Vertical
 from textual.screen import Screen
@@ -24,7 +24,7 @@ from textual.widgets import (
     Static,
 )
 
-from logos.logos import LOGos
+from logos import Logos
 
 _EMPTY_MSG = "[dim]Graph is empty. Accept some edges to populate it.[/dim]"
 
@@ -69,7 +69,9 @@ def _render_graph_netext(graph: nx.DiGraph, variables, width: int, height: int):
     except Exception:
         lines = [
             f"[green]{tag(u)}[/green] [dim]\u2192[/dim] [blue]{tag(v)}[/blue]"
-            for u, v in sorted(graph.edges, key=lambda e: (tag(e[0]), tag(e[1])))
+            for u, v in sorted(
+                graph.edges, key=lambda e: (tag(e[0]), tag(e[1]))
+            )
         ]
         return "\n".join(lines) if lines else "[dim](no edges yet)[/dim]"
 
@@ -110,9 +112,7 @@ class ExploreScreen(Screen):
 
             # TOP-RIGHT: causal graph
             with Vertical(classes="pane", id="graph-pane"):
-                yield Static(
-                    "[bold]Causal Graph[/bold]", classes="pane-title"
-                )
+                yield Static("[bold]Causal Graph[/bold]", classes="pane-title")
                 yield ScrollableContainer(
                     Static("", id="graph-text"), id="graph-scroll"
                 )
@@ -139,9 +139,7 @@ class ExploreScreen(Screen):
                         "Accept  ✓", id="btn_accept", variant="success"
                     )
                     yield Button("Reject  ✗", id="btn_reject", variant="error")
-                yield Button(
-                    "Reject all undecided → dst", id="btn_rej_inc"
-                )
+                yield Button("Reject all undecided → dst", id="btn_rej_inc")
                 yield Button(
                     "Reject all undecided from src →", id="btn_rej_out"
                 )
@@ -156,7 +154,8 @@ class ExploreScreen(Screen):
             # BOTTOM-RIGHT: ATE
             with Vertical(classes="pane", id="ate-pane"):
                 yield Static(
-                    "[bold]Average Treatment Effect[/bold]", classes="pane-title"
+                    "[bold]Average Treatment Effect[/bold]",
+                    classes="pane-title",
                 )
                 yield Label("Treatment:")
                 yield Select(
@@ -180,8 +179,14 @@ class ExploreScreen(Screen):
                 yield Label("", id="ate-result")
                 yield Label("", id="ate-error")
         with Horizontal(classes="exit-bar"):
-            yield Button("\U0001f4be Save & Exit", id="btn_save_exit", variant="success")
-            yield Button("\u2717 Exit without saving", id="btn_exit_no_save", variant="error")
+            yield Button(
+                "\U0001f4be Save & Exit", id="btn_save_exit", variant="success"
+            )
+            yield Button(
+                "\u2717 Exit without saving",
+                id="btn_exit_no_save",
+                variant="error",
+            )
 
     # ------------------------------------------------------------------
     # Lifecycle
@@ -192,7 +197,7 @@ class ExploreScreen(Screen):
         self._update_graph_display()
 
     def _populate_variable_selects(self) -> None:
-        logos: LOGos = self.app.logos
+        logos: Logos = self.app.logos
         try:
             tags = logos.prepared_variable_tags
         except Exception:
@@ -251,7 +256,9 @@ class ExploreScreen(Screen):
             try:
                 df = self.app.logos.rank_candidate_causes(target=target_tag)
             except Exception as exc:
-                self.app.call_from_thread(self.notify, str(exc), severity="error")
+                self.app.call_from_thread(
+                    self.notify, str(exc), severity="error"
+                )
                 self.app.call_from_thread(self._after_rank, None)
                 return
             self.app.call_from_thread(self._after_rank, df)
@@ -265,16 +272,22 @@ class ExploreScreen(Screen):
             return
         table = self.query_one("#causes-table", DataTable)
         table.clear(columns=True)
-        table.add_columns("Candidate", "Slope", "P-value", "Cand→Tgt", "Tgt→Cand")
+        table.add_columns(
+            "Candidate", "Slope", "P-value", "Cand→Tgt", "Tgt→Cand"
+        )
         for _, row in df.iterrows():
             table.add_row(
                 str(row.get("Candidate Tag", row.get("Candidate", ""))),
-                f"{row.get('Slope', 0.0):.4f}"
-                if row.get("Slope") is not None
-                else "—",
-                f"{row.get('P-value', 1.0):.4f}"
-                if row.get("P-value") is not None
-                else "—",
+                (
+                    f"{row.get('Slope', 0.0):.4f}"
+                    if row.get("Slope") is not None
+                    else "—"
+                ),
+                (
+                    f"{row.get('P-value', 1.0):.4f}"
+                    if row.get("P-value") is not None
+                    else "—"
+                ),
                 str(row.get("Candidate->Target Edge Status", "—")),
                 str(row.get("Target->Candidate Edge Status", "—")),
             )
@@ -305,7 +318,9 @@ class ExploreScreen(Screen):
             )
             return
         if action == "reject_inc" and dst_sel.value is Select.BLANK:
-            self.notify("Please select a destination variable.", severity="warning")
+            self.notify(
+                "Please select a destination variable.", severity="warning"
+            )
             return
         if action == "reject_out" and src_sel.value is Select.BLANK:
             self.notify("Please select a source variable.", severity="warning")
@@ -320,7 +335,7 @@ class ExploreScreen(Screen):
 
         def _act() -> None:
             try:
-                logos: LOGos = self.app.logos
+                logos: Logos = self.app.logos
                 if action == "accept":
                     score, next_var = logos.accept(src, dst)
                 elif action == "reject":
@@ -330,7 +345,9 @@ class ExploreScreen(Screen):
                 else:
                     score, next_var = logos.reject_undecided_outgoing(src)
             except Exception as exc:
-                self.app.call_from_thread(self.notify, str(exc), severity="error")
+                self.app.call_from_thread(
+                    self.notify, str(exc), severity="error"
+                )
                 self.app.call_from_thread(self._after_edge_action, None, None)
                 return
             self.app.call_from_thread(self._after_edge_action, score, next_var)
@@ -369,7 +386,9 @@ class ExploreScreen(Screen):
                     treatment_tag, outcome_tag
                 )
             except Exception as exc:
-                self.app.call_from_thread(self.notify, str(exc), severity="error")
+                self.app.call_from_thread(
+                    self.notify, str(exc), severity="error"
+                )
                 self.app.call_from_thread(self._after_suggest, None)
                 return
             self.app.call_from_thread(self._after_suggest, edge)
@@ -397,7 +416,7 @@ class ExploreScreen(Screen):
 
     def _update_graph_display(self) -> None:
         try:
-            logos: LOGos = self.app.logos
+            logos: Logos = self.app.logos
             pane = self.query_one("#graph-pane")
             # Subtract borders/padding/title from the usable canvas area
             w = max(20, (pane.content_size.width or 40) - 2)
@@ -415,8 +434,9 @@ class ExploreScreen(Screen):
 
     def _save_graph_png(self) -> None:
         import os
+
         try:
-            logos: LOGos = self.app.logos
+            logos: Logos = self.app.logos
             workdir = logos._explorer._workdir if logos._explorer else "."
             path = os.path.join(workdir, "causal_graph.png")
             logos.save_graph(path)
@@ -464,7 +484,9 @@ class ExploreScreen(Screen):
                     False,
                 )
                 return
-            self.app.call_from_thread(self._on_ate_done, treatment, outcome, ate)
+            self.app.call_from_thread(
+                self._on_ate_done, treatment, outcome, ate
+            )
 
         self.run_worker(_calc, thread=True)
 

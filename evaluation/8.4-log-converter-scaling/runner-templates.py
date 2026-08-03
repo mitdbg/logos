@@ -1,11 +1,11 @@
-import sys
 import os
+import sys
 import time
 
-sys.path.append("../../../")
-from logos.logos import LOGos
-from definitions import LOGOS_ROOT_DIR
 from gen_scaling_logs import gen_log
+
+from logos.logos import LOGos
+from logos.paths import LOGOS_ROOT_DIR
 
 
 def main():
@@ -23,7 +23,9 @@ def main():
         os.makedirs(outdir)
 
     runlog_path = os.path.join(outdir, f"templates_runlog.txt")
-    outfile_path = os.path.join(outdir, "8.4-log-converter-scaling-templates.csv")
+    outfile_path = os.path.join(
+        outdir, "8.4-log-converter-scaling-templates.csv"
+    )
 
     f = open(runlog_path, "w+")
     fr1 = open(outfile_path, "w+")

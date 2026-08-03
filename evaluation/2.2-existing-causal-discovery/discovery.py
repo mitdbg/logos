@@ -1,14 +1,10 @@
-import sys
-
-import pandas as pd
-
-sys.path.append("../..")
 import multiprocessing as mp
 import pickle
-import threading
+import sys
 from datetime import datetime
 
 import networkx as nx
+import pandas as pd
 from causallearn.graph.Endpoint import Endpoint
 from causallearn.search.ConstraintBased.FCI import fci
 from causallearn.search.ConstraintBased.PC import pc
@@ -218,7 +214,9 @@ def run_method_with_timer(dataset_name, method_name, options, fres):
         except Exception as e:
             print(f"{datetime.now()} Error running {function}: {e}")
             sys.stdout.flush()
-            fres.write(f"{dataset_name},{method_name},{option},exception: {e},\n")
+            fres.write(
+                f"{dataset_name},{method_name},{option},exception: {e},\n"
+            )
             fres.flush()
 
     ##############################
@@ -228,7 +226,10 @@ def run_method_with_timer(dataset_name, method_name, options, fres):
     for option in options:
         process = mp.Process(
             target=run_safe,
-            kwargs={"function": locals()[f"run_{method_name}"], "option": option},
+            kwargs={
+                "function": locals()[f"run_{method_name}"],
+                "option": option,
+            },
         )
         print(f"{datetime.now()} Running {method_name} with {option}")
         sys.stdout.flush()

@@ -1,15 +1,12 @@
-import os
-import sys
-
-sys.path.append("../..")
-
 import argparse
+import os
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
-from definitions import LOGOS_ROOT_DIR
+import pandas as pd
 
+from logos.paths import LOGOS_ROOT_DIR
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--use_repro_results", action="store_true")
@@ -149,7 +146,9 @@ for metric, properties in LINE_FORMATTING_DATA.items():
         label=form_polynomial_string(pfit_coeffs),
     )
 
-    ax1.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0001), fontsize=FONTSIZE)
+    ax1.legend(
+        loc="lower center", bbox_to_anchor=(0.5, 1.0001), fontsize=FONTSIZE
+    )
 
     plt.tight_layout()
     plt.show
@@ -222,7 +221,9 @@ for metric, properties in LINE_FORMATTING_DATA.items():
         color="black",
         label=form_polynomial_string(afit_coeffs),
     )
-    ax2.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0001), fontsize=FONTSIZE)
+    ax2.legend(
+        loc="lower center", bbox_to_anchor=(0.5, 1.0001), fontsize=FONTSIZE
+    )
 
     plt.tight_layout()
     plt.show

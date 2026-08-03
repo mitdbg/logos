@@ -1,5 +1,5 @@
 """
-Protocol that CausalDatasetPreparer and PreparedTableInput satisfy, letting
+Protocol that CausalDatasetPreparer and PreparedDataFrameSource satisfy, letting
 CausalExplorer accept either without an inheritance hierarchy.
 """
 
@@ -11,7 +11,7 @@ import pandas as pd
 @runtime_checkable
 class PreparedSource(Protocol):
     """
-    Structural interface shared by CausalDatasetPreparer and PreparedTableInput.
+    Structural interface shared by CausalDatasetPreparer and PreparedDataFrameSource.
     """
 
     @property

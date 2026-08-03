@@ -9,7 +9,7 @@ from typing import Optional
 import pandas as pd
 
 
-class PreparedTableInput:
+class PreparedDataFrameSource:
     """
     Holds a user-provided prepared DataFrame ready for CausalExplorer.
 
@@ -37,8 +37,8 @@ class PreparedTableInput:
 
         self._workdir = workdir
         self._prepared_log: pd.DataFrame = data.copy(deep=True)
-        self._prepared_variables: pd.DataFrame = (
-            self._synthesize_variables(data, variable_tags or {})
+        self._prepared_variables: pd.DataFrame = self._synthesize_variables(
+            data, variable_tags or {}
         )
         # Empty parsed artefacts; inspect() skips lookups when From regex=True.
         self._parsed_variables: pd.DataFrame = pd.DataFrame(
@@ -84,7 +84,7 @@ class PreparedTableInput:
     ) -> pd.DataFrame:
         rows = []
         for col in data.columns:
-            col_type = PreparedTableInput._infer_type(data[col])
+            col_type = PreparedDataFrameSource._infer_type(data[col])
             examples = data[col].dropna().unique()[:5].tolist()
             rows.append(
                 {

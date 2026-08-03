@@ -8,10 +8,10 @@ from typing import Optional
 
 import pandas as pd
 
-from logos.tag_utils import TagOrigin, TagUtils
+from logos.tag_utils import TagOrigin, deduplicate_tags, get_tag, set_tag
 
 
-class ParsedTableInput:
+class ParsedDataFrameSource:
     """
     A ParsedSource backed by a user-supplied DataFrame.
 
@@ -88,7 +88,7 @@ class ParsedTableInput:
         return self._skip_writeout
 
     def get_tag_of_parsed(self, name: str) -> str:
-        return TagUtils.get_tag(self._parsed_variables, name, "parsed")
+        return get_tag(self._parsed_variables, name, "parsed")
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -104,7 +104,7 @@ class ParsedTableInput:
     ) -> pd.DataFrame:
         rows = []
         for col in data.columns:
-            col_type = ParsedTableInput._infer_type(data[col])
+            col_type = ParsedDataFrameSource._infer_type(data[col])
             examples = (
                 data[col].dropna().unique()[:5].tolist()
             )

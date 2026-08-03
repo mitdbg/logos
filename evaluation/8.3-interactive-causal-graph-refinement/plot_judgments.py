@@ -1,12 +1,11 @@
-import pandas as pd
-import sys
+import argparse
+import os
 
-sys.path.append("../..")
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from definitions import LOGOS_ROOT_DIR
-import os
-import argparse
+import pandas as pd
+
+from logos.paths import LOGOS_ROOT_DIR
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--use_repro_results", action="store_true")
@@ -52,7 +51,8 @@ for dataset in datasets:
     # Plot the judgments required by of each method.
     judgments = {}
     group_cols = list(
-        set(results[methods[0]].columns) - set(["judgments", "edge", "ATE", "ARE_ATE"])
+        set(results[methods[0]].columns)
+        - set(["judgments", "edge", "ATE", "ARE_ATE"])
     )
     for method in methods:
         if len(group_cols) == 0:
@@ -68,14 +68,17 @@ for dataset in datasets:
                 .mean()["judgments"]
             )
     df = pd.DataFrame(
-        {"judgments": [judgments[m] for m in mapping.keys()]}, index=mapping.values()
+        {"judgments": [judgments[m] for m in mapping.keys()]},
+        index=mapping.values(),
     )
     fig, ax = plt.subplots(figsize=(4, 4))
     for idx, (label, value) in enumerate(zip(df.index, df["judgments"])):
         ax.bar(idx, value, label=label)
     ax.tick_params(axis="both", which="major", labelsize=FONTSIZE)
     plt.xticks([])
-    plt.ylabel("Judgments Until\nGround Truth ATE", fontsize=FONTSIZE, labelpad=10)
+    plt.ylabel(
+        "Judgments Until\nGround Truth ATE", fontsize=FONTSIZE, labelpad=10
+    )
     plt.xlabel("")
 
     # Print the value of each bar above it

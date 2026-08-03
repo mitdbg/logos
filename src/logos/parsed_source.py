@@ -1,5 +1,5 @@
 """
-Protocol that both LogParser and ParsedTableInput satisfy, letting
+Protocol that both LogParser and ParsedDataFrameSource satisfy, letting
 CausalDatasetPreparer accept either without an inheritance hierarchy.
 """
 
@@ -10,7 +10,7 @@ import pandas as pd
 
 @runtime_checkable
 class ParsedSource(Protocol):
-    """Structural interface shared by LogParser and ParsedTableInput."""
+    """Structural interface shared by Parser and ParsedDataFrameSource."""
 
     @property
     def parsed_log(self) -> pd.DataFrame: ...

@@ -1,13 +1,12 @@
-import pandas as pd
-import sys
+import argparse
+import json
+import os
 
-sys.path.append("../..")
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from definitions import LOGOS_ROOT_DIR
-import os
-import json
-import argparse
+import pandas as pd
+
+from logos.paths import LOGOS_ROOT_DIR
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--use_repro_results", action="store_true")
@@ -20,7 +19,9 @@ datasets = ["postgresql", "proprietary", "xyz"]
 for dataset in datasets:
     # Read in the data
     methods = ["logos", "regression", "langmodel"]
-    strip_if_string = lambda x: x.split(":")[0].strip() if isinstance(x, str) else x
+    strip_if_string = lambda x: (
+        x.split(":")[0].strip() if isinstance(x, str) else x
+    )
     results = {}
     for method in methods:
         path = os.path.join(
@@ -83,7 +84,9 @@ for dataset in datasets:
 
     avg_precision = {}
     for method in methods:
-        avg_precision[method] = calc_avg_precision(results[method], ground_truth)
+        avg_precision[method] = calc_avg_precision(
+            results[method], ground_truth
+        )
     df = pd.DataFrame(
         {"avg_precision": [avg_precision[m] for m in mapping.keys()]},
         index=mapping.values(),
@@ -116,7 +119,7 @@ for dataset in datasets:
     ax.patches[0].set_facecolor("#7FBA82")
     ax.patches[1].set_facecolor("#ba8a7f")
     ax.patches[2].set_facecolor("#7F9FBA")
-    if dataset == 'postgresql':
+    if dataset == "postgresql":
         plt.legend(fontsize=FONTSIZE, loc="upper center", borderpad=0.2)
 
     plt.tight_layout()

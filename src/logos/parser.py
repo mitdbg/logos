@@ -13,15 +13,27 @@ from typing import Any, Optional
 import pandas as pd
 from tqdm.auto import tqdm
 
-from logos.cache import Cache
+from logos.cache import (
+    artifact_exists,
+    dump_dataframe,
+    dump_metadata,
+    load_dataframe,
+    load_metadata,
+)
 from logos.drain import Drain
-from logos.tag_utils import TagUtils
-from logos.variable_name.parsed_variable_name import ParsedVariableName
+from logos.tag_utils import (
+    deduplicate_tags,
+    get_tag,
+    preceding_tokens_tag,
+    set_tag,
+    waterfall_tag,
+)
+from logos.variable_name import ParsedVariableName
 
 _logger = logging.getLogger(__name__)
 
 
-class LogParser:
+class Parser:
     """Owns log-file parsing state and all parse-stage operations."""
 
     DEFAULT_REGEX_DICT = {
@@ -186,25 +198,19 @@ class LogParser:
         # Check if the parsed files already exist.
         files_exist = (
             not force
-            and Cache.artifact_exists(
-                self._get_parse_parquet_path("parsed_log")
-            )
-            and Cache.artifact_exists(
-                self._get_parse_json_path("parsed_templates")
-            )
-            and Cache.artifact_exists(
-                self._get_parse_json_path("parsed_variables")
-            )
+            and artifact_exists(self._get_parse_parquet_path("parsed_log"))
+            and artifact_exists(self._get_parse_json_path("parsed_templates"))
+            and artifact_exists(self._get_parse_json_path("parsed_variables"))
         )
 
         if files_exist:
-            self._parsed_log = Cache.load_dataframe(
+            self._parsed_log = load_dataframe(
                 self._get_parse_parquet_path("parsed_log")
             )
-            self._parsed_templates = Cache.load_metadata(
+            self._parsed_templates = load_metadata(
                 self._get_parse_json_path("parsed_templates")
             )
-            self._parsed_variables = Cache.load_metadata(
+            self._parsed_variables = load_metadata(
                 self._get_parse_json_path("parsed_variables")
             )
         else:
@@ -255,22 +261,20 @@ class LogParser:
             if enable_gpt_tagging:
                 tag, tag_origin = zip(
                     *self._parsed_variables.progress_apply(
-                        lambda x: TagUtils.waterfall_tag(
-                            self.parsed_templates, x
-                        ),
+                        lambda x: waterfall_tag(self.parsed_templates, x),
                         axis=1,  # type: ignore[operator]
                     )
                 )
             else:
                 tag, tag_origin = zip(
                     *self._parsed_variables.progress_apply(
-                        lambda x: TagUtils.preceding_tokens_tag(x),
+                        lambda x: preceding_tokens_tag(x),
                         axis=1,  # type: ignore[operator]
                     )
                 )
             self._parsed_variables["Tag"] = tag
             self._parsed_variables["TagOrigin"] = tag_origin
-            TagUtils.deduplicate_tags(self._parsed_variables)
+            deduplicate_tags(self._parsed_variables)
 
             # Detect identifiers.
             nunique_map = self._parsed_log.nunique()
@@ -299,14 +303,14 @@ class LogParser:
 
         # Write out files if appropriate.
         if not self._skip_writeout and not files_exist:
-            Cache.dump_dataframe(
+            dump_dataframe(
                 self._parsed_log, self._get_parse_parquet_path("parsed_log")
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 self._parsed_templates,
                 self._get_parse_json_path("parsed_templates"),
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 self._parsed_variables,
                 self._get_parse_json_path("parsed_variables"),
             )
@@ -332,7 +336,7 @@ class LogParser:
             skip_writeout: Whether to skip writing out the regenerated parsed
                 dataframes. Defaults to the value of self._skip_writeout.
         """
-        name = TagUtils.name_of(self._parsed_variables, var, "parsed")
+        name = name_of(self._parsed_variables, var, "parsed")
 
         old_template_id = ParsedVariableName(name).template_id()
         idx = ParsedVariableName(name).index()
@@ -425,11 +429,11 @@ class LogParser:
                 )
                 x["From regex"] = False
                 if enable_gpt_tagging:
-                    x["Tag"], x["TagOrigin"] = TagUtils.waterfall_tag(
+                    x["Tag"], x["TagOrigin"] = waterfall_tag(
                         self.parsed_templates, pd.Series(x)
                     )
                 else:
-                    x["Tag"], x["TagOrigin"] = TagUtils.preceding_tokens_tag(
+                    x["Tag"], x["TagOrigin"] = preceding_tokens_tag(
                         pd.Series(x)
                     )
                 x["Type"] = self._find_type(pd.Series(x))
@@ -443,20 +447,20 @@ class LogParser:
         ].reset_index(drop=True)
 
         # Deduplicate tags again
-        TagUtils.deduplicate_tags(self._parsed_variables)
+        deduplicate_tags(self._parsed_variables)
 
         # Write out files if appropriate.
         if skip_writeout is None:
             skip_writeout = self._skip_writeout
         if not skip_writeout:
-            Cache.dump_dataframe(
+            dump_dataframe(
                 self._parsed_log, self._get_parse_parquet_path("parsed_log")
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 self._parsed_templates,
                 self._get_parse_json_path("parsed_templates"),
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 self._parsed_variables,
                 self._get_parse_json_path("parsed_variables"),
             )
@@ -469,8 +473,8 @@ class LogParser:
             name: The name of the variable to be tagged.
             tag: The tag to be assigned to the variable.
         """
-        TagUtils.set_tag(self._parsed_variables, name, tag, "parsed")
-        TagUtils.deduplicate_tags(self._parsed_variables)
+        set_tag(self._parsed_variables, name, tag, "parsed")
+        deduplicate_tags(self._parsed_variables)
 
     def get_tag_of_parsed(self, name: str) -> str:
         """
@@ -482,4 +486,4 @@ class LogParser:
         Returns:
             The tag of the variable.
         """
-        return TagUtils.get_tag(self._parsed_variables, name, "parsed")
+        return get_tag(self._parsed_variables, name, "parsed")

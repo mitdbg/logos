@@ -1,12 +1,11 @@
-import pandas as pd
-import sys
+import argparse
+import os
 
-sys.path.append("../..")
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from definitions import LOGOS_ROOT_DIR
-import os
-import argparse
+import pandas as pd
+
+from logos.paths import LOGOS_ROOT_DIR
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--use_repro_results", action="store_true")
@@ -51,7 +50,9 @@ for dataset in datasets:
     #####
     # Plot the latency of each method.
     latency = {}
-    group_cols = list(set(results[methods[0]].columns) - set(["judgments", "latency"]))
+    group_cols = list(
+        set(results[methods[0]].columns) - set(["judgments", "latency"])
+    )
     for method in methods:
         if len(group_cols) == 0:
             latency[method] = results[method].sum()["latency"]
@@ -60,7 +61,8 @@ for dataset in datasets:
                 results[method].groupby(group_cols).sum().mean()["latency"]
             )
     df = pd.DataFrame(
-        {"latency": [latency[m] for m in mapping.keys()]}, index=mapping.values()
+        {"latency": [latency[m] for m in mapping.keys()]},
+        index=mapping.values(),
     )
     fig, ax = plt.subplots(figsize=(4, 4))
     for idx, (label, value) in enumerate(zip(df.index, df["latency"])):

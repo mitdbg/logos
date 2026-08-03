@@ -6,10 +6,9 @@ from datetime import datetime
 
 import pandas as pd
 
-sys.path.append("../..")
-from definitions import LOGOS_ROOT_DIR
 from logos.candidate_cause_ranker import CandidateCauseRanker
 from logos.logos import LOGos
+from logos.paths import LOGOS_ROOT_DIR
 from logos.tag_utils import TagUtils
 
 ALL_METHODS = ["logos", "regression", "langmodel"]

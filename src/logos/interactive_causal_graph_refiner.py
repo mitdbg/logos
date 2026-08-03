@@ -10,20 +10,19 @@ import pandas as pd
 from eccs.eccs import ECCS
 
 from logos.llm import get_openai_client
-from logos.regression import Regression
-from logos.tag_utils import TagUtils
-from logos.types import Types
+from logos.regression import get_normalized_copy, ols
+from logos.tag_utils import name_of, tag_of
+from logos.types import Edge
 
 
-
-class InteractiveCausalGraphRefiner:
+class GraphRefiner:
 
     @staticmethod
     def get_suggestion(
         eccs: ECCS,
         treatment_name: str,
         outcome_name: str,
-    ) -> Optional[Types.Edge]:
+    ) -> Optional[Edge]:
         """Suggest the next edge to assess using the LOGOS (ECCS) method.
 
         Parameters:
@@ -34,14 +33,14 @@ class InteractiveCausalGraphRefiner:
         Returns:
             The next edge for which the user should produce a judgment, or None.
         """
-        return InteractiveCausalGraphRefiner._get_suggestion_logos(
+        return GraphRefiner._get_suggestion_logos(
             eccs, treatment_name, outcome_name
         )
 
     @staticmethod
     def _get_suggestion_logos(
         eccs: ECCS, treatment_name: str, outcome_name: str
-    ) -> Types.Edge:
+    ) -> Edge:
         """
         Implement `get_suggestion()` for the `LOGOS` method.
 
@@ -63,7 +62,7 @@ class InteractiveCausalGraphRefiner:
         )
 
     most_recent_graph = None
-    cache: list[Types.Edge] = []
+    cache: list[Edge] = []
 
     @classmethod
     def get_suggestion_regression(
@@ -71,7 +70,7 @@ class InteractiveCausalGraphRefiner:
         data: pd.DataFrame,
         graph: nx.DiGraph,
         data_tags: Optional[pd.DataFrame] = None,
-    ) -> Optional[Types.Edge]:
+    ) -> Optional[Edge]:
         """For evaluation: suggest next edge using OLS regression.
 
         Recomputes a full pairwise ranking on every call.  Pass `data_tags` to
@@ -84,14 +83,14 @@ class InteractiveCausalGraphRefiner:
         if cls.cache:
             edge = cls.cache.pop(0)
         else:
-            pairs: list[tuple[Types.Edge, float]] = []
-            data_norm, _ = Regression.get_normalized_copy(data)
+            pairs: list[tuple[Edge, float]] = []
+            data_norm, _ = get_normalized_copy(data)
             for v in graph.nodes:
                 for w in set(data_norm.columns) - set(graph.neighbors(v)) - {v}:
-                    d = Regression.ols(w, data_norm[w], data_norm[v])
+                    d = ols(w, data_norm[w], data_norm[v])
                     slope = d["Slope"]
                     abs_slope = abs(slope) if slope is not None else 0.0
-                    pairs.append((cast(Types.Edge, (w, v)), abs_slope))
+                    pairs.append((cast(Edge, (w, v)), abs_slope))
             if not pairs:
                 return None
             pairs.sort(key=lambda x: x[1], reverse=True)
@@ -100,8 +99,8 @@ class InteractiveCausalGraphRefiner:
 
         if data_tags is not None:
             return (
-                cast(str, TagUtils.tag_of(data_tags, edge[0], "prepared")),
-                cast(str, TagUtils.tag_of(data_tags, edge[1], "prepared")),
+                cast(str, tag_of(data_tags, edge[0], "prepared")),
+                cast(str, tag_of(data_tags, edge[1], "prepared")),
             )
         return edge
 
@@ -116,12 +115,12 @@ class InteractiveCausalGraphRefiner:
         model: str = "gpt-4o-mini-2024-07-18",
         gpt_log_path: Optional[str] = None,
         return_tags: bool = True,
-    ) -> Optional[Types.Edge]:
+    ) -> Optional[Edge]:
         """For evaluation: suggest next edge using an LLM.
 
         Set `return_tags=False` to receive raw variable names instead of tags.
         """
-        return InteractiveCausalGraphRefiner._get_suggestion_langmodel(
+        return GraphRefiner._get_suggestion_langmodel(
             data,
             data_tags,
             treatment_name,
@@ -143,7 +142,7 @@ class InteractiveCausalGraphRefiner:
         model: str = "gpt-4o-mini-2024-07-18",
         gpt_log_path: Optional[str] = None,
         return_tags: bool = True,
-    ) -> Optional[Types.Edge]:
+    ) -> Optional[Edge]:
         """Implementation of the LANGMODEL suggestion method."""
         if graph != cls.most_recent_graph:
             cls.most_recent_graph = graph
@@ -153,8 +152,8 @@ class InteractiveCausalGraphRefiner:
 
         client = get_openai_client()
 
-        treatment_tag = TagUtils.tag_of(data_tags, treatment_name, "prepared")
-        outcome_tag = TagUtils.tag_of(data_tags, outcome_name, "prepared")
+        treatment_tag = tag_of(data_tags, treatment_name, "prepared")
+        outcome_tag = tag_of(data_tags, outcome_name, "prepared")
 
         num_samples_per_var = 3
 
@@ -165,7 +164,7 @@ class InteractiveCausalGraphRefiner:
 
         # Prepare some substrings for the prompt
         def tag_func(x: str) -> Optional[str]:
-            return TagUtils.tag_of(data_tags, x, "prepared")
+            return tag_of(data_tags, x, "prepared")
 
         vars_to_examples = {
             v: data[v].unique().tolist()[:num_samples_per_var]
@@ -255,7 +254,7 @@ class InteractiveCausalGraphRefiner:
                 right = f"{edge[1]} mean"
 
             if left is not None and right is not None:
-                ranked_edges.append(cast(Types.Edge, (left, right)))
+                ranked_edges.append(cast(Edge, (left, right)))
 
         if not ranked_edges:
             return None
@@ -263,7 +262,7 @@ class InteractiveCausalGraphRefiner:
         edge = ranked_edges[0]
         if not return_tags:
             return (
-                cast(str, TagUtils.name_of(data_tags, edge[0], "prepared")),
-                cast(str, TagUtils.name_of(data_tags, edge[1], "prepared")),
+                cast(str, name_of(data_tags, edge[0], "prepared")),
+                cast(str, name_of(data_tags, edge[1], "prepared")),
             )
         return edge

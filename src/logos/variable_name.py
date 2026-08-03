@@ -1,10 +1,56 @@
 """
-Represents a prepared variable name.
+Parsed and prepared variable name helpers.
 """
 
 from typing import Optional, Self, Union
 
-from logos.variable_name.parsed_variable_name import ParsedVariableName
+
+class ParsedVariableName:
+    """
+    Performs operations on a string interpreted as a parsed variable name.
+
+    The relevant string format is {template_id}[_{index}].
+    """
+
+    def __init__(self, s: str) -> None:
+        """
+        Initializes a ParsedVariableName object.
+
+        Parameters:
+            s: The string interpretation of the parsed variable name.
+        """
+        toks = s.split("_")
+        self._s = s
+        self._template_id = toks[0]
+        self._index = int(toks[1]) if len(toks) > 1 else -1
+
+    def template_id(self) -> str:
+        """
+        Returns the template ID of the parsed variable name.
+
+        Returns:
+            The template ID of the parsed variable name.
+        """
+        return self._template_id
+
+    def index(self) -> Optional[int]:
+        """
+        Returns the index of the parsed variable name.
+
+        Returns:
+            The index of the parsed variable name, or None if the index is not
+            present.
+        """
+        return self._index if self._index != -1 else None
+
+    def __str__(self) -> str:
+        """
+        Returns the string representation of the parsed variable name.
+
+        Returns:
+            The string representation of the parsed variable name.
+        """
+        return self._s
 
 
 class PreparedVariableName:
@@ -25,7 +71,9 @@ class PreparedVariableName:
         mid_split = s.split("+")
 
         left_split = mid_split[0].split("=")
-        right_split = mid_split[1].split("=") if len(mid_split) > 1 else ["", ""]
+        right_split = (
+            mid_split[1].split("=") if len(mid_split) > 1 else ["", ""]
+        )
 
         self._base_var = left_split[0]
         self._pre_agg_value = left_split[1] if len(left_split) > 1 else ""
@@ -127,7 +175,6 @@ class PreparedVariableName:
         Returns:
             Whether the two variables have the same base variable.
         """
-
         if isinstance(var1, str):
             var1 = PreparedVariableName(var1)
         if isinstance(var2, str):

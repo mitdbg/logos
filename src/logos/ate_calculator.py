@@ -10,7 +10,7 @@ import networkx as nx
 import pandas as pd
 from dowhy import CausalModel
 
-from logos.tag_utils import TagUtils
+from logos.tag_utils import name_of
 
 
 class ATECalculator:  # pylint: disable=too-few-public-methods
@@ -56,10 +56,10 @@ class ATECalculator:  # pylint: disable=too-few-public-methods
         """
 
         # If the user provided the tag of any variable, retrieve their names
-        treatment = TagUtils.name_of(variables, treatment, "prepared")
-        outcome = TagUtils.name_of(variables, outcome, "prepared")
+        treatment = name_of(variables, treatment, "prepared")
+        outcome = name_of(variables, outcome, "prepared")
         if confounder is not None:
-            confounder = TagUtils.name_of(variables, confounder, "prepared")
+            confounder = name_of(variables, confounder, "prepared")
 
         # Should the effects be calculated based on the current partial causal graph,
         # some other graph provided as a function parameter,
@@ -78,7 +78,10 @@ class ATECalculator:  # pylint: disable=too-few-public-methods
         # Use dowhy to get the ATE, P-value and standard error.
         with open("/dev/null", "w+", encoding="utf-8") as f:
             try:
-                with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
+                with (
+                    contextlib.redirect_stdout(f),
+                    contextlib.redirect_stderr(f),
+                ):
                     model = CausalModel(
                         data=data[list(graph.nodes)],
                         treatment=treatment,
@@ -94,12 +97,16 @@ class ATECalculator:  # pylint: disable=too-few-public-methods
                         test_significance=True,
                     )
                     p_value = (
-                        estimate.test_stat_significance()["p_value"].astype(float)[0]
+                        estimate.test_stat_significance()["p_value"].astype(
+                            float
+                        )[0]
                         if calculate_p_value
                         else None
                     )
                     stderr = (
-                        estimate.get_standard_error() if calculate_std_error else None
+                        estimate.get_standard_error()
+                        if calculate_std_error
+                        else None
                     )
                     d = {
                         "ATE": float(estimate.value),

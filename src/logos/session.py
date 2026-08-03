@@ -12,9 +12,14 @@ from typing import Optional
 import networkx as nx
 import numpy as np
 
-from logos.cache import Cache
-from logos.log_parser import LogParser
-from logos.logos import LOGos
+from logos import Logos
+from logos.cache import (
+    dump_dataframe,
+    dump_metadata,
+    load_dataframe,
+    load_metadata,
+)
+from logos.parser import Parser
 
 _logger = logging.getLogger(__name__)
 
@@ -24,13 +29,13 @@ class Session:
     _DEFAULT_SESSION_BASE = Path.home() / ".logos" / "sessions"
 
     @staticmethod
-    def save_session(logos: "LOGos", path: Optional[str] = None) -> str:
+    def save_session(logos: "Logos", path: Optional[str] = None) -> str:
         """
         Serialize the full LOGos pipeline state to a directory.
 
         Parameters:
-            logos: The LOGos instance to save.
-            path: Destination directory. Defaults to 
+            logos: The Logos instance to save.
+            path: Destination directory. Defaults to
                 ~/.logos/sessions/<unix_timestamp>/.
 
         Returns:
@@ -50,11 +55,11 @@ class Session:
                 if logos._explorer is not None
                 else path
             )
-        elif isinstance(logos._parser, LogParser):
+        elif isinstance(logos._parser, Parser):
             manifest["entry_point"] = "EP-1"
             manifest["source_path"] = logos._parser.filename
             workdir = logos._parser.workdir
-        else:  # ParsedTableInput
+        else:  # ParsedDataFrameSource
             manifest["entry_point"] = "EP-2"
             manifest["source_path"] = logos._parser.filename  # source_id
             workdir = logos._parser.workdir
@@ -63,15 +68,15 @@ class Session:
 
         # Save parsed artefacts when available and non-empty
         if logos._parser is not None and not logos._parser.parsed_log.empty:
-            Cache.dump_dataframe(
+            dump_dataframe(
                 logos._parser.parsed_log,
                 os.path.join(path, "parsed_log.parquet"),
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 logos._parser.parsed_variables,
                 os.path.join(path, "parsed_variables.json"),
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 logos._parser.parsed_templates,
                 os.path.join(path, "parsed_templates.json"),
             )
@@ -84,11 +89,11 @@ class Session:
             logos._preparer is not None
             and not logos._preparer.prepared_log.empty
         ):
-            Cache.dump_dataframe(
+            dump_dataframe(
                 logos._preparer.prepared_log,
                 os.path.join(path, "prepared_log.parquet"),
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 logos._preparer.prepared_variables,
                 os.path.join(path, "prepared_variables.json"),
             )
@@ -124,15 +129,15 @@ class Session:
         return path
 
     @staticmethod
-    def load_session(path: str) -> "LOGos":
+    def load_session(path: str) -> "Logos":
         """
-        Reconstruct a LOGos instance from a saved session directory.
+        Reconstruct a Logos instance from a saved session directory.
 
         Parameters:
             path: Directory previously created by save_session().
 
         Returns:
-            A fully-restored LOGos instance ready for exploration.
+            A fully-restored Logos instance ready for exploration.
 
         Raises:
             FileNotFoundError: If no manifest is found at the given path.
@@ -151,10 +156,10 @@ class Session:
 
         # Reconstruct at the most advanced available stage
         if manifest.get("has_prepared"):
-            prepared_log = Cache.load_dataframe(
+            prepared_log = load_dataframe(
                 os.path.join(path, "prepared_log.parquet")
             )
-            prepared_variables = Cache.load_metadata(
+            prepared_variables = load_metadata(
                 os.path.join(path, "prepared_variables.json")
             )
             variable_tags = dict(
@@ -163,15 +168,15 @@ class Session:
                     prepared_variables["Tag"].tolist(),
                 )
             )
-            logos = LOGos.from_prepared_table(
+            logos = Logos.from_prepared_table(
                 prepared_log, workdir, variable_tags
             )
 
         elif manifest.get("has_parsed"):
-            parsed_log = Cache.load_dataframe(
+            parsed_log = load_dataframe(
                 os.path.join(path, "parsed_log.parquet")
             )
-            parsed_variables = Cache.load_metadata(
+            parsed_variables = load_metadata(
                 os.path.join(path, "parsed_variables.json")
             )
             variable_tags = dict(
@@ -181,7 +186,7 @@ class Session:
                 )
             )
             source_id = manifest.get("source_path", "restored_session")
-            logos = LOGos.from_parsed_table(
+            logos = Logos.from_parsed_table(
                 parsed_log,
                 workdir,
                 source_id=source_id,

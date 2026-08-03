@@ -1,4 +1,5 @@
 """Transform screen: set causal unit, configure agg/imp, run prepare()."""
+
 from __future__ import annotations
 
 import json
@@ -18,7 +19,7 @@ from textual.widgets import (
     TextArea,
 )
 
-from logos.logos import LOGos
+from logos import Logos
 from logos_tui.explore import ExploreScreen
 
 
@@ -33,7 +34,7 @@ class TransformScreen(Screen):
         with Vertical(id="causal-unit-section"):
             yield Static("[bold]Causal Unit[/bold]")
             yield Label(
-                "LOGos will suggest candidates based on information utilization "
+                "Logos will suggest candidates based on information utilization "
                 "(IUS). Click a row to fill the variable field, or type directly."
             )
             yield DataTable(id="suggestions-table", cursor_type="row")
@@ -86,12 +87,18 @@ class TransformScreen(Screen):
 
         with Horizontal():
             yield Button("Prepare", variant="primary", id="btn_prepare")
-            yield Button("Next →", variant="success", id="btn_next", disabled=True)
+            yield Button(
+                "Next →", variant="success", id="btn_next", disabled=True
+            )
             yield Button("← Back", variant="default", id="btn_back")
             yield Button("💾 Save Session", id="btn_save_session")
         with Horizontal(classes="exit-bar"):
-            yield Button("💾 Save & Exit", id="btn_save_exit", variant="success")
-            yield Button("✗ Exit without saving", id="btn_exit_no_save", variant="error")
+            yield Button(
+                "💾 Save & Exit", id="btn_save_exit", variant="success"
+            )
+            yield Button(
+                "✗ Exit without saving", id="btn_exit_no_save", variant="error"
+            )
 
     def on_mount(self) -> None:
         st = self.query_one("#suggestions-table", DataTable)
@@ -120,7 +127,9 @@ class TransformScreen(Screen):
             # Fill the causal unit input from the clicked row
             row_data = event.data_table.get_row(event.row_key)
             if row_data:
-                self.query_one("#causal_unit_input", Input).value = str(row_data[0])
+                self.query_one("#causal_unit_input", Input).value = str(
+                    row_data[0]
+                )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         btn_id = event.button.id
@@ -153,8 +162,12 @@ class TransformScreen(Screen):
         error_lbl.update("")
 
         try:
-            custom_agg = json.loads(self.query_one("#custom_agg_area", TextArea).text)
-            custom_imp = json.loads(self.query_one("#custom_imp_area", TextArea).text)
+            custom_agg = json.loads(
+                self.query_one("#custom_agg_area", TextArea).text
+            )
+            custom_imp = json.loads(
+                self.query_one("#custom_imp_area", TextArea).text
+            )
             force = self.query_one("#force_cb", Checkbox).value
         except json.JSONDecodeError as exc:
             error_lbl.update(f"[red]Invalid JSON: {exc}[/red]")
@@ -182,14 +195,16 @@ class TransformScreen(Screen):
         self.query_one("#loading").display = False
         for btn_id in ("btn_prepare", "btn_back"):
             self.query_one(f"#{btn_id}", Button).disabled = False
-        self.query_one("#error-label", Label).update(f"[red]Prepare failed: {msg}[/red]")
+        self.query_one("#error-label", Label).update(
+            f"[red]Prepare failed: {msg}[/red]"
+        )
 
     def _on_prepare_done(self) -> None:
         self.query_one("#loading").display = False
         for btn_id in ("btn_prepare", "btn_next", "btn_back"):
             self.query_one(f"#{btn_id}", Button).disabled = False
 
-        logos: LOGos = self.app.logos
+        logos: Logos = self.app.logos
         n_rows = len(logos.prepared_log)
         n_vars = logos.num_prepared_variables
         self.query_one("#summary-label", Label).update(

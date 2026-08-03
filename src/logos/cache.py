@@ -4,61 +4,52 @@ import pickle
 import pandas as pd
 
 
-class Cache:
+def dump_dataframe(df: pd.DataFrame, path: str) -> None:
+    """Write a tabular DataFrame to Parquet."""
+    _ensure_parent(path)
+    df.to_parquet(path, index=True)
+
+
+def load_dataframe(path: str) -> pd.DataFrame:
     """
-    Serialisation for LOGos artifacts. Writes Parquet/JSON; falls back to legacy
-    .pkl on read.
+    Read from Parquet, falling back to a legacy .pkl file if Parquet is
+    absent.
     """
+    if os.path.isfile(path):
+        return pd.read_parquet(path)
+    for fallback in (_pkl_equivalent(path), _legacy_none_none_pkl(path)):
+        if os.path.isfile(fallback):
+            with open(fallback, "rb") as f:
+                return pickle.load(f)  # noqa: S301 — legacy read path only
+    raise FileNotFoundError(f"No cache file found for {path}")
 
-    @staticmethod
-    def dump_dataframe(df: pd.DataFrame, path: str) -> None:
-        """Write a tabular DataFrame to Parquet."""
-        _ensure_parent(path)
-        df.to_parquet(path, index=True)
 
-    @staticmethod
-    def load_dataframe(path: str) -> pd.DataFrame:
-        """
-        Read from Parquet, falling back to a legacy .pkl file if Parquet is 
-        absent.
-        """
-        if os.path.isfile(path):
-            return pd.read_parquet(path)
-        for fallback in (_pkl_equivalent(path), _legacy_none_none_pkl(path)):
-            if os.path.isfile(fallback):
-                with open(fallback, "rb") as f:
-                    return pickle.load(f)  # noqa: S301 — legacy read path only
-        raise FileNotFoundError(f"No cache file found for {path}")
+def dump_metadata(df: pd.DataFrame, path: str) -> None:
+    """Write a metadata DataFrame (may contain list-typed cells) to JSON."""
+    _ensure_parent(path)
+    df.to_json(path, orient="records", indent=2)
 
-    @staticmethod
-    def dump_metadata(df: pd.DataFrame, path: str) -> None:
-        """Write a metadata DataFrame (may contain list-typed cells) to JSON."""
-        _ensure_parent(path)
-        df.to_json(path, orient="records", indent=2)
 
-    @staticmethod
-    def load_metadata(path: str) -> pd.DataFrame:
-        """
-        Read from JSON, falling back to a legacy .pkl file if JSON is absent.
-        """
-        if os.path.isfile(path):
-            return pd.read_json(path, orient="records")
-        for fallback in (_pkl_equivalent(path), _legacy_none_none_pkl(path)):
-            if os.path.isfile(fallback):
-                with open(fallback, "rb") as f:
-                    return pickle.load(f)  # noqa: S301 — legacy read path only
-        raise FileNotFoundError(f"No cache file found for {path}")
+def load_metadata(path: str) -> pd.DataFrame:
+    """
+    Read from JSON, falling back to a legacy .pkl file if JSON is absent.
+    """
+    if os.path.isfile(path):
+        return pd.read_json(path, orient="records")
+    for fallback in (_pkl_equivalent(path), _legacy_none_none_pkl(path)):
+        if os.path.isfile(fallback):
+            with open(fallback, "rb") as f:
+                return pickle.load(f)  # noqa: S301 — legacy read path only
+    raise FileNotFoundError(f"No cache file found for {path}")
 
-    @staticmethod
-    def artifact_exists(path: str) -> bool:
-        """
-        True if the artifact exists in new format or as any legacy .pkl variant.
-        """
-        return (
-            os.path.isfile(path)
-            or os.path.isfile(_pkl_equivalent(path))
-            or os.path.isfile(_legacy_none_none_pkl(path))
-        )
+
+def artifact_exists(path: str) -> bool:
+    """True if the artifact exists in new format or as any legacy .pkl variant."""
+    return (
+        os.path.isfile(path)
+        or os.path.isfile(_pkl_equivalent(path))
+        or os.path.isfile(_legacy_none_none_pkl(path))
+    )
 
 
 def _legacy_none_none_pkl(path: str) -> str:

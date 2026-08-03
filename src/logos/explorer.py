@@ -15,20 +15,20 @@ from tqdm.auto import tqdm
 
 from logos.candidate_cause_ranker import CandidateCauseRanker
 from logos.edge_state_matrix import EdgeStateMatrix
-from logos.graph_renderer import GraphRenderer
+from logos.graph_renderer import save_graph
 from logos.interactive_causal_graph_refiner import (
-    InteractiveCausalGraphRefiner,
+    GraphRefiner,
 )
 from logos.prepared_source import PreparedSource
 from logos.pruner import Pruner
-from logos.tag_utils import TagUtils
-from logos.types import Types
-from logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.tag_utils import name_of, tag_of
+from logos.types import Edge
+from logos.variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 
 
-class CausalExplorer:
+class Explorer:
     """
     Owns graph-state and all exploration operations after data preparation.
 
@@ -140,7 +140,7 @@ class CausalExplorer:
                 (2) Template metadata from parsed_templates (empty if from regex).
                 (3) A sample of the prepared log with `row_limit` rows.
         """
-        name = TagUtils.name_of(self._prepared_variables, var, "prepared")
+        name = name_of(self._prepared_variables, var, "prepared")
         base_var = PreparedVariableName(name).base_var()
         from_regex = False
 
@@ -195,9 +195,7 @@ class CausalExplorer:
         Parameters:
             filename: Destination file path.
         """
-        GraphRenderer.save_graph(
-            self._graph, self._prepared_variables, filename
-        )
+        save_graph(self._graph, self._prepared_variables, filename)
 
     def accept(
         self,
@@ -221,8 +219,8 @@ class CausalExplorer:
         Returns:
             A tuple of (exploration_score, suggested_next_variable).
         """
-        src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
-        dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
+        src_name = name_of(self._prepared_variables, src, "prepared")
+        dst_name = name_of(self._prepared_variables, dst, "prepared")
         to_drop = self._edge_states.mark_edge(src_name, dst_name, "Accepted")
         for node in to_drop:
             if node in self._graph.nodes:
@@ -259,8 +257,8 @@ class CausalExplorer:
         Returns:
             A tuple of (exploration_score, suggested_next_variable).
         """
-        src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
-        dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
+        src_name = name_of(self._prepared_variables, src, "prepared")
+        dst_name = name_of(self._prepared_variables, dst, "prepared")
         self._edge_states.mark_edge(src_name, dst_name, "Rejected")
         if self._eccs and also_ban:
             self._eccs.ban_edge(src_name, dst_name)
@@ -281,7 +279,7 @@ class CausalExplorer:
         Returns:
             A tuple of (exploration_score, suggested_next_variable).
         """
-        dst_name = TagUtils.name_of(self._prepared_variables, dst, "prepared")
+        dst_name = name_of(self._prepared_variables, dst, "prepared")
         for v in self.prepared_variable_names:
             if self._edge_states.get_edge_state(v, dst_name) == "Undecided":
                 self._edge_states.mark_edge(v, dst_name, "Rejected")
@@ -304,7 +302,7 @@ class CausalExplorer:
         Returns:
             A tuple of (exploration_score, suggested_next_variable).
         """
-        src_name = TagUtils.name_of(self._prepared_variables, src, "prepared")
+        src_name = name_of(self._prepared_variables, src, "prepared")
         for v in self.prepared_variable_names:
             if self._edge_states.get_edge_state(src_name, v) == "Undecided":
                 self._edge_states.mark_edge(src_name, v, "Rejected")
@@ -483,7 +481,7 @@ class CausalExplorer:
             target = self._next_exploration
         assert target is not None
 
-        target = TagUtils.name_of(self._prepared_variables, target, "prepared")
+        target = name_of(self._prepared_variables, target, "prepared")
 
         lfn = f"ranker-gpt-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.log"
         result_df, pruned = CandidateCauseRanker.rank(
@@ -514,7 +512,7 @@ class CausalExplorer:
         self,
         treatment: str,
         outcome: str,
-    ) -> Optional[Types.Edge]:
+    ) -> Optional[Edge]:
         """
         Suggest the next edge to assess using the LOGOS (ECCS) method.
 
@@ -529,14 +527,12 @@ class CausalExplorer:
         assert (
             self._eccs is not None
         ), "ECCS not initialized. Call _init_eccs() before refinement."
-        treatment_name = TagUtils.name_of(
+        treatment_name = name_of(
             self._prepared_variables, treatment, "prepared"
         )
-        outcome_name = TagUtils.name_of(
-            self._prepared_variables, outcome, "prepared"
-        )
+        outcome_name = name_of(self._prepared_variables, outcome, "prepared")
 
-        edge = InteractiveCausalGraphRefiner.get_suggestion(
+        edge = GraphRefiner.get_suggestion(
             self._eccs, treatment_name, outcome_name
         )
 
@@ -545,15 +541,11 @@ class CausalExplorer:
             edge_tags = (
                 cast(
                     str,
-                    TagUtils.tag_of(
-                        self._prepared_variables, edge[0], "prepared"
-                    ),
+                    tag_of(self._prepared_variables, edge[0], "prepared"),
                 ),
                 cast(
                     str,
-                    TagUtils.tag_of(
-                        self._prepared_variables, edge[1], "prepared"
-                    ),
+                    tag_of(self._prepared_variables, edge[1], "prepared"),
                 ),
             )
 

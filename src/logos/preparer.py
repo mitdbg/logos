@@ -10,9 +10,23 @@ from typing import Callable, Optional, Tuple
 import pandas as pd
 from tqdm.auto import tqdm
 
-import logos.aggimp.agg_funcs as _agg_mod
-import logos.aggimp.imp_funcs as _imp_mod
-from logos.aggregate_selector import AggregateSelector
+import logos.transforms.aggregators as _agg_mod
+import logos.transforms.imputators as _imp_mod
+from logos.aggregate_selector import (
+    DEFAULT_AGGREGATES,
+    find_uninformative_aggregates,
+)
+from logos.cache import (
+    artifact_exists,
+    dump_dataframe,
+    dump_metadata,
+    load_dataframe,
+    load_metadata,
+)
+from logos.causal_unit_suggester import CausalUnitSuggester
+from logos.parsed_source import ParsedSource
+from logos.tag_utils import deduplicate_tags, get_tag, name_of, set_tag
+from logos.variable_name import PreparedVariableName
 
 # Aggregation names that pandas groupby handles natively via Cython fast-path
 _PANDAS_BUILTIN_AGGS = frozenset(
@@ -30,16 +44,12 @@ _PANDAS_BUILTIN_AGGS = frozenset(
         "var",
     }
 )
-from logos.cache import Cache
-from logos.causal_unit_suggester import CausalUnitSuggester
-from logos.parsed_source import ParsedSource
-from logos.tag_utils import TagUtils
-from logos.variable_name.prepared_variable_name import PreparedVariableName
+
 
 _logger = logging.getLogger(__name__)
 
 
-class CausalDatasetPreparer:
+class Preparer:
     """Owns data-preparation state and all prepare-stage operations."""
 
     def __init__(self, parser: ParsedSource) -> None:
@@ -205,9 +215,7 @@ class CausalDatasetPreparer:
         if var is None:
             return self.suggest_causal_unit_defs()
 
-        var_name = TagUtils.name_of(
-            self._parser.parsed_variables, var, "parsed"
-        )
+        var_name = name_of(self._parser.parsed_variables, var, "parsed")
         var_type = self._parser.parsed_variables.loc[
             self._parser.parsed_variables["Name"] == var_name, "Type"
         ].values[0]
@@ -261,19 +269,17 @@ class CausalDatasetPreparer:
         # Check if the prepared files already exist.
         files_exist = (
             not force
-            and Cache.artifact_exists(
-                self._get_prepare_parquet_path("prepared_log")
-            )
-            and Cache.artifact_exists(
+            and artifact_exists(self._get_prepare_parquet_path("prepared_log"))
+            and artifact_exists(
                 self._get_prepare_json_path("prepared_variables")
             )
         )
 
         if files_exist:
-            self._prepared_log = Cache.load_dataframe(
+            self._prepared_log = load_dataframe(
                 self._get_prepare_parquet_path("prepared_log")
             )
-            self._prepared_variables = Cache.load_metadata(
+            self._prepared_variables = load_metadata(
                 self._get_prepare_json_path("prepared_variables")
             )
         else:
@@ -328,11 +334,11 @@ class CausalDatasetPreparer:
         # Convert keys in custom_agg and custom_imp to the names of the
         # variables, if they are tags.
         custom_agg = {
-            TagUtils.name_of(self._parser.parsed_variables, k, "parsed"): v
+            name_of(self._parser.parsed_variables, k, "parsed"): v
             for k, v in custom_agg.items()
         }
         custom_imp = {
-            TagUtils.name_of(self._parser.parsed_variables, k, "parsed"): v
+            name_of(self._parser.parsed_variables, k, "parsed"): v
             for k, v in custom_imp.items()
         }
 
@@ -371,7 +377,7 @@ class CausalDatasetPreparer:
             variable.Name: (
                 custom_agg[variable.Name]
                 if variable.Name in custom_agg
-                else AggregateSelector.DEFAULT_AGGREGATES[variable.Type]
+                else DEFAULT_AGGREGATES[variable.Type]
             )
             for variable in self._parser.parsed_variables.itertuples()
         }
@@ -405,7 +411,7 @@ class CausalDatasetPreparer:
 
         # Perform the aggregation
         _logger.debug("Calculating aggregates for each causal unit...")
-        # Use string names for pandas built-in aggs (Cython fast-path); 
+        # Use string names for pandas built-in aggs (Cython fast-path);
         # callable only for mode
         agg_func_dict: dict[str, list] = {
             name: [
@@ -457,7 +463,7 @@ class CausalDatasetPreparer:
         # function.
         if drop_bad_aggs:
             _logger.debug("Dropping aggregates that do not add information...")
-            cols_to_drop = AggregateSelector.find_uninformative_aggregates(
+            cols_to_drop = find_uninformative_aggregates(
                 self._prepared_log,
                 self._parser.parsed_variables,
                 self._causal_unit_var,
@@ -511,11 +517,11 @@ class CausalDatasetPreparer:
 
         # Write out prepared log and variables
         if not self._parser.skip_writeout:
-            Cache.dump_dataframe(
+            dump_dataframe(
                 self._prepared_log,
                 self._get_prepare_parquet_path("prepared_log"),
             )
-            Cache.dump_metadata(
+            dump_metadata(
                 self._prepared_variables,
                 self._get_prepare_json_path("prepared_variables"),
             )
@@ -607,8 +613,8 @@ class CausalDatasetPreparer:
             name: The name of the variable to be tagged.
             tag: The tag to be assigned to the variable.
         """
-        TagUtils.set_tag(self._prepared_variables, name, tag, "prepared")
-        TagUtils.deduplicate_tags(self._prepared_variables)
+        set_tag(self._prepared_variables, name, tag, "prepared")
+        deduplicate_tags(self._prepared_variables)
 
     def get_tag_of_prepared(self, name: str) -> str:
         """
@@ -620,4 +626,4 @@ class CausalDatasetPreparer:
         Returns:
             The tag of the variable.
         """
-        return TagUtils.get_tag(self._prepared_variables, name, "prepared")
+        return get_tag(self._prepared_variables, name, "prepared")

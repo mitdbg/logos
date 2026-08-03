@@ -5,7 +5,7 @@ A data structure for managing an the state of each directed edge in the causal g
 import networkx as nx
 import numpy as np
 
-from logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.variable_name import PreparedVariableName
 
 
 class EdgeStateMatrix:

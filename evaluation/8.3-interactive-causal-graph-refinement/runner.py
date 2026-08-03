@@ -6,14 +6,9 @@ from datetime import datetime
 
 import pandas as pd
 
-sys.path.append("../..")
-
-
-from definitions import LOGOS_ROOT_DIR
-from logos.interactive_causal_graph_refiner import (
-    InteractiveCausalGraphRefiner,
-)
+from logos.interactive_causal_graph_refiner import InteractiveCausalGraphRefiner
 from logos.logos import LOGos
+from logos.paths import LOGOS_ROOT_DIR
 
 ALL_METHODS = ["logos", "regression", "langmodel"]
 ALL_DATASETS = ["postgresql", "xyz"]
@@ -144,7 +139,6 @@ def interactive_causal_graph_refinement(dataset: str, methods: list[str]):
                 d["ATE"] = ate
                 d["ARE_ATE"] = get_are_ate(ate, ground_truth_ate)
                 df_ranks[method].loc[len(df_ranks[method])] = d
-
 
                 j = 0
 

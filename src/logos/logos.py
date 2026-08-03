@@ -7,30 +7,30 @@ import numpy as np
 import pandas as pd
 
 from logos.ate_calculator import ATECalculator
-from logos.causal_explorer import CausalExplorer
-from logos.dataset_preparer import CausalDatasetPreparer
 from logos.exceptions import UnsupportedOperationError
-from logos.log_parser import LogParser
+from logos.explorer import Explorer
 from logos.parsed_source import ParsedSource
-from logos.parsed_table_input import ParsedTableInput
-from logos.prepared_table_input import PreparedTableInput
+from logos.parser import Parser
+from logos.preparer import Preparer
 from logos.pruner import Pruner
-from logos.tag_utils import TagUtils
-from logos.types import Types
-from logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.tag_utils import name_of, tag_of
+from logos.types import Edge
+from logos.variable_name import PreparedVariableName
+from src.logos.parsed_dataframe_source import ParsedDataFrameSource
+from src.logos.prepared_dataframe_source import PreparedDataFrameSource
 
 _logger = logging.getLogger(__name__)
 # Suppress LOGos debug messages by default; call set_verbose_to(True) to enable.
 logging.getLogger("src.logos").setLevel(logging.WARNING)
 
 
-class LOGos:
+class Logos:
     """
     LOGos provides a high-level interface for causal analysis of event logs.
     """
 
-    DEFAULT_REGEX_DICT = LogParser.DEFAULT_REGEX_DICT
-    DEFAULT_MESSAGE_PREFIX = LogParser.DEFAULT_MESSAGE_PREFIX
+    DEFAULT_REGEX_DICT = Parser.DEFAULT_REGEX_DICT
+    DEFAULT_MESSAGE_PREFIX = Parser.DEFAULT_MESSAGE_PREFIX
 
     def __init__(
         self, filename: str, workdir: str, skip_writeout: bool = False
@@ -46,16 +46,14 @@ class LOGos:
             skip_writeout: Whether to skip writing out the parsed and prepared
                 dataframes.
         """
-        self._parser: Optional[ParsedSource] = LogParser(
+        self._parser: Optional[ParsedSource] = Parser(
             filename, workdir, skip_writeout
         )
-        self._preparer: Optional[CausalDatasetPreparer] = CausalDatasetPreparer(
-            self._parser
-        )
-        self._explorer: Optional[CausalExplorer] = None
+        self._preparer: Optional[Preparer] = Preparer(self._parser)
+        self._explorer: Optional[Explorer] = None
 
     @classmethod
-    def _create(cls) -> "LOGos":
+    def _create(cls) -> "Logos":
         """Return an uninitialised instance (used by factory methods)."""
         instance = cls.__new__(cls)
         instance._parser = None
@@ -71,7 +69,7 @@ class LOGos:
         source_id: str = "parsed_input",
         variable_tags: Optional[dict[str, str]] = None,
         skip_writeout: bool = False,
-    ) -> "LOGos":
+    ) -> "Logos":
         """
         Create a LOGos instance from a pre-parsed DataFrame (EP-2).
 
@@ -88,10 +86,10 @@ class LOGos:
             skip_writeout: Whether to skip writing prepare cache files.
         """
         instance = cls._create()
-        instance._parser = ParsedTableInput(
+        instance._parser = ParsedDataFrameSource(
             data, workdir, source_id, variable_tags, skip_writeout
         )
-        instance._preparer = CausalDatasetPreparer(instance._parser)
+        instance._preparer = Preparer(instance._parser)
         return instance
 
     @classmethod
@@ -100,7 +98,7 @@ class LOGos:
         data: pd.DataFrame,
         workdir: str,
         variable_tags: Optional[dict[str, str]] = None,
-    ) -> "LOGos":
+    ) -> "Logos":
         """
         Create a LOGos instance from an already-prepared DataFrame (EP-3).
 
@@ -115,8 +113,8 @@ class LOGos:
             variable_tags: Optional column-name → tag mapping.
         """
         instance = cls._create()
-        pti = PreparedTableInput(data, workdir, variable_tags)
-        instance._explorer = CausalExplorer(pti)
+        pti = PreparedDataFrameSource(data, workdir, variable_tags)
+        instance._explorer = Explorer(pti)
         instance._explorer._init_eccs()
         return instance
 
@@ -127,9 +125,9 @@ class LOGos:
         if self._explorer and self._explorer._eccs:
             self._explorer._eccs.set_verbose_to(val)
 
-    def _require_parser(self) -> LogParser:
+    def _require_parser(self) -> Parser:
         """Raise if the instance was not created from a raw log file."""
-        if not isinstance(self._parser, LogParser):
+        if not isinstance(self._parser, Parser):
             raise UnsupportedOperationError(
                 "This operation requires a LOGos instance created from a raw "
                 "log file.  Use LOGos(filename=...) instead of "
@@ -137,7 +135,7 @@ class LOGos:
             )
         return self._parser
 
-    def _require_preparer(self) -> CausalDatasetPreparer:
+    def _require_preparer(self) -> Preparer:
         """Raise if the instance has no prepare stage (EP-3)."""
         if self._preparer is None:
             raise UnsupportedOperationError(
@@ -146,7 +144,7 @@ class LOGos:
             )
         return self._preparer
 
-    def _require_explorer(self) -> CausalExplorer:
+    def _require_explorer(self) -> Explorer:
         """Raise if the exploration stage has not been initialized yet."""
         if self._explorer is None:
             raise UnsupportedOperationError(
@@ -227,7 +225,7 @@ class LOGos:
         message_prefix: str = DEFAULT_MESSAGE_PREFIX,
         enable_gpt_tagging: bool = False,
     ) -> None:
-        """Parse the log file; see LogParser.parse() for full documentation."""
+        """Parse the log file; see Parser.parse() for full documentation."""
         parser = self._require_parser()
         parser.parse(
             regex_dict,
@@ -246,7 +244,7 @@ class LOGos:
     ) -> None:
         """
         Treat a parsed variable as part of its template; see
-        LogParser.include_in_template().
+        Parser.include_in_template().
         """
         parser = self._require_parser()
         return parser.include_in_template(
@@ -346,7 +344,7 @@ class LOGos:
         ):
             return
 
-        self._explorer = CausalExplorer(preparer)
+        self._explorer = Explorer(preparer)
         if reject_prunable_edges:
             _logger.debug("Pruning edges...")
             self._explorer.reject_all_prunable_edges(
@@ -457,7 +455,7 @@ class LOGos:
         self,
         treatment: str,
         outcome: str,
-    ) -> Optional[Types.Edge]:
+    ) -> Optional[Edge]:
         """Suggest the next edge to assess using the LOGOS (ECCS) method."""
         return self._require_explorer().get_causal_graph_refinement_suggestion(
             treatment, outcome
@@ -509,16 +507,14 @@ class LOGos:
         """
         if self._parser is not None:
             try:
-                TagUtils.name_of(self._parser.parsed_variables, var, "parsed")
+                name_of(self._parser.parsed_variables, var, "parsed")
                 self._require_parser().tag_parsed_variable(var, tag)
                 return
             except (ValueError, KeyError):
                 pass
         if self._preparer is not None:
             try:
-                TagUtils.name_of(
-                    self._preparer.prepared_variables, var, "prepared"
-                )
+                name_of(self._preparer.prepared_variables, var, "prepared")
                 self._require_preparer().tag_prepared_variable(var, tag)
                 return
             except (ValueError, KeyError):
@@ -537,19 +533,14 @@ class LOGos:
         if self._parser is not None:
             try:
                 return (
-                    TagUtils.tag_of(
-                        self._parser.parsed_variables, var, "parsed"
-                    )
-                    or var
+                    tag_of(self._parser.parsed_variables, var, "parsed") or var
                 )
             except (ValueError, KeyError):
                 pass
         if self._preparer is not None:
             try:
                 return (
-                    TagUtils.tag_of(
-                        self._preparer.prepared_variables, var, "prepared"
-                    )
+                    tag_of(self._preparer.prepared_variables, var, "prepared")
                     or var
                 )
             except (ValueError, KeyError):
@@ -557,9 +548,7 @@ class LOGos:
         if self._explorer is not None:
             try:
                 return (
-                    TagUtils.tag_of(
-                        self._explorer._prepared_variables, var, "prepared"
-                    )
+                    tag_of(self._explorer._prepared_variables, var, "prepared")
                     or var
                 )
             except (ValueError, KeyError):

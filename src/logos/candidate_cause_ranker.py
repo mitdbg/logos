@@ -11,8 +11,8 @@ import pandas as pd
 
 from logos.llm import get_openai_client
 from logos.pruner import Pruner
-from logos.regression import Regression
-from logos.tag_utils import TagUtils
+from logos.regression import multi_ols, ols
+from logos.tag_utils import name_of, tag_of
 
 _logger = logging.getLogger(__name__)
 
@@ -129,7 +129,7 @@ class CandidateCauseRanker:
         num_processors = multiprocessing.cpu_count()
         with multiprocessing.Pool(processes=num_processors) as pool:
             results = pool.starmap(
-                Regression.ols,
+                ols,
                 [(col, data[col], data[target_name]) for col in candidates],
             )
 
@@ -139,11 +139,9 @@ class CandidateCauseRanker:
             .sort_values(by="P-value", ascending=True)
             .reset_index(drop=True)
         )
-        result_df["Target Tag"] = TagUtils.tag_of(
-            data_tags_df, target_name, "prepared"
-        )
+        result_df["Target Tag"] = tag_of(data_tags_df, target_name, "prepared")
         result_df["Candidate Tag"] = result_df["Candidate"].apply(
-            lambda x: TagUtils.tag_of(data_tags_df, x, "prepared")
+            lambda x: tag_of(data_tags_df, x, "prepared")
         )
         result_df = result_df[CandidateCauseRanker.INTERNAL_COLUMN_ORDER]
 
@@ -169,9 +167,7 @@ class CandidateCauseRanker:
         """
 
         candidates = [c for c in data.columns if c != target_name]
-        result_df = Regression.multi_ols(
-            candidates, data[candidates], data[target_name]
-        )
+        result_df = multi_ols(candidates, data[candidates], data[target_name])
         result_df = (
             result_df.sort_values(
                 by="Absolute Normalized Slope", ascending=False
@@ -180,11 +176,9 @@ class CandidateCauseRanker:
             .reset_index(drop=True)
         )
 
-        result_df["Target Tag"] = TagUtils.tag_of(
-            data_tags_df, target_name, "prepared"
-        )
+        result_df["Target Tag"] = tag_of(data_tags_df, target_name, "prepared")
         result_df["Candidate Tag"] = result_df["Candidate"].apply(
-            lambda x: TagUtils.tag_of(data_tags_df, x, "prepared")
+            lambda x: tag_of(data_tags_df, x, "prepared")
         )
         result_df = result_df[CandidateCauseRanker.INTERNAL_COLUMN_ORDER]
 
@@ -215,7 +209,7 @@ class CandidateCauseRanker:
 
         client = get_openai_client()
 
-        target_tag = TagUtils.tag_of(data_tags_df, target_name, "prepared")
+        target_tag = tag_of(data_tags_df, target_name, "prepared")
         nspv = 3  # Number of sample values to show per variable
 
         if gpt_log_path is None:
@@ -246,7 +240,7 @@ class CandidateCauseRanker:
                     """list. Here are the variables: """
                     ", ".join(
                         [
-                            f"""{TagUtils.tag_of(data_tags_df, v, "prepared")}: """
+                            f"""{tag_of(data_tags_df, v, "prepared")}: """
                             f"""[{", ".join(str(x) for x in data[v].unique().tolist()[:nspv])}]"""
                             for v in data.columns
                         ]
@@ -293,13 +287,9 @@ class CandidateCauseRanker:
             "P-value": [None for _ in range(len(candidate_tags))],
         }
         result_df = pd.DataFrame(d)
-        result_df["Target Tag"] = TagUtils.tag_of(
-            data_tags_df, target_name, "prepared"
-        )
+        result_df["Target Tag"] = tag_of(data_tags_df, target_name, "prepared")
         result_df["Candidate"] = result_df["Candidate Tag"].apply(
-            lambda x: TagUtils.name_of(
-                data_tags_df, x.split(":")[0], "prepared"
-            )
+            lambda x: name_of(data_tags_df, x.split(":")[0], "prepared")
         )
         result_df = result_df[CandidateCauseRanker.INTERNAL_COLUMN_ORDER]
 

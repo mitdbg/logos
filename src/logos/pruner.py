@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Optional
+from typing import Optional
 
 import networkx as nx
 import numpy as np
@@ -10,8 +10,8 @@ from sklearn.preprocessing import StandardScaler
 from tqdm.auto import tqdm
 
 from logos.ate_calculator import ATECalculator
-from logos.cache import Cache
-from logos.variable_name.prepared_variable_name import PreparedVariableName
+from logos.cache import artifact_exists, dump_dataframe, load_dataframe
+from logos.variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 
@@ -151,8 +151,8 @@ class Pruner:
             work_dir,
             f"pickles/triangle_dags/{treatment_col}_{outcome_col}.parquet",
         )
-        if Cache.artifact_exists(filename) and not force:
-            df = Cache.load_dataframe(filename)
+        if artifact_exists(filename) and not force:
+            df = load_dataframe(filename)
             _logger.debug("Found cached file")
             return list(df.index[:top_n].values)
 
@@ -220,6 +220,6 @@ class Pruner:
         )
         df = df.sort_values(by="max_diff", ascending=False)
 
-        Cache.dump_dataframe(df, filename)
+        dump_dataframe(df, filename)
 
         return list(df.index[:top_n].values)
