@@ -21,9 +21,9 @@ with mkdocs_gen_files.open("index.md", "w") as fd:
 nav = mkdocs_gen_files.Nav()
 
 root = Path(__file__).parent.parent
-src = root / "src"  
+src = root / "src" 
 
-for path in sorted(src.rglob("*/*.py")):  
+for path in sorted(src.rglob("logos*/*.py")):  
     module_path = path.relative_to(src).with_suffix("")  
     doc_path = path.relative_to(src).with_suffix(".md")  
     full_doc_path = Path("reference", doc_path)  
