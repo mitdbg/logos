@@ -3,8 +3,6 @@ Data preparation: aggregation, imputation, one-hot encoding, and causal-unit
 management.
 """
 
-import importlib
-import inspect
 import logging
 import os
 from typing import Callable, Optional, Tuple
@@ -12,7 +10,26 @@ from typing import Callable, Optional, Tuple
 import pandas as pd
 from tqdm.auto import tqdm
 
+import logos.aggimp.agg_funcs as _agg_mod
+import logos.aggimp.imp_funcs as _imp_mod
 from logos.aggregate_selector import AggregateSelector
+
+# Aggregation names that pandas groupby handles natively via Cython fast-path
+_PANDAS_BUILTIN_AGGS = frozenset(
+    {
+        "count",
+        "first",
+        "last",
+        "max",
+        "mean",
+        "median",
+        "min",
+        "nunique",
+        "std",
+        "sum",
+        "var",
+    }
+)
 from logos.cache import Cache
 from logos.causal_unit_suggester import CausalUnitSuggester
 from logos.parsed_source import ParsedSource
@@ -34,13 +51,21 @@ class CausalDatasetPreparer:
         self._prepared_log: pd.DataFrame = pd.DataFrame()
         self._prepared_variables: pd.DataFrame = pd.DataFrame()
 
-        agg_module = importlib.import_module("logos.aggimp.agg_funcs")
         self._agg_funcs: dict[str, Callable] = {
-            n: f for n, f in inspect.getmembers(agg_module, inspect.isfunction)
+            "first": _agg_mod.first,
+            "last": _agg_mod.last,
+            "max": _agg_mod.max,
+            "mean": _agg_mod.mean,
+            "median": _agg_mod.median,
+            "min": _agg_mod.min,
+            "mode": _agg_mod.mode,
+            "std": _agg_mod.std,
+            "sum": _agg_mod.sum,
         }
-        imp_module = importlib.import_module("logos.aggimp.imp_funcs")
         self._imp_funcs: dict[str, Callable] = {
-            n: f for n, f in inspect.getmembers(imp_module, inspect.isfunction)
+            "ffill_imp": _imp_mod.ffill_imp,
+            "zero_imp": _imp_mod.zero_imp,
+            "no_imp": _imp_mod.no_imp,
         }
 
     # ------------------------------------------------------------------
@@ -70,7 +95,7 @@ class CausalDatasetPreparer:
     @property
     def parsed_variables(self) -> pd.DataFrame:
         """
-        Forward parsed_variables from the underlying parser 
+        Forward parsed_variables from the underlying parser
         (satisfies PreparedSource).
         """
         return self._parser.parsed_variables
@@ -78,7 +103,7 @@ class CausalDatasetPreparer:
     @property
     def parsed_templates(self) -> pd.DataFrame:
         """
-        Forward parsed_templates from the underlying parser 
+        Forward parsed_templates from the underlying parser
         (satisfies PreparedSource).
         """
         return self._parser.parsed_templates
@@ -86,7 +111,7 @@ class CausalDatasetPreparer:
     @property
     def workdir(self) -> str:
         """
-        Forward workdir from the underlying parser 
+        Forward workdir from the underlying parser
         (satisfies PreparedSource).
         """
         return self._parser.workdir
@@ -313,7 +338,10 @@ class CausalDatasetPreparer:
 
         # Start with the parsed log, optionally with extra variables counting
         # the occurence of each template.
-        if count_occurrences and "TemplateId" in self._parser.parsed_log.columns:
+        if (
+            count_occurrences
+            and "TemplateId" in self._parser.parsed_log.columns
+        ):
             _logger.debug("Adding template occurrence count variables...")
             self._prepared_log = pd.concat(
                 [
@@ -377,8 +405,13 @@ class CausalDatasetPreparer:
 
         # Perform the aggregation
         _logger.debug("Calculating aggregates for each causal unit...")
-        agg_func_dict: dict[str, list[Callable]] = {
-            name: [self._agg_funcs[f] for f in funcs]
+        # Use string names for pandas built-in aggs (Cython fast-path); 
+        # callable only for mode
+        agg_func_dict: dict[str, list] = {
+            name: [
+                f if f in _PANDAS_BUILTIN_AGGS else self._agg_funcs[f]
+                for f in funcs
+            ]
             for name, funcs in agg_dict.items()
         }
         self._prepared_log = self._prepared_log.groupby(
@@ -402,21 +435,25 @@ class CausalDatasetPreparer:
         self._prepared_log.index = self._prepared_log.index.astype(str)
 
         # Perform the imputation
+        null_cols = set(
+            self._prepared_log.columns[self._prepared_log.isnull().any()]
+        )
         for col in tqdm(
             self._prepared_log.columns, desc="Imputing missing values..."
         ):
-            if self._prepared_log[col].isnull().values.any():
-                base_var = PreparedVariableName(col).base_var()
-                func_name: str = (
-                    custom_imp[base_var] if base_var in custom_imp else "no_imp"
-                )
-                self._prepared_log[col] = (self._imp_funcs[func_name])(
-                    self._prepared_log[col]
-                )
+            if col not in null_cols:
+                continue
+            base_var = PreparedVariableName(col).base_var()
+            func_name: str = (
+                custom_imp[base_var] if base_var in custom_imp else "no_imp"
+            )
+            self._prepared_log[col] = (self._imp_funcs[func_name])(
+                self._prepared_log[col]
+            )
         self._prepared_log.dropna(inplace=True)
 
-        # Drop variables that do not add information compared to other variables 
-        # based on the same base variable but using a different aggregation 
+        # Drop variables that do not add information compared to other variables
+        # based on the same base variable but using a different aggregation
         # function.
         if drop_bad_aggs:
             _logger.debug("Dropping aggregates that do not add information...")
@@ -431,22 +468,23 @@ class CausalDatasetPreparer:
         categorical_vars = self._prepared_log.select_dtypes(
             include="object"
         ).columns.tolist()
-        for col in tqdm(
-            categorical_vars, desc="One-hot encoding categorical variables..."
-        ):
+        if categorical_vars:
+            dummies = [
+                pd.get_dummies(
+                    self._prepared_log[col],
+                    prefix=col,
+                    prefix_sep="=",
+                    dtype=float,
+                )
+                for col in tqdm(
+                    categorical_vars,
+                    desc="One-hot encoding categorical variables...",
+                )
+            ]
             self._prepared_log = pd.concat(
-                [
-                    self._prepared_log,
-                    pd.get_dummies(
-                        self._prepared_log[col],
-                        prefix=col,
-                        prefix_sep="=",
-                        dtype=float,
-                    ),
-                ],
+                [self._prepared_log.drop(columns=categorical_vars)] + dummies,
                 axis=1,
             )
-            self._prepared_log.drop(col, axis=1, inplace=True)
         # Deal with https://github.com/pydot/pydot/issues/258
         self._prepared_log.columns = [
             x.replace(":", ";") for x in self._prepared_log.columns
@@ -495,97 +533,71 @@ class CausalDatasetPreparer:
 
     def _generate_prepared_variables_df(self) -> None:
         """Generate dataframe of prepared variables for later tagging etc."""
-        self._prepared_variables = pd.DataFrame()
-        self._prepared_variables["Name"] = self._prepared_log.columns
+        names = self._prepared_log.columns.tolist()
+        prep_names = [PreparedVariableName(n) for n in names]
 
-        # Bring in variable name components leveraging PreparedVariableName
-        self._prepared_variables["Base"] = self._prepared_variables[
-            "Name"
-        ].apply(lambda x: PreparedVariableName(x).base_var())
-        self._prepared_variables["Pre-agg Value"] = self._prepared_variables[
-            "Name"
-        ].apply(lambda x: PreparedVariableName(x).pre_agg_value())
-        self._prepared_variables["Agg"] = self._prepared_variables[
-            "Name"
-        ].apply(lambda x: PreparedVariableName(x).aggregate())
-        self._prepared_variables["Post-agg Value"] = self._prepared_variables[
-            "Name"
-        ].apply(lambda x: PreparedVariableName(x).post_agg_value())
+        self._prepared_variables = pd.DataFrame(
+            {
+                "Name": names,
+                "Base": [p.base_var() for p in prep_names],
+                "Pre-agg Value": [p.pre_agg_value() for p in prep_names],
+                "Agg": [p.aggregate() for p in prep_names],
+                "Post-agg Value": [p.post_agg_value() for p in prep_names],
+            }
+        )
 
-        # Bring in other info from parsed_variables
+        # Build O(1) lookup dicts from parsed_variables once instead of
+        # re-scanning the DataFrame for every prepared variable
+        pv_idx = self._parser.parsed_variables.set_index("Name")
+        tag_map = pv_idx["Tag"].to_dict()
+        occ_map: dict = {**pv_idx["Occurrences"].to_dict(), "TemplateId": ""}
+        type_map: dict = {**pv_idx["Type"].to_dict(), "TemplateId": ""}
+        examples_map: dict = {**pv_idx["Examples"].to_dict(), "TemplateId": ""}
+        from_regex_map: dict = {
+            **pv_idx["From regex"].to_dict(),
+            "TemplateId": "",
+        }
+
         self._prepared_variables["Tag"] = self._prepared_variables.apply(
             lambda x: (
-                self._parser.parsed_variables.loc[
-                    self._parser.parsed_variables["Name"] == x["Base"],
-                    "Tag",
-                ].values[0]
-                if x["Base"] != "TemplateId"
-                else "TemplateId"
-            )
-            + (f" {x['Pre-agg Value']}" if x["Pre-agg Value"] != "" else "")
-            + (f" {x['Agg']}" if x["Agg"] != "" else "")
-            + (f" {x['Post-agg Value']}" if x["Post-agg Value"] != "" else ""),
+                (
+                    tag_map.get(x["Base"], "TemplateId")
+                    if x["Base"] != "TemplateId"
+                    else "TemplateId"
+                )
+                + (f" {x['Pre-agg Value']}" if x["Pre-agg Value"] != "" else "")
+                + (f" {x['Agg']}" if x["Agg"] != "" else "")
+                + (
+                    f" {x['Post-agg Value']}"
+                    if x["Post-agg Value"] != ""
+                    else ""
+                )
+            ),
             axis=1,
         )
-        self._prepared_variables[
-            "Base Variable Occurences"
-        ] = self._prepared_variables["Base"].apply(
-            lambda x: (
-                self._parser.parsed_variables.loc[
-                    self._parser.parsed_variables["Name"] == x, "Occurrences"
-                ].values[0]
-                if x != "TemplateId"
-                else ""
-            )
+        self._prepared_variables["Base Variable Occurences"] = (
+            self._prepared_variables["Base"].map(occ_map)
         )
-        self._prepared_variables["Type"] = self._prepared_variables[
-            "Base"
-        ].apply(
-            lambda x: (
-                self._parser.parsed_variables.loc[
-                    self._parser.parsed_variables["Name"] == x, "Type"
-                ].values[0]
-                if x != "TemplateId"
-                else ""
-            )
+        self._prepared_variables["Type"] = self._prepared_variables["Base"].map(
+            type_map
         )
         self._prepared_variables["Examples"] = self._prepared_variables[
             "Base"
-        ].apply(
-            lambda x: (
-                self._parser.parsed_variables.loc[
-                    self._parser.parsed_variables["Name"] == x, "Examples"
-                ].values[0]
-                if x != "TemplateId"
-                else ""
-            )
-        )
+        ].map(examples_map)
         self._prepared_variables["From regex"] = self._prepared_variables[
             "Base"
-        ].apply(
-            lambda x: (
-                self._parser.parsed_variables.loc[
-                    self._parser.parsed_variables["Name"] == x, "From regex"
-                ].values[0]
-                if x != "TemplateId"
-                else ""
-            )
-        )
+        ].map(from_regex_map)
 
-        def _get_template_text(row: pd.Series) -> str:
-            if row["From regex"]:
-                return ""
-            tpl_id = PreparedVariableName(row["Name"]).template_id()
-            matches = self._parser.parsed_templates.loc[
-                self._parser.parsed_templates["TemplateId"] == tpl_id,
-                "TemplateText",
-            ]
-            return matches.values[0] if len(matches) > 0 else ""
-
-        # Bring in template text, only for appropriate base variables.
-        self._prepared_variables["TemplateText"] = (
-            self._prepared_variables.apply(_get_template_text, axis=1)
-        )
+        # Build TemplateText with pre-computed template IDs and a single dict lookup
+        tpl_text_map = self._parser.parsed_templates.set_index("TemplateId")[
+            "TemplateText"
+        ].to_dict()
+        template_ids = [p.template_id() for p in prep_names]
+        from_regex_vals = self._prepared_variables["From regex"].tolist()
+        self._prepared_variables["TemplateText"] = [
+            "" if fr else tpl_text_map.get(tid, "")
+            for tid, fr in zip(template_ids, from_regex_vals)
+        ]
 
     def tag_prepared_variable(self, name: str, tag: str) -> None:
         """

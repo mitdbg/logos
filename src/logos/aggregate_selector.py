@@ -43,11 +43,14 @@ class AggregateSelector:
 
     @staticmethod
     def find_uninformative_aggregates(
-        prepared_log: pd.DataFrame, parsed_variables: pd.DataFrame, causal_unit_var: str
+        prepared_log: pd.DataFrame,
+        parsed_variables: pd.DataFrame,
+        causal_unit_var: str,
     ) -> list[str]:
         """
-        Find aggregates that are uninformative for each column in `prepared_log`.
-        Aggregates are uninformative unless they maximize the empirical entropy across causal units.
+        Find aggregates that are uninformative for each column in the
+        `prepared_log`. Aggregates are uninformative unless they maximize the
+        empirical entropy across causal units.
 
         Parameters:
             prepared_log: The prepared log.
@@ -60,21 +63,28 @@ class AggregateSelector:
 
         drop_list = []
 
+        # Pre-compute entropy for every candidate column in one pass
+        entropy_map = {
+            col: AggregateSelector.entropy(prepared_log[col])
+            for col in prepared_log.columns
+        }
+
         for row in parsed_variables.itertuples():
             aggs = row.Aggregates
             if len(aggs) == 0 or row.Name == causal_unit_var:
                 continue
 
             variables = [f"{row.Name}+{agg}" for agg in aggs]
-            best_var = f"{row.Name}+{AggregateSelector.DEFAULT_AGGREGATES[row.Type][0]}"
+            default = AggregateSelector.DEFAULT_AGGREGATES[row.Type][0]
+            best_var = f"{row.Name}+{default}"
             max_entropy = -np.inf
 
             for var in variables:
-                entropy = AggregateSelector.entropy(prepared_log[var])
+                e = entropy_map.get(var, 0.0)
 
-                if entropy > max_entropy:
+                if e > max_entropy:
                     best_var = var
-                    max_entropy = entropy
+                    max_entropy = e
 
             drop_list.extend([var for var in variables if var != best_var])
 

@@ -1,6 +1,7 @@
 """
-A class for suggesting causal units to the user. This is mostly experimental, as the user would 
-typically define causal units themselves based on domain knowledge.
+A class for suggesting causal units to the user. This is mostly experimental, as
+the user would typically define causal units themselves based on domain
+knowledge.
 """
 
 from typing import Optional
@@ -16,10 +17,10 @@ class CausalUnitSuggester:
     @staticmethod
     def discretize(col: pd.Series, col_type: str, bins: int = 0) -> pd.Series:
         """
-        Discretize an unsorted `col` based on its type. If `col_type` is 'num', then
-        return labels for each of `bins` equi-depth bins. If `col_type` is 'str,
-        then return a unique label for each unique value. Nulls in `col` are assigned
-        to bin -1.
+        Discretize an unsorted `col` based on its type. If `col_type` is 'num',
+        then return labels for each of `bins` equi-depth bins. If `col_type` is
+        'str', then return a unique label for each unique value. Nulls in `col`
+        are assigned to bin -1.
 
         Parameters:
             col: The column to discretize.
@@ -27,7 +28,8 @@ class CausalUnitSuggester:
             bins: The number of bins to use when discretizing the column.
 
         Returns:
-            A vector of length len(`col`) with the labels of each value in `col`.
+            A vector of length len(`col`) with the labels of each value in
+                `col`.
         """
         if col_type == "num":
             return (
@@ -46,16 +48,18 @@ class CausalUnitSuggester:
         col: pd.Series, col_type: str, k: int
     ) -> list[pd.Series]:
         """
-        Return a list of all possible discretizations of `col` based on its type.
-        If `col_type` is 'num', then return discretizations with `k`, `2k` and `10k` bins.
-        If `col_type` is 'str', then return a discretization with a unique label for
-        each unique value in `col`.
+        Return a list of all possible discretizations of `col` based on its
+        type.
+        If `col_type` is 'num', then return discretizations with `k`, `2k` and
+            `10k` bins.
+        If `col_type` is 'str', then return a discretization with a unique label
+            for each unique value in `col`.
 
         Parameters:
             col: The column to discretize.
             col_type: The type of the column.
-            k: A parameter indirectly controlling the number of bins to use when discretizing
-                a numeric column (see above).
+            k: A parameter indirectly controlling the number of bins to use when
+                discretizing a numeric column (see above).
 
         Returns:
             A list of all desired discretizations of `col`.
@@ -81,8 +85,8 @@ class CausalUnitSuggester:
         """
         Calculate the Information Utilization Score of `df` if each row belongs
         to the causal unit specified by `discretization`. The unit labelled -1
-        contails rows with null value for the causal unit column, so the corresponding
-        rows in `df` are ignored.
+        contains rows with null value for the causal unit column, so the
+        corresponding rows in `df` are ignored.
 
         Parameters:
             df: The DataFrame to calculate the Information Utilization Score of.
@@ -92,16 +96,20 @@ class CausalUnitSuggester:
             The Information Utilization Score of `df`.
         """
 
-        grouped = df.groupby(discretization)  # TODO: handle nulls
-        ius = 0
-
-        for group_id, group_data in grouped:
-            if group_id == -1:
-                continue
-            columns_with_non_nulls = group_data.notna().any(axis=0).sum()
-            ius += columns_with_non_nulls * len(group_data)
-
-        return ius / (len(df.columns) * len(df))
+        # Vectorised: for each group, count columns that have ≥1 non-null value,
+        # multiply by group size, then sum — avoids a Python loop over groups
+        valid = discretization != -1
+        valid_df = df.loc[valid]
+        valid_disc = discretization.loc[valid]
+        if valid_df.empty:
+            return 0.0
+        nonnull_cols_per_group = (
+            valid_df.notna().groupby(valid_disc).any().sum(axis=1)
+        )
+        group_sizes = valid_disc.value_counts()
+        return float((nonnull_cols_per_group * group_sizes).sum()) / (
+            len(df.columns) * len(df)
+        )
 
     @staticmethod
     def suggest_causal_unit_defs(
@@ -111,41 +119,50 @@ class CausalUnitSuggester:
         num_suggestions: int = 10,
     ) -> Optional[pd.DataFrame]:
         """
-        Suggest at most `num_suggestions` causal unit definitions for `data_df` based on ius
-        maximization, while returning at least `min_causal_units` causal units. `var_df` provides
-        information on the type of each variable.
+        Suggest at most `num_suggestions` causal unit definitions for `data_df` 
+        based on ius maximization, while returning at least `min_causal_units` 
+        causal units. `var_df` provides information on the type of each 
+        variable.
 
         Parameters:
             data_df: The DataFrame to suggest causal unit definitions for.
-            var_df: A DataFrame with one row for each variable in `data_df` that includes variable
-                type information.
-            min_causal_units: The minimum number of causal units that a suggested definition should
-                create.
-            num_suggestions: The maximum number of causal unit definitions to suggest.
+            var_df: A DataFrame with one row for each variable in `data_df` that 
+                includes variable type information.
+            min_causal_units: The minimum number of causal units that a 
+                suggested definition should create.
+            num_suggestions: The maximum number of causal unit definitions to 
+                suggest.
 
         Returns:
-            A DataFrame with one row for each suggested causal unit definition, or `None` if no
-                suggestions were made.
+            A DataFrame with one row for each suggested causal unit definition, 
+                or `None` if no suggestions were made.
         """
 
         list_of_suggestions = []
 
+        # Build type look-up dict once instead of scanning var_df for every 
+        # column
+        type_map = var_df.set_index("Name")["Type"].to_dict()
+
         for col in data_df.columns:
+            col_type = type_map[col]
             discretizations = CausalUnitSuggester._get_all_discretizations(
                 data_df[col],
-                var_df[var_df["Name"] == col]["Type"].values[0],
+                col_type,
                 k=min_causal_units,
             )
             for disc in discretizations:
-                # Ensure that the unique values in disc, excluding -1 if it exists,
-                # are at least min_causal_units
+                # Ensure that the unique values in disc, excluding -1 if it 
+                # exists, are at least min_causal_units
                 if disc.max() >= (min_causal_units - 1):
                     list_of_suggestions.append(
                         {
                             "Variable": col,
-                            "Type": var_df[var_df["Name"] == col]["Type"].values[0],
+                            "Type": col_type,
                             "Num Units": disc.max() + 1,
-                            "IUS": CausalUnitSuggester._calculate_ius(data_df, disc),
+                            "IUS": CausalUnitSuggester._calculate_ius(
+                                data_df, disc
+                            ),
                         }
                     )
 
