@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 sys.path.append("../../../")
 from logos.logos import LOGos
@@ -42,14 +43,17 @@ def main():
 
         # Analyze log
         s = LOGos(filename, workdir=workdir, skip_writeout=True)
-        parse_time = s.parse(
+        _t0 = time.perf_counter()
+        s.parse(
             regex_dict={"LineID": r"line_\d+"}, sim_thresh=12 / 13, force=True
         )
+        parse_time = time.perf_counter() - _t0
         print(f"Number of templates: {len(s.parsed_templates)}")
         print(f"Number of parsed variables: {len(s.parsed_variables)}")
         s.set_causal_unit("LineID")
         d = {k: "zero_imp" for k in s.parsed_log.columns[2:]}
-        prep_time = s.prepare(
+        _t0 = time.perf_counter()
+        s.prepare(
             custom_agg={"LineID": ["mode"]},
             custom_imp=d,
             ignore_uninteresting=False,
@@ -57,6 +61,7 @@ def main():
             drop_bad_aggs=False,
             reject_prunable_edges=False,
         )
+        prep_time = time.perf_counter() - _t0
         print(f"Shape of prepared log: {s.prepared_log.shape}")
         s.prepared_log.head(10)
 

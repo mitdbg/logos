@@ -98,7 +98,7 @@ for metric, properties in LINE_FORMATTING_DATA.items():
         "scaling",
         f"{prefix}_evaluation",
         "8.4-log-converter-scaling",
-        f"{metric}.csv",
+        f"8.4-log-converter-scaling-{metric}.csv",
     )
     data = pd.read_csv(path)
     data.columns = [x.strip() for x in data.columns]
