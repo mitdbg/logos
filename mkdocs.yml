@@ -66,30 +66,40 @@ plugins:
 
 nav:
   - Home: index.md
-  - Docs: 
-    - "LOGos": reference/logos/logos.md
-    - "Drain": reference/logos/drain.md
-    - "TagUtils": reference/logos/tag_utils.md 
-    - "CausalUnitSuggester": reference/logos/causal_unit_suggester.md
-    - "AggregateSelector": reference/logos/aggregate_selector.md
-    - "EdgeStateMatrix": reference/logos/edge_state_matrix.md
-    - "CandidateCauseRanker": reference/logos/candidate_cause_ranker.md
-    - "Pruner": reference/logos/pruner.md
-    - "Regression": reference/logos/regression.md
-    - "GraphRenderer": reference/logos/graph_renderer.md
-    - "ATECalculator": reference/logos/ate_calculator.md
-    - "InteractiveCausalGraphRefiner": reference/logos/interactive_causal_graph_refiner.md
-    - "Cache": reference/logos/cache.md
-    - "ParsedSource": reference/logos/parsed_source.md
-    - "PreparedSource": reference/logos/prepared_source.md
-    - "Session": reference/logos/session.md
-    - "Types": reference/logos/types.md
-    - Variable Names: 
-      - "ParsedVariableName": reference/logos/variable_name/parsed_variable_name.md
-      - "PreparedVariableName": reference/logos/variable_name/prepared_variable_name.md
-    - Aggregation/Imputation Functions: 
-      - "Aggregation Functions": reference/logos/aggimp/agg_funcs.md
-      - "Imputation Functions": reference/logos/aggimp/imp_funcs.md
+  - Core:
+    - "Logos": reference/logos/logos.md
+    - "LLM": reference/logos/llm.md
+    - "Exceptions": reference/logos/exceptions.md
+  - Parsing:
+    - "Parser": reference/logos/parsing/parser.md
+    - "Drain": reference/logos/parsing/drain.md
+    - "Tag Utilities": reference/logos/parsing/tag_utils.md
+    - "ParsedVariableName": reference/logos/parsing/parsed_variable_name.md
+    - "ParsedSource": reference/logos/parsing/parser_like.md
+    - "ParsedDataFrameSource": reference/logos/parsing/parser_from_precomputed.md
+  - Preparation:
+    - "Preparer": reference/logos/preparation/preparer.md
+    - "Aggregate Selector": reference/logos/preparation/aggregate_selector.md
+    - "Aggregators": reference/logos/preparation/aggregators.md
+    - "Imputators": reference/logos/preparation/imputators.md
+    - "Causal Unit Suggester": reference/logos/preparation/causal_unit_suggester.md
+    - "PreparedVariableName": reference/logos/preparation/prepared_variable_name.md
+    - "PreparedSource": reference/logos/preparation/preparer_like.md
+    - "PreparedDataFrameSource": reference/logos/preparation/preparer_from_precomputed.md
+  - Exploration:
+    - "Explorer": reference/logos/exploration/explorer.md
+    - "ATE Calculator": reference/logos/exploration/ate_calculator.md
+    - "Candidate Cause Ranker": reference/logos/exploration/candidate_cause_ranker.md
+    - "Edge State Matrix": reference/logos/exploration/edge_state_matrix.md
+    - "Graph Refiner": reference/logos/exploration/interactive_causal_graph_refiner.md
+    - "Graph Renderer": reference/logos/exploration/graph_renderer.md
+    - "Pruner": reference/logos/exploration/pruner.md
+    - "Regression": reference/logos/exploration/regression.md
+    - "Types": reference/logos/exploration/types.md
+  - Filesystem:
+    - "Cache": reference/logos/filesystem/cache.md
+    - "Paths": reference/logos/filesystem/paths.md
+    - "Session": reference/logos/filesystem/session.md
   - TUI:
     - "App": reference/logos_tui/app.md
     - "WelcomeScreen": reference/logos_tui/welcome.md
@@ -98,6 +108,7 @@ nav:
     - "TransformScreen": reference/logos_tui/transform.md
     - "ExploreScreen": reference/logos_tui/explore.md
     - "LoadSessionModal": reference/logos_tui/load_modal.md
+    - "SaveSessionModal": reference/logos_tui/save_modal.md
     - "SaveSessionModal": reference/logos_tui/save_modal.md
 
   
