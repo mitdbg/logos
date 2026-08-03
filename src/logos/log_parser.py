@@ -120,23 +120,28 @@ class LogParser:
                     except Exception as e:
                         return "str"
 
-    def _find_uninteresting(self, row: pd.Series) -> bool:
+    def _find_uninteresting(
+        self, row: pd.Series, nunique_map: Optional[pd.Series] = None
+    ) -> bool:
         """
         Identify whether a parsed variable is likely to be uninteresting.
 
         Parameters:
             row: A row of the parsed variables dataframe.
+            nunique_map: Pre-computed unique-value counts for all parsed columns.
+                If None, the count is computed on demand (single-variable path).
 
         Returns:
             True if the variable is likely to be uninteresting, False otherwise.
         """
-        return (
-            row["Type"] != "num"
-            and (
-                self._parsed_log[row["Name"]].nunique()
-                >= 0.15 * row["Occurrences"]
-            )
-        ) or (self._parsed_log[row["Name"]].nunique() == 1)
+        n = (
+            self._parsed_log[row["Name"]].nunique()
+            if nunique_map is None
+            else nunique_map[row["Name"]]
+        )
+        return (row["Type"] != "num" and n >= 0.15 * row["Occurrences"]) or (
+            n == 1
+        )
 
     # ------------------------------------------------------------------
     # Public methods
@@ -215,38 +220,24 @@ class LogParser:
                 )
             )
 
-            # Cast and convert date columns
+            # Cast and convert date columns to Unix timestamps (float seconds)
             is_date = self._parsed_variables["Type"] == "date"
             date_cols = self._parsed_variables.loc[is_date, "Name"].tolist()
-            tqdm.pandas(desc="Casting date variables...")
-            self._parsed_log[date_cols] = self._parsed_log[
-                date_cols
-            ].progress_apply(  # type: ignore[operator]
-                pd.to_datetime, errors="coerce"
-            )
-            tqdm.pandas(desc="Casting date variables round 2...")
-            self._parsed_log[date_cols] = self._parsed_log[
-                date_cols
-            ].progress_map(  # type: ignore[operator]
-                lambda x: x.timestamp() if not pd.isnull(x) else None
-            )
+            for col in tqdm(date_cols, desc="Casting date variables..."):
+                dt = pd.to_datetime(self._parsed_log[col], errors="coerce")
+                # nanoseconds → seconds; NaT becomes NaN via .where
+                self._parsed_log[col] = (
+                    dt.astype("int64").where(dt.notna()) / 1e9
+                )
             self._parsed_variables.loc[is_date, "Type"] = "num"
 
-            # Cast and convert time columns
+            # Cast and convert time columns to total seconds (float)
             is_time = self._parsed_variables["Type"] == "time"
             time_cols = self._parsed_variables.loc[is_time, "Name"].tolist()
-            tqdm.pandas(desc="Casting time variables...")
-            self._parsed_log[time_cols] = self._parsed_log[
-                time_cols
-            ].progress_apply(  # type: ignore[operator]
-                pd.to_timedelta, errors="coerce"
-            )
-            tqdm.pandas(desc="Casting time variables round 2...")
-            self._parsed_log[time_cols] = self._parsed_log[
-                time_cols
-            ].progress_map(  # type: ignore[operator]
-                lambda x: x.total_seconds() if not pd.isnull(x) else None
-            )
+            for col in tqdm(time_cols, desc="Casting time variables..."):
+                self._parsed_log[col] = pd.to_timedelta(
+                    self._parsed_log[col], errors="coerce"
+                ).dt.total_seconds()
             self._parsed_variables.loc[is_time, "Type"] = "num"
 
             # Cast numeric columns
@@ -282,11 +273,13 @@ class LogParser:
             TagUtils.deduplicate_tags(self._parsed_variables)
 
             # Detect identifiers.
+            nunique_map = self._parsed_log.nunique()
             tqdm.pandas(desc="Detecting identifiers...")
-            self._parsed_variables[
-                "IsUninteresting"
-            ] = self._parsed_variables.progress_apply(
-                self._find_uninteresting, axis=1  # type: ignore[operator]
+            self._parsed_variables["IsUninteresting"] = (
+                self._parsed_variables.progress_apply(
+                    lambda row: self._find_uninteresting(row, nunique_map),
+                    axis=1,  # type: ignore[operator]
+                )
             )
 
             # Reorder columns.
@@ -329,14 +322,14 @@ class LogParser:
         skip_writeout: Optional[bool] = None,
     ) -> None:
         """
-        Treat a certain parsed variable as part of its template and regenerate 
+        Treat a certain parsed variable as part of its template and regenerate
         parsed dataframes.
 
         Parameters:
             var: The name or tag of the variable to be included in its template.
-            enable_gpt_tagging: A boolean indicating whether GPT-3.5 tagging 
+            enable_gpt_tagging: A boolean indicating whether GPT-3.5 tagging
                 should be enabled.
-            skip_writeout: Whether to skip writing out the regenerated parsed 
+            skip_writeout: Whether to skip writing out the regenerated parsed
                 dataframes. Defaults to the value of self._skip_writeout.
         """
         name = TagUtils.name_of(self._parsed_variables, var, "parsed")
@@ -382,30 +375,23 @@ class LogParser:
         ### Modify _parsed_log
 
         # Update the template ids of all rows that belonged to the old template
-        self._parsed_log["TemplateId"] = self._parsed_log.apply(
-            lambda x: (
-                new_template_ids[x[name]]
-                if (x["TemplateId"] == old_template_id)
-                else x["TemplateId"]
-            ),
-            axis=1,
-        )
+        mask = self._parsed_log["TemplateId"] == old_template_id
+        self._parsed_log.loc[mask, "TemplateId"] = self._parsed_log.loc[
+            mask, name
+        ].map(new_template_ids)
 
-        # Create new variables for each new template id and assign the value of 
+        # Create new variables for each new template id and assign the value of
         # the old variables to them
         new_variables = []
         for new_template_id in new_template_ids.values():
             for other_idx in new_variable_indices:
                 new_var_name = f"{new_template_id}_{str(other_idx)}"
                 new_variables.append(new_var_name)
-                self._parsed_log[new_var_name] = self._parsed_log.apply(
-                    lambda x: (
-                        x[f"{old_template_id}_{other_idx}"]
-                        if (x["TemplateId"] == new_template_id)
-                        else None
-                    ),
-                    axis=1,
-                )
+                old_col = f"{old_template_id}_{other_idx}"
+                tmpl_mask = self._parsed_log["TemplateId"] == new_template_id
+                self._parsed_log[new_var_name] = self._parsed_log[
+                    old_col
+                ].where(tmpl_mask)
 
         # Drop variable columns associated with old template id
         variables_to_drop = [

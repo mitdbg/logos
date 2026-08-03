@@ -1,6 +1,6 @@
 """
-Inspired by the LogPAI implementation of the Drain algorithm for log parsing, 
-available under the MIT license 
+Inspired by the LogPAI implementation of the Drain algorithm for log parsing,
+available under the MIT license
 [here](https://github.com/HelenGuohx/logbert/blob/main/logparser/Drain.py).
 """
 
@@ -82,11 +82,13 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             depth: depth of all leaf nodes
             st: similarity threshold
             max_children: max number of children of an internal node
-            rex: regular expressions used in preprocessing, provided as a dictionary from field name
-                to field regex
-            skip_writeout: whether to skip writing out the parsed log file, templates and variables.
-            message_prefix: prefix that starts each message of the log file - lines are merged to
-                their preceding line if they do not start with this prefix.
+            rex: regular expressions used in preprocessing, provided as a 
+                dictionary from field name to field regex
+            skip_writeout: whether to skip writing out the parsed log file, 
+                templates and variables.
+            message_prefix: prefix that starts each message of the log file - 
+                lines are merged to their preceding line if they do not start 
+                with this prefix.
         """
         self.indir = indir
         self.depth = depth - 2
@@ -103,7 +105,17 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
         self.logdf = pd.DataFrame()
         self.parsed_templates = pd.DataFrame()
 
-    def parse(self, filename: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+        # Pre-compile all regex patterns once to avoid per-line recompilation.
+        self._rex_compiled: list[re.Pattern] = [
+            re.compile(pattern) for pattern in self.rex.values()
+        ]
+        self._prefix_compiled: re.Pattern = re.compile(self.message_prefix)
+        self._punct_compiled: re.Pattern = re.compile(r'([=,\{\}\[\]\(\);"\'])')
+        self._colon_compiled: re.Pattern = re.compile(r"(?<=\D):|:(?=\D)")
+
+    def parse(
+        self, filename: str
+    ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
         Parse a log file.
 
@@ -111,8 +123,8 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             filename: The name of the log file to parse (without path).
 
         Returns:
-            A tuple of three dataframes, containing the parsed log file, the parsed log templates,
-            and the parsed variables respectively.
+            A tuple of three dataframes, containing the parsed log file, the 
+            parsed log templates, and the parsed variables respectively.
         """
 
         full_path = os.path.join(self.indir, filename)
@@ -120,8 +132,12 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
         self.filename = filename
         self.logdf = self._to_df(full_path)
 
-        tqdm.pandas(desc="Determining template for each line...")
-        self.logdf.progress_apply(self._parse_message, axis=1)
+        for line_id, tokenized in tqdm(
+            zip(self.logdf["MsgId"].tolist(), self.logdf["Tokenized"].tolist()),
+            desc="Determining template for each line...",
+            total=len(self.logdf),
+        ):
+            self._parse_message(line_id, tokenized)
 
         return self._postprocess()
 
@@ -133,7 +149,8 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             log_file: The path to the log file.
 
         Returns:
-            A dataframe containing the log file's lines, tokenized and with regexes replaced.
+            A dataframe containing the log file's lines, tokenized and with 
+            regexes replaced.
         """
 
         log_messages = []
@@ -142,10 +159,10 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
         with open(log_file, "r", encoding="utf-8") as f:
             log_message = ""
 
-            for line in tqdm(f.readlines(), desc="Reading and tokenizing log lines..."):
+            for line in tqdm(f, desc="Reading and tokenizing log lines..."):
                 line = line.strip()
 
-                if re.match(self.message_prefix, line):
+                if self._prefix_compiled.match(line):
                     if log_message:
                         try:
                             log_messages.append(self._preprocess(log_message))
@@ -177,35 +194,35 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             msg: The message to preprocess.
 
         Returns:
-            A tuple containing the original message, the tokenized message, and a list of the
-                values replaced by regexes.
+            A tuple containing the original message, the tokenized message, and
+                a list of the values replaced by regexes.
         """
 
         msg = msg.strip()
 
         regex_matches = []
-        for i, rex in enumerate(self.rex.values()):
-            matches = re.findall(rex, msg)  ##### ASSUMPTION: only 1 match of interest
+        for i, compiled in enumerate(self._rex_compiled):
+            matches = compiled.findall(
+                msg
+            )  ##### ASSUMPTION: only 1 match of interest
             regex_matches.append(matches[0] if matches else "")
-            msg = re.sub(rex, "<*" + str(i) + ">", msg, count=1)
+            msg = compiled.sub("<*" + str(i) + ">", msg, count=1)
 
-        pattern = r'([=,\{\}\[\]\(\);"\'])'  # Add spaces around punctuation
-        msg = re.sub(pattern, r" \1 ", msg)
-        pattern = r"(?<=\D):|:(?=\D)"  # Colons not in timestamps
-        msg = re.sub(pattern, " : ", msg)
+        msg = self._punct_compiled.sub(r" \1 ", msg)  # Spaces near punctuation
+        msg = self._colon_compiled.sub(" : ", msg)  # Colons not in timestamps
 
         return (msg, msg.strip().split(), regex_matches)
 
-    def _parse_message(self, msg: pd.Series) -> None:
+    def _parse_message(self, line_id: int, tokenized: list[str]) -> None:
         """
-        Parse a single log message and add it to the Drain parse tree in the appropriate cluster.
+        Parse a single log message and add it to the Drain parse tree in the
+        appropriate cluster.
 
         Parameters:
-            msg: The log message to parse.
+            line_id: The integer ID of the log message.
+            tokenized: The tokenized log message.
         """
 
-        line_id = msg["MsgId"]
-        tokenized = msg["Tokenized"]
         cluster = self._tree_search(self.root, tokenized)
 
         if cluster is None:
@@ -213,12 +230,16 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             self.cluster_list.append(new_cluster)
             self._add_cluster_to_tree(self.root, new_cluster)
         else:
-            new_template = self._get_updated_template(tokenized, cluster.template)
+            new_template = self._get_updated_template(
+                tokenized, cluster.template
+            )
             cluster.message_ids.append(line_id)
             if " ".join(new_template) != " ".join(cluster.template):
                 cluster.template = new_template
 
-    def _tree_search(self, root: Node, tokenized: list[str]) -> Optional[Cluster]:
+    def _tree_search(
+        self, root: Node, tokenized: list[str]
+    ) -> Optional[Cluster]:
         """
         Search the Drain parse tree for a cluster matching `tokenized`.
 
@@ -263,7 +284,8 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             cluster: The cluster to add.
         """
 
-        # Add a node to the first layer of the tree representing the length of the log message.
+        # Add a node to the first layer of the tree representing the length of 
+        # the log message.
         length = len(cluster.template)
         first_layer_node = None
         if length not in root.children:
@@ -307,7 +329,9 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
                             node = node.children["<*>"]
                 else:
                     if "<*>" not in node.children:
-                        node.children["<*>"] = Node(depth=depth + 1, node_id="<*>")
+                        node.children["<*>"] = Node(
+                            depth=depth + 1, node_id="<*>"
+                        )
                     node = node.children["<*>"]
 
             # If the token is matched
@@ -316,7 +340,9 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
 
             depth += 1
 
-    def _similarity(self, seq1: list[str], seq2: list[str]) -> tuple[float, int]:
+    def _similarity(
+        self, seq1: list[str], seq2: list[str]
+    ) -> tuple[float, int]:
         """
         Determine the fraction of tokens in `seq1` that are identical to the corresponding token in
         `seq2` (i.e. with the same index). Also return the number of parameters in `seq1`.
@@ -376,7 +402,9 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
 
         return None
 
-    def _get_updated_template(self, template: list[str], msg: list[str]) -> list[str]:
+    def _get_updated_template(
+        self, template: list[str], msg: list[str]
+    ) -> list[str]:
         """
         Get the updated template from matching `msg` to `template`.
 
@@ -466,9 +494,9 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
         # Create a dataframe of the parsed templates.
         self.parsed_templates = pd.DataFrame(parsed_templates_list)
         template_occurences = dict(self.logdf["TemplateId"].value_counts())
-        self.parsed_templates["Occurrences"] = self.parsed_templates["TemplateId"].map(
-            template_occurences
-        )
+        self.parsed_templates["Occurrences"] = self.parsed_templates[
+            "TemplateId"
+        ].map(template_occurences)
 
         # Create columns for each variable (parsed or regex-derived) and extract them
         # from each log message.
@@ -498,7 +526,10 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             lambda x: Drain._preceding_3(self.parsed_templates, x)
         )
         parsed_variables["Examples"] = parsed_variables["Name"].map(
-            lambda x: self.logdf[x].loc[self.logdf[x].notna()].unique()[:5].tolist()
+            lambda x: self.logdf[x]
+            .loc[self.logdf[x].notna()]
+            .unique()[:5]
+            .tolist()
         )
         parsed_variables["From regex"] = parsed_variables["Name"].map(
             lambda x: True if x in self.rex.keys() else False
@@ -507,7 +538,9 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
         # Drop unnecessary columns from the parsed log.
         to_drop = ["MsgId", "Message", "Tokenized", "Replaced by regex"]
         to_drop.extend(
-            parsed_variables[parsed_variables["Occurrences"] == 0]["Name"].tolist()
+            parsed_variables[parsed_variables["Occurrences"] == 0][
+                "Name"
+            ].tolist()
         )
         parsed_log = self.logdf.drop(columns=to_drop)
         parsed_variables = (
@@ -534,9 +567,9 @@ class Drain:  # pylint: disable=too-many-instance-attributes, too-few-public-met
             mask = self.logdf["TemplateId"] == template_id
             for i in variable_indices:
                 col_name = f"{template_id}_{str(i)}"
-                self.logdf.loc[mask, col_name] = self.logdf.loc[mask, "Tokenized"].str[
-                    i
-                ]
+                self.logdf.loc[mask, col_name] = self.logdf.loc[
+                    mask, "Tokenized"
+                ].str[i]
 
             for i, col_name in enumerate(self.rex.keys()):
                 self.logdf.loc[mask, col_name] = self.logdf.loc[
