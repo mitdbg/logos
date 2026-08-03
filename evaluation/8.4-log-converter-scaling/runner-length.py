@@ -3,7 +3,7 @@ import os
 
 sys.path.append("../../../")
 from logos.logos import LOGos
-from src.definitions import LOGOS_ROOT_DIR
+from definitions import LOGOS_ROOT_DIR
 from gen_scaling_logs import gen_log
 
 

@@ -7,7 +7,7 @@ from datetime import datetime
 import pandas as pd
 
 sys.path.append("../..")
-from src.definitions import LOGOS_ROOT_DIR
+from definitions import LOGOS_ROOT_DIR
 from logos.candidate_cause_ranker import CandidateCauseRanker
 from logos.logos import LOGos
 from logos.tag_utils import TagUtils

@@ -4,7 +4,7 @@ import sys
 sys.path.append("../..")
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from src.definitions import LOGOS_ROOT_DIR
+from definitions import LOGOS_ROOT_DIR
 import os
 import json
 import argparse

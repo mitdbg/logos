@@ -8,7 +8,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from src.definitions import LOGOS_ROOT_DIR
+from definitions import LOGOS_ROOT_DIR
 
 
 parser = argparse.ArgumentParser()

@@ -9,7 +9,7 @@ import pandas as pd
 sys.path.append("../..")
 
 
-from src.definitions import LOGOS_ROOT_DIR
+from definitions import LOGOS_ROOT_DIR
 from logos.interactive_causal_graph_refiner import (
     InteractiveCausalGraphRefiner,
 )
