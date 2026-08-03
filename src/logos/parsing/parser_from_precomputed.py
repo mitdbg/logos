@@ -1,5 +1,5 @@
 """
-Entry Point 2: wrap a user-provided DataFrame as a ParsedSource so that
+Entry Point 2: wrap a user-provided DataFrame as a ParserLike so that
 CausalDatasetPreparer can prepare it without running Drain.
 """
 
@@ -8,12 +8,12 @@ from typing import Optional
 
 import pandas as pd
 
-from logos.tag_utils import TagOrigin, deduplicate_tags, get_tag, set_tag
+from logos.parsing.tag_utils import TagOrigin, get_tag
 
 
-class ParsedDataFrameSource:
+class ParserFromPrecomputed:
     """
-    A ParsedSource backed by a user-supplied DataFrame.
+    A ParserLike backed by a user-supplied DataFrame.
 
     The DataFrame is treated as if it were the output of LogParser.parse():
     one row per log event, one column per field.  No Drain run is performed.
@@ -60,7 +60,7 @@ class ParsedDataFrameSource:
         )
 
     # ------------------------------------------------------------------
-    # ParsedSource interface
+    # ParserLike interface
     # ------------------------------------------------------------------
 
     @property
@@ -104,7 +104,7 @@ class ParsedDataFrameSource:
     ) -> pd.DataFrame:
         rows = []
         for col in data.columns:
-            col_type = ParsedDataFrameSource._infer_type(data[col])
+            col_type = ParserFromPrecomputed._infer_type(data[col])
             examples = (
                 data[col].dropna().unique()[:5].tolist()
             )

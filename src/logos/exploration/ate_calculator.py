@@ -10,7 +10,7 @@ import networkx as nx
 import pandas as pd
 from dowhy import CausalModel
 
-from logos.tag_utils import name_of
+from logos.parsing.tag_utils import name_of
 
 
 class ATECalculator:  # pylint: disable=too-few-public-methods

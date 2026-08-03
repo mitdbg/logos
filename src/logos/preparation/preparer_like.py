@@ -1,18 +1,10 @@
-"""
-Protocol that CausalDatasetPreparer and PreparedDataFrameSource satisfy, letting
-CausalExplorer accept either without an inheritance hierarchy.
-"""
-
 from typing import Protocol, runtime_checkable
 
 import pandas as pd
 
 
 @runtime_checkable
-class PreparedSource(Protocol):
-    """
-    Structural interface shared by CausalDatasetPreparer and PreparedDataFrameSource.
-    """
+class PreparerLike(Protocol):
 
     @property
     def prepared_log(self) -> pd.DataFrame: ...

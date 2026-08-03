@@ -10,9 +10,9 @@ import pandas as pd
 from eccs.eccs import ECCS
 
 from logos.llm import get_openai_client
-from logos.regression import get_normalized_copy, ols
-from logos.tag_utils import name_of, tag_of
-from logos.types import Edge
+from logos.exploration.regression import get_normalized_copy, ols
+from logos.parsing.tag_utils import name_of, tag_of
+from logos.exploration.types import Edge
 
 
 class GraphRefiner:

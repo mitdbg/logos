@@ -1,16 +1,10 @@
-"""
-Protocol that both LogParser and ParsedDataFrameSource satisfy, letting
-CausalDatasetPreparer accept either without an inheritance hierarchy.
-"""
-
 from typing import Protocol, runtime_checkable
 
 import pandas as pd
 
 
 @runtime_checkable
-class ParsedSource(Protocol):
-    """Structural interface shared by Parser and ParsedDataFrameSource."""
+class ParserLike(Protocol):
 
     @property
     def parsed_log(self) -> pd.DataFrame: ...

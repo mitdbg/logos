@@ -13,13 +13,13 @@ import networkx as nx
 import numpy as np
 
 from logos import Logos
-from logos.cache import (
+from logos.filesystem.cache import (
     dump_dataframe,
     dump_metadata,
     load_dataframe,
     load_metadata,
 )
-from logos.parser import Parser
+from logos.parsing.parser import Parser
 
 _logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class Session:
             manifest["entry_point"] = "EP-1"
             manifest["source_path"] = logos._parser.filename
             workdir = logos._parser.workdir
-        else:  # ParsedDataFrameSource
+        else:  # ParserFromPrecomputed
             manifest["entry_point"] = "EP-2"
             manifest["source_path"] = logos._parser.filename  # source_id
             workdir = logos._parser.workdir

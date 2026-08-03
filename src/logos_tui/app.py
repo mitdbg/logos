@@ -15,7 +15,7 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.widgets import Button, Footer, Header
 
-from logos.session import Session
+from logos.filesystem.session import Session
 from logos_tui.explore import ExploreScreen
 from logos_tui.file_select import FileSelectScreen
 from logos_tui.load_modal import LoadSessionModal

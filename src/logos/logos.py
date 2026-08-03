@@ -6,18 +6,20 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from logos.ate_calculator import ATECalculator
 from logos.exceptions import UnsupportedOperationError
-from logos.explorer import Explorer
-from logos.parsed_source import ParsedSource
-from logos.parser import Parser
-from logos.preparer import Preparer
-from logos.pruner import Pruner
-from logos.tag_utils import name_of, tag_of
-from logos.types import Edge
-from logos.variable_name import PreparedVariableName
-from src.logos.parsed_dataframe_source import ParsedDataFrameSource
-from src.logos.prepared_dataframe_source import PreparedDataFrameSource
+from logos.preparation.prepared_variable_name import PreparedVariableName
+from logos.exploration.ate_calculator import ATECalculator
+from logos.exploration.explorer import Explorer
+from logos.exploration.pruner import Pruner
+from logos.exploration.types import Edge
+from logos.parsing.parser import Parser
+from logos.parsing.parser_from_precomputed import ParserFromPrecomputed
+from logos.parsing.parser_like import ParserLike
+from logos.parsing.tag_utils import name_of, tag_of
+from logos.preparation.preparer_from_precomputed import (
+    PreparerFromPrecomputed,
+)
+from logos.preparation.preparer import Preparer
 
 _logger = logging.getLogger(__name__)
 # Suppress LOGos debug messages by default; call set_verbose_to(True) to enable.
@@ -46,7 +48,7 @@ class Logos:
             skip_writeout: Whether to skip writing out the parsed and prepared
                 dataframes.
         """
-        self._parser: Optional[ParsedSource] = Parser(
+        self._parser: Optional[ParserLike] = Parser(
             filename, workdir, skip_writeout
         )
         self._preparer: Optional[Preparer] = Preparer(self._parser)
@@ -86,7 +88,7 @@ class Logos:
             skip_writeout: Whether to skip writing prepare cache files.
         """
         instance = cls._create()
-        instance._parser = ParsedDataFrameSource(
+        instance._parser = ParserFromPrecomputed(
             data, workdir, source_id, variable_tags, skip_writeout
         )
         instance._preparer = Preparer(instance._parser)
@@ -113,7 +115,7 @@ class Logos:
             variable_tags: Optional column-name → tag mapping.
         """
         instance = cls._create()
-        pti = PreparedDataFrameSource(data, workdir, variable_tags)
+        pti = PreparerFromPrecomputed(data, workdir, variable_tags)
         instance._explorer = Explorer(pti)
         instance._explorer._init_eccs()
         return instance

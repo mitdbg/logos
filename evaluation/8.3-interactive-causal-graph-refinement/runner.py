@@ -8,7 +8,7 @@ import pandas as pd
 
 from logos.interactive_causal_graph_refiner import InteractiveCausalGraphRefiner
 from logos.logos import LOGos
-from logos.paths import LOGOS_ROOT_DIR
+from logos.filesystem.paths import LOGOS_ROOT_DIR
 
 ALL_METHODS = ["logos", "regression", "langmodel"]
 ALL_DATASETS = ["postgresql", "xyz"]

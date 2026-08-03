@@ -13,17 +13,17 @@ import pandas as pd
 from eccs.eccs import ECCS
 from tqdm.auto import tqdm
 
-from logos.candidate_cause_ranker import CandidateCauseRanker
-from logos.edge_state_matrix import EdgeStateMatrix
-from logos.graph_renderer import save_graph
-from logos.interactive_causal_graph_refiner import (
+from logos.exploration.candidate_cause_ranker import CandidateCauseRanker
+from logos.exploration.edge_state_matrix import EdgeStateMatrix
+from logos.exploration.graph_renderer import save_graph
+from logos.exploration.interactive_causal_graph_refiner import (
     GraphRefiner,
 )
-from logos.prepared_source import PreparedSource
-from logos.pruner import Pruner
-from logos.tag_utils import name_of, tag_of
-from logos.types import Edge
-from logos.variable_name import PreparedVariableName
+from logos.preparation.preparer_like import PreparerLike
+from logos.exploration.pruner import Pruner
+from logos.parsing.tag_utils import name_of, tag_of
+from logos.exploration.types import Edge
+from logos.preparation.prepared_variable_name import PreparedVariableName
 
 _logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class Explorer:
     Call _init_eccs() once after any initial edge pruning is complete.
     """
 
-    def __init__(self, source: PreparedSource) -> None:
+    def __init__(self, source: PreparerLike) -> None:
         self._prepared_log = source.prepared_log
         self._prepared_variables = source.prepared_variables
         self._parsed_variables = source.parsed_variables

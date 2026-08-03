@@ -9,7 +9,7 @@ from typing import Optional
 import pandas as pd
 
 
-class PreparedDataFrameSource:
+class PreparerFromPrecomputed:
     """
     Holds a user-provided prepared DataFrame ready for CausalExplorer.
 
@@ -84,7 +84,7 @@ class PreparedDataFrameSource:
     ) -> pd.DataFrame:
         rows = []
         for col in data.columns:
-            col_type = PreparedDataFrameSource._infer_type(data[col])
+            col_type = PreparerFromPrecomputed._infer_type(data[col])
             examples = data[col].dropna().unique()[:5].tolist()
             rows.append(
                 {

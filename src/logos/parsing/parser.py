@@ -13,22 +13,22 @@ from typing import Any, Optional
 import pandas as pd
 from tqdm.auto import tqdm
 
-from logos.cache import (
+from logos.parsing.parsed_variable_name import ParsedVariableName
+from logos.filesystem.cache import (
     artifact_exists,
     dump_dataframe,
     dump_metadata,
     load_dataframe,
     load_metadata,
 )
-from logos.drain import Drain
-from logos.tag_utils import (
+from logos.parsing.drain import Drain
+from logos.parsing.tag_utils import (
     deduplicate_tags,
     get_tag,
     preceding_tokens_tag,
     set_tag,
     waterfall_tag,
 )
-from logos.variable_name import ParsedVariableName
 
 _logger = logging.getLogger(__name__)
 

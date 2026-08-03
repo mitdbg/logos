@@ -5,7 +5,7 @@ from typing import Optional
 import pandas as pd
 
 from logos.llm import get_openai_client
-from logos.variable_name import ParsedVariableName
+from logos.parsing.parsed_variable_name import ParsedVariableName
 
 _logger = logging.getLogger(__name__)
 

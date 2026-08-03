@@ -10,23 +10,23 @@ from typing import Callable, Optional, Tuple
 import pandas as pd
 from tqdm.auto import tqdm
 
-import logos.transforms.aggregators as _agg_mod
-import logos.transforms.imputators as _imp_mod
-from logos.aggregate_selector import (
+import logos.preparation.aggregators as _agg_mod
+import logos.preparation.imputators as _imp_mod
+from logos.preparation.aggregate_selector import (
     DEFAULT_AGGREGATES,
     find_uninformative_aggregates,
 )
-from logos.cache import (
+from logos.filesystem.cache import (
     artifact_exists,
     dump_dataframe,
     dump_metadata,
     load_dataframe,
     load_metadata,
 )
-from logos.causal_unit_suggester import CausalUnitSuggester
-from logos.parsed_source import ParsedSource
-from logos.tag_utils import deduplicate_tags, get_tag, name_of, set_tag
-from logos.variable_name import PreparedVariableName
+from logos.preparation.causal_unit_suggester import CausalUnitSuggester
+from logos.parsing.parser_like import ParserLike
+from logos.parsing.tag_utils import deduplicate_tags, get_tag, name_of, set_tag
+from logos.preparation.prepared_variable_name import PreparedVariableName
 
 # Aggregation names that pandas groupby handles natively via Cython fast-path
 _PANDAS_BUILTIN_AGGS = frozenset(
@@ -52,7 +52,7 @@ _logger = logging.getLogger(__name__)
 class Preparer:
     """Owns data-preparation state and all prepare-stage operations."""
 
-    def __init__(self, parser: ParsedSource) -> None:
+    def __init__(self, parser: ParserLike) -> None:
         self._parser = parser
 
         self._causal_unit_var: Optional[str] = None
@@ -106,7 +106,7 @@ class Preparer:
     def parsed_variables(self) -> pd.DataFrame:
         """
         Forward parsed_variables from the underlying parser
-        (satisfies PreparedSource).
+        (satisfies PreparerLike).
         """
         return self._parser.parsed_variables
 
@@ -114,7 +114,7 @@ class Preparer:
     def parsed_templates(self) -> pd.DataFrame:
         """
         Forward parsed_templates from the underlying parser
-        (satisfies PreparedSource).
+        (satisfies PreparerLike).
         """
         return self._parser.parsed_templates
 
@@ -122,7 +122,7 @@ class Preparer:
     def workdir(self) -> str:
         """
         Forward workdir from the underlying parser
-        (satisfies PreparedSource).
+        (satisfies PreparerLike).
         """
         return self._parser.workdir
 

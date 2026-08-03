@@ -6,7 +6,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from logos.paths import LOGOS_ROOT_DIR
+from logos.filesystem.paths import LOGOS_ROOT_DIR
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--use_repro_results", action="store_true")

@@ -8,7 +8,7 @@ import pandas as pd
 
 from logos.candidate_cause_ranker import CandidateCauseRanker
 from logos.logos import LOGos
-from logos.paths import LOGOS_ROOT_DIR
+from logos.filesystem.paths import LOGOS_ROOT_DIR
 from logos.tag_utils import TagUtils
 
 ALL_METHODS = ["logos", "regression", "langmodel"]

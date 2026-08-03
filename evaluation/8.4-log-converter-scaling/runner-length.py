@@ -5,7 +5,7 @@ import time
 from gen_scaling_logs import gen_log
 
 from logos.logos import LOGos
-from logos.paths import LOGOS_ROOT_DIR
+from logos.filesystem.paths import LOGOS_ROOT_DIR
 
 
 def main():
