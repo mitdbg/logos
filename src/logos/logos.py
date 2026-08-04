@@ -71,6 +71,9 @@ class Logos:
         source_id: str = "parsed_input",
         variable_tags: Optional[dict[str, str]] = None,
         skip_writeout: bool = False,
+        template_col: Optional[str] = None,
+        passthrough_cols: Optional[List[str]] = None,
+        per_unit_cols: Optional[List[str]] = None,
     ) -> "Logos":
         """
         Create a LOGos instance from a pre-parsed DataFrame (EP-2).
@@ -86,10 +89,25 @@ class Logos:
                 filename).
             variable_tags: Optional column-name → tag mapping.
             skip_writeout: Whether to skip writing prepare cache files.
+            template_col: Column whose distinct values define templates.
+                When provided, other columns are split into per-template
+                variables (one variable per template that has non-null values
+                for that column), mirroring Drain's output structure.
+            passthrough_cols: Structural identifier columns kept as single
+                global variables rather than being split per template (e.g.
+                the causal-unit column).  Only meaningful when `template_col`
+                is set.
+            per_unit_cols: Per-causal-unit constant columns (outcomes,
+                assignments) that should not be split per template but should
+                appear as candidate variables in the ranking.  Mechanically
+                equivalent to `passthrough_cols`; separate parameter for
+                semantic clarity.  Only meaningful when `template_col` is set.
         """
         instance = cls._create()
+        all_passthrough = list(passthrough_cols or []) + list(per_unit_cols or [])
         instance._parser = ParserFromPrecomputed(
-            data, workdir, source_id, variable_tags, skip_writeout
+            data, workdir, source_id, variable_tags, skip_writeout,
+            template_col, all_passthrough,
         )
         instance._preparer = Preparer(instance._parser)
         return instance
