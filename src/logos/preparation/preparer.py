@@ -387,6 +387,23 @@ class Preparer:
             if PreparedVariableName(col).base_var() == "TemplateId":
                 agg_dict[col] = ["sum"]
 
+        # Drop rows with no causal unit, then drop columns that are entirely
+        # null across the surviving rows (they would make dropna() erase
+        # every row from the prepared log after aggregation).
+        null_cu = self._prepared_log[self._causal_unit_var].isna()
+        if null_cu.any():
+            self._prepared_log = self._prepared_log[~null_cu]
+            causal_unit_assignment = causal_unit_assignment[~null_cu.values]
+        all_null_cols = [
+            c for c in self._prepared_log.columns
+            if c != self._causal_unit_var
+            and self._prepared_log[c].isna().all()
+        ]
+        if all_null_cols:
+            self._prepared_log.drop(columns=all_null_cols, inplace=True)
+            for c in all_null_cols:
+                agg_dict.pop(c, None)
+
         # Drop uninteresting columns if requested, except if they are the causal
         # unit.
         ui_cols = self._parser.parsed_variables.loc[
