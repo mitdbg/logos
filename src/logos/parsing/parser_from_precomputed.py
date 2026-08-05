@@ -117,6 +117,19 @@ class ParserFromPrecomputed:
                 ]
             )
 
+        # Catch duplicate tags.
+        dup_mask = self._parsed_variables["Tag"].duplicated(keep=False)
+        if dup_mask.any():
+            dup_tags = sorted(
+                self._parsed_variables.loc[dup_mask, "Tag"].unique().tolist()
+            )
+            raise ValueError(
+                f"Duplicate tags in parsed_variables: {dup_tags}. "
+                "Every variable must have a unique tag for correct imputation "
+                "and display. Use `variable_tags` for explicit mappings, or "
+                "set `template_col` to auto-prefix tags with the event-type name."
+            )
+
     # ------------------------------------------------------------------
     # ParserLike interface
     # ------------------------------------------------------------------
@@ -207,9 +220,10 @@ class ParserFromPrecomputed:
             for var_idx, col in enumerate(active_cols):
                 var_name = f"{t_id}_{var_idx}"
                 new_log_cols[var_name] = data[col].where(mask)
+                base_tag = variable_tags.get(col, col)
                 var_rows.append({
                     "Name": var_name,
-                    "Tag": variable_tags.get(col, col),
+                    "Tag": f"{t_val} {base_tag}",
                     "TagOrigin": int(TagOrigin.REGEX_VARIABLE),
                     "Type": ParserFromPrecomputed._infer_type(
                         data.loc[mask, col]

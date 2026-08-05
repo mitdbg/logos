@@ -329,6 +329,7 @@ class Logos:
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
         drop_bad_aggs: bool = True,
         reject_prunable_edges: bool = False,
+        default_imp: str = "no_imp",
     ) -> None:
         """
         Prepare the log for causal analysis.
@@ -345,6 +346,9 @@ class Logos:
             lasso_max_iter: Maximum LASSO iterations.
             drop_bad_aggs: Whether to drop uninformative aggregate columns.
             reject_prunable_edges: Whether to pre-reject LASSO-prunable edges.
+            default_imp: Imputation applied to any variable not in `custom_imp`.
+                Defaults to ``"no_imp"`` (rows with NaN are dropped by dropna).
+                Set to ``"zero_imp"`` to impute all uncovered variables with 0.
         """
         start_time = datetime.now()
         if custom_agg is None:
@@ -361,6 +365,7 @@ class Logos:
             ignore_uninteresting,
             force,
             drop_bad_aggs,
+            default_imp=default_imp,
         ):
             return
 

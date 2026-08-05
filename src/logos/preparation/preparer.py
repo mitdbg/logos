@@ -248,6 +248,7 @@ class Preparer:
         ignore_uninteresting: bool = True,
         force: bool = False,
         drop_bad_aggs: bool = True,
+        default_imp: str = "no_imp",
     ) -> bool:
         """
         Prepare the parsed log for causal analysis.
@@ -289,6 +290,7 @@ class Preparer:
                 count_occurrences=count_occurrences,
                 ignore_uninteresting=ignore_uninteresting,
                 drop_bad_aggs=drop_bad_aggs,
+                default_imp=default_imp,
             )
 
         return True
@@ -300,6 +302,7 @@ class Preparer:
         count_occurrences: bool = False,
         ignore_uninteresting: bool = True,
         drop_bad_aggs: bool = True,
+        default_imp: str = "no_imp",
     ) -> None:
         """
         Prepare the log anew.
@@ -315,6 +318,10 @@ class Preparer:
             drop_bad_aggs: Whether to drop prepared variables that do not add
                 information compared to other variables based on the same base
                 variable but using a different aggregation function.
+            default_imp: Imputation function applied to any variable whose
+                base_var is not in `custom_imp`. Defaults to ``"no_imp"``
+                (leave NaN, then drop rows). Set to ``"zero_imp"`` or
+                ``"ffill_imp"`` to impute all uncovered variables uniformly.
         """
 
         if custom_agg is None:
@@ -468,7 +475,7 @@ class Preparer:
                 continue
             base_var = PreparedVariableName(col).base_var()
             func_name: str = (
-                custom_imp[base_var] if base_var in custom_imp else "no_imp"
+                custom_imp[base_var] if base_var in custom_imp else default_imp
             )
             self._prepared_log[col] = (self._imp_funcs[func_name])(
                 self._prepared_log[col]
