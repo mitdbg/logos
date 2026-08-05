@@ -251,6 +251,41 @@
     "TemplateText":""
   },
   {
+    "Name":"84dae2fe_0+mean",
+    "Base":"84dae2fe_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"selected_rpu mean",
+    "Base Variable Occurences":21236,
+    "Type":"num",
+    "Examples":[
+      32.0,
+      16.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"17060c6a_0+mean",
+    "Base":"17060c6a_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"prediction_error mean",
+    "Base Variable Occurences":21236,
+    "Type":"num",
+    "Examples":[
+      4.007,
+      -11.761,
+      -10.376,
+      -10.449,
+      -10.337
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
     "Name":"0b37e060_0+mean",
     "Base":"0b37e060_0",
     "Pre-agg Value":"",
@@ -1948,6 +1983,196 @@
     "Type":"str",
     "Examples":[
       "pre_spinup"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-3",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-3",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-3",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-4",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-4",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-4",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-5",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-5",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-5",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-6",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-6",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-6",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-7",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-7",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-7",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-8",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-8",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-8",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-16-1783260865180-9",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783260865180-9",
+    "Tag":"selected_cluster_name last autoslo-16-1783260865180-9",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-32-1783260865180-0",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783260865180-0",
+    "Tag":"selected_cluster_name last autoslo-32-1783260865180-0",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-32-1783260865180-1",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783260865180-1",
+    "Tag":"selected_cluster_name last autoslo-32-1783260865180-1",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed4cac1d_0+last=autoslo-32-1783260865180-2",
+    "Base":"ed4cac1d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783260865180-2",
+    "Tag":"selected_cluster_name last autoslo-32-1783260865180-2",
+    "Base Variable Occurences":21236,
+    "Type":"str",
+    "Examples":[
+      "autoslo-32-1783260865180-0",
+      "autoslo-32-1783260865180-1",
+      "autoslo-32-1783260865180-2",
+      "autoslo-16-1783260865180-3",
+      "autoslo-16-1783260865180-4"
     ],
     "From regex":true,
     "TemplateText":""

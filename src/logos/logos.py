@@ -509,7 +509,9 @@ class Logos:
             treatment,
             outcome,
             confounder,
-            graph=explorer.graph,
+            # When a confounder is explicit, let ATECalculator build the
+            # 3-node graph; otherwise use the current partial explorer graph.
+            graph=explorer.graph if confounder is None else None,
             calculate_p_value=False,
             calculate_std_error=False,
         )["ATE"]
