@@ -79,6 +79,22 @@ class ParserFromPrecomputed:
         if not os.path.exists(self._workdir):
             os.makedirs(self._workdir, exist_ok=True)
 
+        # Convert boolean columns to float.
+        bool_cols = [
+            c
+            for c in data.columns
+            if (
+                pd.api.types.is_bool_dtype(data[c])
+                or (
+                    data[c].dtype == object
+                    and len(nn := data[c].dropna()) > 0
+                    and all(isinstance(x, bool) for x in nn)
+                )
+            )
+        ]
+        for c in bool_cols:
+            data[c] = data[c].astype(float)
+
         if template_col is not None:
             (
                 self._parsed_log,
@@ -190,8 +206,7 @@ class ParserFromPrecomputed:
         """
         pt_set = set(passthrough_cols)
         other_cols = [
-            c for c in data.columns
-            if c != template_col and c not in pt_set
+            c for c in data.columns if c != template_col and c not in pt_set
         ]
         str_col = data[template_col].map(str)  # normalise dtype for comparisons
 
@@ -213,37 +228,40 @@ class ParserFromPrecomputed:
             occurrences = int(mask.sum())
 
             active_cols = [
-                col for col in other_cols
-                if data.loc[mask, col].notna().any()
+                col for col in other_cols if data.loc[mask, col].notna().any()
             ]
 
             for var_idx, col in enumerate(active_cols):
                 var_name = f"{t_id}_{var_idx}"
                 new_log_cols[var_name] = data[col].where(mask)
                 base_tag = variable_tags.get(col, col)
-                var_rows.append({
-                    "Name": var_name,
-                    "Tag": f"{t_val} {base_tag}",
-                    "TagOrigin": int(TagOrigin.REGEX_VARIABLE),
-                    "Type": ParserFromPrecomputed._infer_type(
-                        data.loc[mask, col]
-                    ),
-                    "IsUninteresting": False,
-                    "Occurrences": occurrences,
-                    "Preceding 3 tokens": [],
-                    "Examples": (
-                        data.loc[mask, col].dropna().unique()[:5].tolist()
-                    ),
-                    "From regex": False,
-                })
+                var_rows.append(
+                    {
+                        "Name": var_name,
+                        "Tag": f"{t_val} {base_tag}",
+                        "TagOrigin": int(TagOrigin.REGEX_VARIABLE),
+                        "Type": ParserFromPrecomputed._infer_type(
+                            data.loc[mask, col]
+                        ),
+                        "IsUninteresting": False,
+                        "Occurrences": occurrences,
+                        "Preceding 3 tokens": [],
+                        "Examples": (
+                            data.loc[mask, col].dropna().unique()[:5].tolist()
+                        ),
+                        "From regex": False,
+                    }
+                )
 
-            template_rows.append({
-                "TemplateId": t_id,
-                "TemplateText": t_val,
-                "Occurrences": occurrences,
-                "VariableIndices": list(range(len(active_cols))),
-                "RegexIndices": [],
-            })
+            template_rows.append(
+                {
+                    "TemplateId": t_id,
+                    "TemplateText": t_val,
+                    "Occurrences": occurrences,
+                    "VariableIndices": list(range(len(active_cols))),
+                    "RegexIndices": [],
+                }
+            )
 
         parsed_log = pd.DataFrame(new_log_cols, index=data.index)
 
@@ -254,37 +272,60 @@ class ParserFromPrecomputed:
             pt_name = _to_parsed_name(col, used_var_names)
             used_var_names.add(pt_name)
             parsed_log[pt_name] = data[col].values
-            pt_var_rows.append({
-                "Name": pt_name,
-                "Tag": variable_tags.get(col, col),
-                "TagOrigin": int(TagOrigin.REGEX_VARIABLE),
-                "Type": ParserFromPrecomputed._infer_type(data[col]),
-                "IsUninteresting": False,
-                "Occurrences": int(data[col].notna().sum()),
-                "Preceding 3 tokens": [],
-                "Examples": data[col].dropna().unique()[:5].tolist(),
-                "From regex": True,
-            })
+            pt_var_rows.append(
+                {
+                    "Name": pt_name,
+                    "Tag": variable_tags.get(col, col),
+                    "TagOrigin": int(TagOrigin.REGEX_VARIABLE),
+                    "Type": ParserFromPrecomputed._infer_type(data[col]),
+                    "IsUninteresting": False,
+                    "Occurrences": int(data[col].notna().sum()),
+                    "Preceding 3 tokens": [],
+                    "Examples": data[col].dropna().unique()[:5].tolist(),
+                    "From regex": True,
+                }
+            )
 
         all_var_rows = var_rows + pt_var_rows
         parsed_templates = pd.DataFrame(
             template_rows,
             columns=[
-                "TemplateId", "TemplateText", "Occurrences",
-                "VariableIndices", "RegexIndices",
+                "TemplateId",
+                "TemplateText",
+                "Occurrences",
+                "VariableIndices",
+                "RegexIndices",
             ],
         )
-        parsed_variables = pd.DataFrame(
-            all_var_rows,
-            columns=[
-                "Name", "Tag", "TagOrigin", "Type", "IsUninteresting",
-                "Occurrences", "Preceding 3 tokens", "Examples", "From regex",
-            ],
-        ) if all_var_rows else pd.DataFrame(
-            columns=[
-                "Name", "Tag", "TagOrigin", "Type", "IsUninteresting",
-                "Occurrences", "Preceding 3 tokens", "Examples", "From regex",
-            ]
+        parsed_variables = (
+            pd.DataFrame(
+                all_var_rows,
+                columns=[
+                    "Name",
+                    "Tag",
+                    "TagOrigin",
+                    "Type",
+                    "IsUninteresting",
+                    "Occurrences",
+                    "Preceding 3 tokens",
+                    "Examples",
+                    "From regex",
+                ],
+            )
+            if all_var_rows
+            else pd.DataFrame(
+                columns=[
+                    "Name",
+                    "Tag",
+                    "TagOrigin",
+                    "Type",
+                    "IsUninteresting",
+                    "Occurrences",
+                    "Preceding 3 tokens",
+                    "Examples",
+                    "From regex",
+                ]
+            )
         )
         return parsed_log, parsed_templates, parsed_variables
 
@@ -295,9 +336,7 @@ class ParserFromPrecomputed:
         rows = []
         for col in data.columns:
             col_type = ParserFromPrecomputed._infer_type(data[col])
-            examples = (
-                data[col].dropna().unique()[:5].tolist()
-            )
+            examples = data[col].dropna().unique()[:5].tolist()
             rows.append(
                 {
                     "Name": col,
