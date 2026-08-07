@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 
 from logos.exceptions import UnsupportedOperationError
-from logos.preparation.prepared_variable_name import PreparedVariableName
 from logos.exploration.ate_calculator import ATECalculator
 from logos.exploration.explorer import Explorer
 from logos.exploration.pruner import Pruner
@@ -16,10 +15,9 @@ from logos.parsing.parser import Parser
 from logos.parsing.parser_from_precomputed import ParserFromPrecomputed
 from logos.parsing.parser_like import ParserLike
 from logos.parsing.tag_utils import name_of, tag_of
-from logos.preparation.preparer_from_precomputed import (
-    PreparerFromPrecomputed,
-)
+from logos.preparation.prepared_variable_name import PreparedVariableName
 from logos.preparation.preparer import Preparer
+from logos.preparation.preparer_from_precomputed import PreparerFromPrecomputed
 
 _logger = logging.getLogger(__name__)
 # Suppress LOGos debug messages by default; call set_verbose_to(True) to enable.
@@ -104,10 +102,17 @@ class Logos:
                 semantic clarity.  Only meaningful when `template_col` is set.
         """
         instance = cls._create()
-        all_passthrough = list(passthrough_cols or []) + list(per_unit_cols or [])
+        all_passthrough = list(passthrough_cols or []) + list(
+            per_unit_cols or []
+        )
         instance._parser = ParserFromPrecomputed(
-            data, workdir, source_id, variable_tags, skip_writeout,
-            template_col, all_passthrough,
+            data,
+            workdir,
+            source_id,
+            variable_tags,
+            skip_writeout,
+            template_col,
+            all_passthrough,
         )
         instance._preparer = Preparer(instance._parser)
         return instance
@@ -470,10 +475,16 @@ class Logos:
         prune_candidates: bool = True,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
+        autoignore_accepted_descendants: bool = True,
     ) -> pd.DataFrame:
         """Return ranked candidate causes for `target` using the LOGOS method."""
         return self._require_explorer().rank_candidate_causes(
-            target, ignore, prune_candidates, lasso_alpha, lasso_max_iter
+            target,
+            ignore,
+            prune_candidates,
+            lasso_alpha,
+            lasso_max_iter,
+            autoignore_accepted_descendants,
         )
 
     def get_causal_graph_refinement_suggestion(

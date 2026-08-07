@@ -455,6 +455,7 @@ class Explorer:
         prune_candidates: bool = True,
         lasso_alpha: float = Pruner.LASSO_DEFAULT_ALPHA,
         lasso_max_iter: int = Pruner.LASSO_DEFAULT_MAX_ITER,
+        autoignore_accepted_descendants: bool = True,
     ) -> pd.DataFrame:
         """
         Return ranked candidate causes for `target` using the LOGOS method.
@@ -466,6 +467,9 @@ class Explorer:
             prune_candidates: Whether to apply LASSO pruning before ranking.
             lasso_alpha: LASSO regularization parameter.
             lasso_max_iter: Maximum LASSO iterations.
+            autoignore_accepted_descendants: Whether to automatically ignore
+                any variables that are already accepted descendants of the 
+                target in the current partial causal graph.
 
         Returns:
             A DataFrame of ranked candidates with columns: Candidate,
@@ -482,6 +486,16 @@ class Explorer:
         assert target is not None
 
         target = name_of(self._prepared_variables, target, "prepared")
+        ignore = [
+            name_of(self._prepared_variables, var, "prepared")
+            for var in ignore or []
+        ]
+
+        if autoignore_accepted_descendants and target in self._graph.nodes:
+            accepted_descendants = nx.descendants(self._graph, target)
+            if ignore is None:
+                ignore = []
+            ignore.extend(accepted_descendants)
 
         lfn = f"ranker-gpt-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.log"
         result_df, pruned = CandidateCauseRanker.rank(
