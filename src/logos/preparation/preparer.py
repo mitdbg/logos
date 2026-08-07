@@ -71,6 +71,7 @@ class Preparer:
             "mode": _agg_mod.mode,
             "std": _agg_mod.std,
             "sum": _agg_mod.sum,
+            "count": _agg_mod.count,
         }
         self._imp_funcs: dict[str, Callable] = {
             "ffill_imp": _imp_mod.ffill_imp,

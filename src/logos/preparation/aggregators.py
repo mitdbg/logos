@@ -124,3 +124,15 @@ def sum(x: pd.Series) -> Optional[pd.Series]:
         The sum of the series, or None if the series is all NA.
     """
     return x.sum(skipna=True) if x.isna().sum() < len(x) else None
+
+def count(x: pd.Series) -> Optional[pd.Series]:
+    """
+    Calculates the length of a series, ignoring NA values.
+
+    Parameters:
+        x: The series for which the length will be calculated.
+    
+    Returns:
+        The length of the series, or None if the series is all NA.
+    """
+    return x.count() if x.isna().sum() < len(x) else None
