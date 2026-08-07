@@ -5,6 +5,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 from logos.filesystem.paths import LOGOS_ROOT_DIR
 
@@ -31,22 +32,18 @@ LINE_FORMATTING_DATA = {
         "color": "#7FBA82",
         "parse_fit_start_idx": 2,
         "parse_fit_end_idx": 6,
-        "parse_polyfit_deg": 1,
-        "agg_fit_start_idx": 1,
+        "agg_fit_start_idx": 2,
         "agg_fit_end_idx": 6,
-        "agg_polyfit_deg": 1,
         "loglog": True,
         "xaxis_mult": 1,
     },
     "templates": {
         "xlabel": r"\# Templates",
         "color": "#ba8a7f",
-        "parse_fit_start_idx": 0,
+        "parse_fit_start_idx": 1,
         "parse_fit_end_idx": 4,
-        "parse_polyfit_deg": 2,
-        "agg_fit_start_idx": 0,
+        "agg_fit_start_idx": 1,
         "agg_fit_end_idx": 4,
-        "agg_polyfit_deg": 2,
         "loglog": True,
         "xaxis_mult": 1,
     },
@@ -55,35 +52,30 @@ LINE_FORMATTING_DATA = {
         "color": "#7F9FBA",
         "parse_fit_start_idx": 0,
         "parse_fit_end_idx": 10,
-        "parse_polyfit_deg": 1,
         "agg_fit_start_idx": 0,
         "agg_fit_end_idx": 10,
-        "agg_polyfit_deg": 1,
         "loglog": False,
-        "polyfit_deg": 1,
         "xaxis_mult": 0.01,
     },
 }
 
 
-def form_polynomial_string(p):
-    p_str = r"$"
-    for i in range(len(p)):
-        if i == 0:
-            p_str += f"{p[i]:.2e}"
-        else:
-            p_str += f"{p[i]:+.2e}"
-        if i < len(p) - 1:
-            p_str += "x"
-        if i < len(p) - 2:
-            p_str += r"^" + f"{len(p)-i-1}"
+def form_line_equation_string(slope, intercept, rvalue):
+    sign = "+" if intercept >= 0 else "-"
+    r2 = rvalue**2
+    return (
+        rf"$y={slope:.2f}x{sign}{abs(intercept):.2f}$" + "\n" rf"$R^2={r2:.3f}$"
+    )
 
-    p_str += r"}$"
-    p_str = p_str.replace("e+00", r"{")
-    p_str = p_str.replace("e-0", r"\cdot10^{-")
-    p_str = p_str.replace("e+0", r"\cdot10^{")
-    p_str = p_str.replace("x", r"}x")
-    return p_str
+
+def form_power_law_string(slope, intercept, rvalue):
+    sign = "+" if intercept >= 0 else "-"
+    r2 = rvalue**2
+    return (
+        rf"$\log_{{10}}y={slope:.2f}\log_{{10}}x{sign}{abs(intercept):.2f}$"
+        + "\n"
+        rf"$R^2={r2:.3f}$"
+    )
 
 
 for metric, properties in LINE_FORMATTING_DATA.items():
@@ -119,35 +111,37 @@ for metric, properties in LINE_FORMATTING_DATA.items():
         color=properties["color"],
         markersize=15,
     )
-    ax1.set_xlabel(
-        properties["xlabel"] + (" (log scale)" if properties["loglog"] else ""),
-        fontsize=FONTSIZE,
-    )
-    ax1.set_ylabel(
-        "Time " + ("(s, log scale)" if properties["loglog"] else "(s)"),
-        fontsize=FONTSIZE,
-    )
+    ax1.set_xlabel(properties["xlabel"], fontsize=FONTSIZE)
+    ax1.set_ylabel("Time (s)", fontsize=FONTSIZE)
     ax1.tick_params(axis="both", which="major", labelsize=FONTSIZE)
 
     # Add trendline
     pfsi = properties["parse_fit_start_idx"]
     pfei = properties["parse_fit_end_idx"]
-    pfit_coeffs = np.polyfit(
-        x[pfsi:pfei],
-        parse_time[pfsi:pfei],
-        properties["parse_polyfit_deg"],
-    )
-    trendline_parse = np.polyval(pfit_coeffs, x[pfsi:pfei])
+    if properties["loglog"]:
+        pfit = stats.linregress(
+            np.log10(x[pfsi:pfei]), np.log10(parse_time[pfsi:pfei])
+        )
+        trendline_parse = (
+            10 ** (pfit.slope * np.log10(x[pfsi:pfei]) + pfit.intercept)
+        ).to_numpy()
+        parse_label = form_power_law_string(
+            pfit.slope, pfit.intercept, pfit.rvalue
+        )
+    else:
+        pfit = stats.linregress(x[pfsi:pfei], parse_time[pfsi:pfei])
+        trendline_parse = (
+            pfit.slope * x[pfsi:pfei] + pfit.intercept
+        ).to_numpy()
+        parse_label = form_line_equation_string(
+            pfit.slope, pfit.intercept, pfit.rvalue
+        )
     ax1.plot(
-        x[pfsi:pfei],
-        trendline_parse,
-        "--",
-        color="black",
-        label=form_polynomial_string(pfit_coeffs),
+        x[pfsi:pfei], trendline_parse, "--", color="black", label=parse_label
     )
 
     ax1.legend(
-        loc="lower center", bbox_to_anchor=(0.5, 1.0001), fontsize=FONTSIZE
+        loc="lower left", bbox_to_anchor=(-0.08, 1.0001), fontsize=FONTSIZE
     )
 
     plt.tight_layout()
@@ -195,34 +189,32 @@ for metric, properties in LINE_FORMATTING_DATA.items():
         color=properties["color"],
         markersize=15,
     )
-    ax2.set_xlabel(
-        properties["xlabel"] + (" (log scale)" if properties["loglog"] else ""),
-        fontsize=FONTSIZE,
-    )
-    ax2.set_ylabel(
-        "Time " + ("(s, log scale)" if properties["loglog"] else "(s)"),
-        fontsize=FONTSIZE,
-    )
+    ax2.set_xlabel(properties["xlabel"], fontsize=FONTSIZE)
+    ax2.set_ylabel("Time (s)", fontsize=FONTSIZE)
     ax2.tick_params(axis="both", which="major", labelsize=FONTSIZE)
 
     # Add linear trendline
     afsi = properties["agg_fit_start_idx"]
     afei = properties["agg_fit_end_idx"]
-    afit_coeffs = np.polyfit(
-        x[afsi:afei],
-        prep_time[afsi:afei],
-        properties["agg_polyfit_deg"],
-    )
-    trendline_prep = np.polyval(afit_coeffs, x[afsi:afei])
-    ax2.plot(
-        x[afsi:afei],
-        trendline_prep,
-        "--",
-        color="black",
-        label=form_polynomial_string(afit_coeffs),
-    )
+    if properties["loglog"]:
+        afit = stats.linregress(
+            np.log10(x[afsi:afei]), np.log10(prep_time[afsi:afei])
+        )
+        trendline_prep = (
+            10 ** (afit.slope * np.log10(x[afsi:afei]) + afit.intercept)
+        ).to_numpy()
+        agg_label = form_power_law_string(
+            afit.slope, afit.intercept, afit.rvalue
+        )
+    else:
+        afit = stats.linregress(x[afsi:afei], prep_time[afsi:afei])
+        trendline_prep = (afit.slope * x[afsi:afei] + afit.intercept).to_numpy()
+        agg_label = form_line_equation_string(
+            afit.slope, afit.intercept, afit.rvalue
+        )
+    ax2.plot(x[afsi:afei], trendline_prep, "--", color="black", label=agg_label)
     ax2.legend(
-        loc="lower center", bbox_to_anchor=(0.5, 1.0001), fontsize=FONTSIZE
+        loc="lower left", bbox_to_anchor=(-0.08, 1.0001), fontsize=FONTSIZE
     )
 
     plt.tight_layout()
