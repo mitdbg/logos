@@ -1,0 +1,4403 @@
+[
+  {
+    "Name":"ebdcf81f_2+mean",
+    "Base":"ebdcf81f_2",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routing_score latency_s_for_routing mean",
+    "Base Variable Occurences":6725,
+    "Type":"num",
+    "Examples":[
+      12.102,
+      14.387,
+      14.39,
+      28.779,
+      16.273
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_3+mean",
+    "Base":"ebdcf81f_3",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routing_score slo_violation mean",
+    "Base Variable Occurences":6725,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      0.2,
+      0.167,
+      0.714,
+      0.75
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_4+mean",
+    "Base":"ebdcf81f_4",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routing_score cost mean",
+    "Base Variable Occurences":6725,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ef3b209b_2+mean",
+    "Base":"ef3b209b_2",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routing latency_s_for_routing mean",
+    "Base Variable Occurences":1356,
+    "Type":"num",
+    "Examples":[
+      12.102,
+      14.387,
+      14.39,
+      28.779,
+      16.273
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_3+mean",
+    "Base":"ef3b209b_3",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routing slo_violation mean",
+    "Base Variable Occurences":1356,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      0.2,
+      0.167,
+      0.714,
+      0.75
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_4+mean",
+    "Base":"ef3b209b_4",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routing cost mean",
+    "Base Variable Occurences":1356,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"3609b411_2+mean",
+    "Base":"3609b411_2",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"latency_update old_latency_s mean",
+    "Base Variable Occurences":2420,
+    "Type":"num",
+    "Examples":[
+      12.102263,
+      28.778955,
+      31.691778,
+      16.27297,
+      36.814407
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_3+last",
+    "Base":"3609b411_3",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"",
+    "Tag":"latency_update updated_predicted_latency_over_slo last",
+    "Base Variable Occurences":2420,
+    "Type":"num",
+    "Examples":[
+      0.1874111622,
+      0.18616621,
+      0.3449295051,
+      0.4006835838,
+      0.2490188003
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"2f4a6473_0+mean",
+    "Base":"2f4a6473_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"wall_clock_s mean",
+    "Base Variable Occurences":17399,
+    "Type":"num",
+    "Examples":[
+      1783276973.3148479462,
+      1783276973.3152918816,
+      1783277178.1001210213,
+      1783277178.1007769108,
+      1783277208.1306080818
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"9bed2068_0+mean",
+    "Base":"9bed2068_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"rel_time_s mean",
+    "Base Variable Occurences":17399,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      -29.9999549389,
+      0.0298819542,
+      0.0305478573,
+      0.0384209156
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"2abc53a8_0+mean",
+    "Base":"2abc53a8_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"cache_risk mean",
+    "Base Variable Occurences":8081,
+    "Type":"num",
+    "Examples":[
+      0.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"260ca9dd_0+mean",
+    "Base":"260ca9dd_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"success mean",
+    "Base Variable Occurences":1356,
+    "Type":"num",
+    "Examples":[
+      1.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"c9db7d03_0+mean",
+    "Base":"c9db7d03_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"observed_latency_s mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      28.012,
+      15.099,
+      10.142,
+      10.081,
+      10.31
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"dd2abe70_0+mean",
+    "Base":"dd2abe70_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"latency_prediction_at_arrival_s mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      12.102263,
+      14.387029,
+      14.390411,
+      28.778955,
+      16.27297
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"99854374_0+mean",
+    "Base":"99854374_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"slo_s mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      94.892,
+      91.879,
+      9.041,
+      6.6,
+      108.175
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"17a1a008_0+mean",
+    "Base":"17a1a008_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"observed_latency_over_slo mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.2951987523,
+      0.1591177338,
+      0.1068793997,
+      0.1062365637,
+      0.1086498335
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"2122b509_0+mean",
+    "Base":"2122b509_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"observed_slo_violation mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"407bba4a_0+mean",
+    "Base":"407bba4a_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"routed_cluster_rpu mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      16.0,
+      32.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"4dcd0ef6_0+mean",
+    "Base":"4dcd0ef6_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"initial_predicted_latency_over_slo mean",
+    "Base Variable Occurences":1356,
+    "Type":"num",
+    "Examples":[
+      0.1275372318,
+      0.1516147726,
+      0.1516504131,
+      0.3132266895,
+      0.1714893774
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"3ffb9abb_0+mean",
+    "Base":"3ffb9abb_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Seq Scan#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      6.0,
+      16.0,
+      3.0,
+      4.0,
+      7.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"c7ca2235_0+mean",
+    "Base":"c7ca2235_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Seq Scan#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      21.6517113086,
+      25.195440955,
+      21.6751549261,
+      24.9192900858,
+      23.5732327931
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"05579e73_0+mean",
+    "Base":"05579e73_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      2.0,
+      3.0,
+      6.0,
+      5.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"1fe3d838_0+mean",
+    "Base":"1fe3d838_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      11.23416349,
+      15.7897832323,
+      18.7452169429,
+      11.2336876394
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"64f4fbef_0+mean",
+    "Base":"64f4fbef_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_DIST_ALL_NONE#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"aa0dffe5_0+mean",
+    "Base":"aa0dffe5_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_DIST_ALL_NONE#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      16.8625270259,
+      21.7279968192,
+      18.7452168851,
+      16.6001637114
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"f84db350_0+mean",
+    "Base":"f84db350_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Subquery Scan#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      6.0,
+      0.0,
+      2.0,
+      1.0,
+      3.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"e2447926_0+mean",
+    "Base":"e2447926_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Subquery Scan#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      5.6629605149,
+      0.0,
+      7.7906960353,
+      21.5333966938,
+      4.3820267597
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"24f9932f_0+mean",
+    "Base":"24f9932f_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN HashAggregate#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0,
+      6.0,
+      4.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"71c87ce2_0+mean",
+    "Base":"71c87ce2_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN HashAggregate#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      9.287301414,
+      10.6072778934,
+      19.2443074399,
+      16.0599375847
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"a7124c20_0+mean",
+    "Base":"a7124c20_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_BCAST_INNER#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      8.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"9b468fb9_0+mean",
+    "Base":"9b468fb9_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_BCAST_INNER#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      20.8401331432,
+      22.3421343064,
+      21.3576790318,
+      20.6693899263
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"5bcf0d1b_0+mean",
+    "Base":"5bcf0d1b_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Network#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"7af458ff_0+mean",
+    "Base":"7af458ff_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Network#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      9.287301414,
+      11.3004250739,
+      19.2443074399,
+      16.7530847653
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"3f6b6aef_0+mean",
+    "Base":"3f6b6aef_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Sort#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"67e1829e_0+mean",
+    "Base":"67e1829e_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Sort#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      9.287301414,
+      11.3004250739,
+      19.2443074399,
+      16.7530847653
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"0a2e608e_0+mean",
+    "Base":"0a2e608e_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Merge#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"2d1ed37f_0+mean",
+    "Base":"2d1ed37f_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Merge#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      9.287301414,
+      10.6072778934,
+      19.2443074399,
+      16.0599375847
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"6ddb7cc4_0+mean",
+    "Base":"6ddb7cc4_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Limit#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      1.0,
+      0.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"365e160e_0+mean",
+    "Base":"365e160e_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Limit#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      5.6629605149,
+      0.0,
+      8.2940496426,
+      8.1886891272,
+      7.9373746997
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"4cdb9741_0+mean",
+    "Base":"4cdb9741_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_DIST_INNER#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28d0d6de_0+mean",
+    "Base":"28d0d6de_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_DIST_INNER#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      15.4217617984,
+      17.6189764775,
+      9.7506859629,
+      7.0975488589
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"c88bc9b7_0+mean",
+    "Base":"c88bc9b7_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Aggregate#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      6.0,
+      15.0,
+      0.0,
+      8.0,
+      1.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"a55de437_0+mean",
+    "Base":"a55de437_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Aggregate#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      4.5643482956,
+      5.1059455345,
+      0.0,
+      2.0794427917,
+      3.4657362153
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"3cc5491f_0+mean",
+    "Base":"3cc5491f_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Result#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"1c8841d5_0+mean",
+    "Base":"1c8841d5_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Result#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"aa0b4b17_0+mean",
+    "Base":"aa0b4b17_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_DIST_OUTER#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"b43ca83a_0+mean",
+    "Base":"b43ca83a_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Hash Join DS_DIST_OUTER#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      7.1716568304,
+      34.1473120994,
+      16.0899442938,
+      16.1927974753
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"17d693a7_0+mean",
+    "Base":"17d693a7_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Append#count mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"321c603f_0+mean",
+    "Base":"321c603f_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"XN Append#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      16.5522811517,
+      14.7482665897,
+      16.567860858,
+      13.7023194632
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"b76dbe24_0+mean",
+    "Base":"b76dbe24_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"store_sales#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      21.6517113086,
+      25.195440955,
+      21.6751549261,
+      24.9192889465,
+      0.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"17255a42_0+mean",
+    "Base":"17255a42_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"catalog_sales#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      24.2616714948,
+      23.5728020002,
+      24.4113857038,
+      25.1132470412
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"df3ecefa_0+mean",
+    "Base":"df3ecefa_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"inventory#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      22.9635499037,
+      23.2512319762,
+      23.9443791568,
+      21.5885063001
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"1d71f31f_0+mean",
+    "Base":"1d71f31f_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"web_sales#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      23.5728161337,
+      23.7269668135,
+      24.6714284223,
+      22.8796689531
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"c4d6d0ea_0+mean",
+    "Base":"c4d6d0ea_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"store_returns#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      22.4742025339,
+      23.2626598942,
+      22.6565240907
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ab8950dc_0+mean",
+    "Base":"ab8950dc_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"catalog_returns#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      22.5694909356
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"7a542c7e_0+mean",
+    "Base":"7a542c7e_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"web_returns#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      21.7810216861
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"e1ae0fdd_0+mean",
+    "Base":"e1ae0fdd_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"customer#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      19.5585137458,
+      18.3798587494,
+      20.631150548,
+      16.9258292969
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"eacd3185_0+mean",
+    "Base":"eacd3185_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"customer_address#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      19.07300593,
+      18.9745658572,
+      20.4435519341,
+      18.8653665652
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"638cace9_0+mean",
+    "Base":"638cace9_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"customer_demographics#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      15.0813815258
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ed83b072_0+mean",
+    "Base":"ed83b072_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"item#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      11.2320998334,
+      15.789591584,
+      16.3095764667,
+      16.2510326169
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"760ae0ee_0+mean",
+    "Base":"760ae0ee_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"time_dim#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      10.9612778469,
+      8.8818363064
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"5d2fffde_0+mean",
+    "Base":"5d2fffde_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"date_dim#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      5.0498560714,
+      7.2298387854,
+      4.7874918261,
+      4.7535902773
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"9c48643b_0+mean",
+    "Base":"9c48643b_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"catalog_page#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      13.487006491
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"d19ee250_0+mean",
+    "Base":"d19ee250_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"household_demographics#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      8.8823917077,
+      10.9370989912,
+      10.605396239,
+      7.9669335019
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"9c890f2c_0+mean",
+    "Base":"9c890f2c_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"web_page#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"0c451600_0+mean",
+    "Base":"0c451600_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"promotion#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      9.7860544562
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"51320c12_0+mean",
+    "Base":"51320c12_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"store#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      5.7807435467,
+      10.4932722204,
+      10.045247498,
+      10.0878071124
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ff99bb26_0+mean",
+    "Base":"ff99bb26_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"reason#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      0.6931521805,
+      2.0794427917
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"87442d18_0+mean",
+    "Base":"87442d18_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"web_site#cardinality mean",
+    "Base Variable Occurences":17281,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      7.1670378846,
+      6.5539334183
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"f1db3404_0+mean",
+    "Base":"f1db3404_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"num_active_at_start mean",
+    "Base Variable Occurences":10556,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"f45d4049_0+mean",
+    "Base":"f45d4049_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"arrival_rate_during mean",
+    "Base Variable Occurences":10556,
+    "Type":"num",
+    "Examples":[
+      0.0356989861,
+      0.0,
+      0.0969932105,
+      0.1630105724,
+      0.1686056314
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"6e5c9b62_0+mean",
+    "Base":"6e5c9b62_0",
+    "Pre-agg Value":"",
+    "Agg":"mean",
+    "Post-agg Value":"",
+    "Tag":"num_arrived_during_initial_prediction mean",
+    "Base Variable Occurences":10556,
+    "Type":"num",
+    "Examples":[
+      0.0,
+      1.0,
+      7.0,
+      6.0,
+      5.0
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"0d4144ff_0+last=WorkloadRunner",
+    "Base":"0d4144ff_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"WorkloadRunner",
+    "Tag":"arrival source last WorkloadRunner",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"arrival"
+  },
+  {
+    "Name":"0d4144ff_1+last=",
+    "Base":"0d4144ff_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"",
+    "Tag":"arrival cluster_name last",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      ""
+    ],
+    "From regex":false,
+    "TemplateText":"arrival"
+  },
+  {
+    "Name":"ebdcf81f_0+last=QueryRouter",
+    "Base":"ebdcf81f_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"QueryRouter",
+    "Tag":"routing_score source last QueryRouter",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "QueryRouter"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-16-1783276972704-0",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"routing_score cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-16-1783276972704-1",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"routing_score cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-16-1783276972704-4",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"routing_score cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-16-1783276972704-6",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"routing_score cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-16-1783276972704-7",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"routing_score cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-16-1783276972704-8",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"routing_score cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-32-1783276972704-2",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"routing_score cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-32-1783276972704-3",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"routing_score cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-32-1783276972704-5",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"routing_score cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ebdcf81f_1+last=autoslo-32-1783276972704-9",
+    "Base":"ebdcf81f_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-9",
+    "Tag":"routing_score cluster_name last autoslo-32-1783276972704-9",
+    "Base Variable Occurences":6725,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing_score"
+  },
+  {
+    "Name":"ef3b209b_0+last=QueryRouter",
+    "Base":"ef3b209b_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"QueryRouter",
+    "Tag":"routing source last QueryRouter",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "QueryRouter"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-16-1783276972704-0",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"routing cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-16-1783276972704-1",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"routing cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-16-1783276972704-4",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"routing cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-16-1783276972704-6",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"routing cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-16-1783276972704-7",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"routing cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-16-1783276972704-8",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"routing cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-32-1783276972704-2",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"routing cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-32-1783276972704-3",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"routing cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"ef3b209b_1+last=autoslo-32-1783276972704-5",
+    "Base":"ef3b209b_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"routing cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"routing"
+  },
+  {
+    "Name":"133bdb9d_0+last=WorkloadRunner",
+    "Base":"133bdb9d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"WorkloadRunner",
+    "Tag":"query_routed source last WorkloadRunner",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-16-1783276972704-0",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"query_routed cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-16-1783276972704-1",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"query_routed cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-16-1783276972704-4",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"query_routed cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-16-1783276972704-6",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"query_routed cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-16-1783276972704-7",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"query_routed cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-16-1783276972704-8",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"query_routed cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-32-1783276972704-2",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"query_routed cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-32-1783276972704-3",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"query_routed cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"133bdb9d_1+last=autoslo-32-1783276972704-5",
+    "Base":"133bdb9d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"query_routed cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_routed"
+  },
+  {
+    "Name":"c3079922_0+last=WorkloadRunner",
+    "Base":"c3079922_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"WorkloadRunner",
+    "Tag":"query_execution_start source last WorkloadRunner",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-16-1783276972704-0",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"query_execution_start cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-16-1783276972704-1",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"query_execution_start cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-16-1783276972704-4",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"query_execution_start cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-16-1783276972704-6",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"query_execution_start cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-16-1783276972704-7",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"query_execution_start cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-16-1783276972704-8",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"query_execution_start cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-32-1783276972704-2",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"query_execution_start cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-32-1783276972704-3",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"query_execution_start cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"c3079922_1+last=autoslo-32-1783276972704-5",
+    "Base":"c3079922_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"query_execution_start cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_start"
+  },
+  {
+    "Name":"3609b411_0+last=0",
+    "Base":"3609b411_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"0",
+    "Tag":"latency_update source last 0",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_0+last=WorkloadRunner",
+    "Base":"3609b411_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"WorkloadRunner",
+    "Tag":"latency_update source last WorkloadRunner",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=0",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"0",
+    "Tag":"latency_update cluster_name last 0",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-16-1783276972704-0",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"latency_update cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-16-1783276972704-1",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"latency_update cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-16-1783276972704-4",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"latency_update cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-16-1783276972704-6",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"latency_update cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-16-1783276972704-7",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"latency_update cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-16-1783276972704-8",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"latency_update cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-32-1783276972704-2",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"latency_update cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-32-1783276972704-3",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"latency_update cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"3609b411_1+last=autoslo-32-1783276972704-5",
+    "Base":"3609b411_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"latency_update cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":2420,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"latency_update"
+  },
+  {
+    "Name":"8bbdd445_0+last=WorkloadRunner",
+    "Base":"8bbdd445_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"WorkloadRunner",
+    "Tag":"query_execution_finish source last WorkloadRunner",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-16-1783276972704-0",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"query_execution_finish cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-16-1783276972704-1",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"query_execution_finish cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-16-1783276972704-4",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"query_execution_finish cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-16-1783276972704-6",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"query_execution_finish cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-16-1783276972704-7",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"query_execution_finish cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-16-1783276972704-8",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"query_execution_finish cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-32-1783276972704-2",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"query_execution_finish cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-32-1783276972704-3",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"query_execution_finish cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"8bbdd445_1+last=autoslo-32-1783276972704-5",
+    "Base":"8bbdd445_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"query_execution_finish cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"query_execution_finish"
+  },
+  {
+    "Name":"5bfc897d_0+last=WorkloadRunner",
+    "Base":"5bfc897d_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"WorkloadRunner",
+    "Tag":"completion source last WorkloadRunner",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "WorkloadRunner"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-16-1783276972704-0",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"completion cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-16-1783276972704-1",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"completion cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-16-1783276972704-4",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"completion cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-16-1783276972704-6",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"completion cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-16-1783276972704-7",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"completion cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-16-1783276972704-8",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"completion cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-32-1783276972704-2",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"completion cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-32-1783276972704-3",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"completion cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"5bfc897d_1+last=autoslo-32-1783276972704-5",
+    "Base":"5bfc897d_1",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"completion cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":1356,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-3",
+      "autoslo-32-1783276972704-2",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":false,
+    "TemplateText":"completion"
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#003#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#003#001",
+    "Tag":"query_text_id last ext_tpcds1000#003#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#003#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#003#002",
+    "Tag":"query_text_id last ext_tpcds1000#003#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#003#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#003#003",
+    "Tag":"query_text_id last ext_tpcds1000#003#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#008#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#008#003",
+    "Tag":"query_text_id last ext_tpcds1000#008#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#009#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#009#001",
+    "Tag":"query_text_id last ext_tpcds1000#009#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#009#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#009#002",
+    "Tag":"query_text_id last ext_tpcds1000#009#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#009#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#009#003",
+    "Tag":"query_text_id last ext_tpcds1000#009#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#012#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#012#001",
+    "Tag":"query_text_id last ext_tpcds1000#012#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#012#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#012#002",
+    "Tag":"query_text_id last ext_tpcds1000#012#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#012#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#012#003",
+    "Tag":"query_text_id last ext_tpcds1000#012#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#013#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#013#003",
+    "Tag":"query_text_id last ext_tpcds1000#013#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#015#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#015#002",
+    "Tag":"query_text_id last ext_tpcds1000#015#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#019#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#019#001",
+    "Tag":"query_text_id last ext_tpcds1000#019#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#020#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#020#001",
+    "Tag":"query_text_id last ext_tpcds1000#020#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#020#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#020#002",
+    "Tag":"query_text_id last ext_tpcds1000#020#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#020#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#020#003",
+    "Tag":"query_text_id last ext_tpcds1000#020#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#021#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#021#001",
+    "Tag":"query_text_id last ext_tpcds1000#021#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#021#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#021#002",
+    "Tag":"query_text_id last ext_tpcds1000#021#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#021#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#021#003",
+    "Tag":"query_text_id last ext_tpcds1000#021#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#022#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#022#001",
+    "Tag":"query_text_id last ext_tpcds1000#022#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#022#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#022#002",
+    "Tag":"query_text_id last ext_tpcds1000#022#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#022#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#022#003",
+    "Tag":"query_text_id last ext_tpcds1000#022#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#024#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#024#003",
+    "Tag":"query_text_id last ext_tpcds1000#024#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#028#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#028#001",
+    "Tag":"query_text_id last ext_tpcds1000#028#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#028#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#028#002",
+    "Tag":"query_text_id last ext_tpcds1000#028#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#028#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#028#003",
+    "Tag":"query_text_id last ext_tpcds1000#028#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#031#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#031#001",
+    "Tag":"query_text_id last ext_tpcds1000#031#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#031#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#031#002",
+    "Tag":"query_text_id last ext_tpcds1000#031#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#031#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#031#003",
+    "Tag":"query_text_id last ext_tpcds1000#031#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#032#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#032#002",
+    "Tag":"query_text_id last ext_tpcds1000#032#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#037#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#037#002",
+    "Tag":"query_text_id last ext_tpcds1000#037#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#039#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#039#002",
+    "Tag":"query_text_id last ext_tpcds1000#039#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#041#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#041#001",
+    "Tag":"query_text_id last ext_tpcds1000#041#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#041#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#041#002",
+    "Tag":"query_text_id last ext_tpcds1000#041#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#041#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#041#003",
+    "Tag":"query_text_id last ext_tpcds1000#041#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#042#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#042#001",
+    "Tag":"query_text_id last ext_tpcds1000#042#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#042#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#042#002",
+    "Tag":"query_text_id last ext_tpcds1000#042#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#042#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#042#003",
+    "Tag":"query_text_id last ext_tpcds1000#042#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#043#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#043#001",
+    "Tag":"query_text_id last ext_tpcds1000#043#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#043#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#043#002",
+    "Tag":"query_text_id last ext_tpcds1000#043#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#043#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#043#003",
+    "Tag":"query_text_id last ext_tpcds1000#043#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#044#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#044#001",
+    "Tag":"query_text_id last ext_tpcds1000#044#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#044#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#044#002",
+    "Tag":"query_text_id last ext_tpcds1000#044#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#045#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#045#003",
+    "Tag":"query_text_id last ext_tpcds1000#045#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#046#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#046#001",
+    "Tag":"query_text_id last ext_tpcds1000#046#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#052#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#052#001",
+    "Tag":"query_text_id last ext_tpcds1000#052#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#052#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#052#002",
+    "Tag":"query_text_id last ext_tpcds1000#052#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#052#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#052#003",
+    "Tag":"query_text_id last ext_tpcds1000#052#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#054#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#054#001",
+    "Tag":"query_text_id last ext_tpcds1000#054#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#054#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#054#002",
+    "Tag":"query_text_id last ext_tpcds1000#054#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#055#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#055#001",
+    "Tag":"query_text_id last ext_tpcds1000#055#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#055#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#055#002",
+    "Tag":"query_text_id last ext_tpcds1000#055#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#055#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#055#003",
+    "Tag":"query_text_id last ext_tpcds1000#055#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#056#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#056#001",
+    "Tag":"query_text_id last ext_tpcds1000#056#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#056#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#056#002",
+    "Tag":"query_text_id last ext_tpcds1000#056#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#056#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#056#003",
+    "Tag":"query_text_id last ext_tpcds1000#056#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#057#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#057#003",
+    "Tag":"query_text_id last ext_tpcds1000#057#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#060#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#060#001",
+    "Tag":"query_text_id last ext_tpcds1000#060#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#062#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#062#001",
+    "Tag":"query_text_id last ext_tpcds1000#062#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#067#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#067#003",
+    "Tag":"query_text_id last ext_tpcds1000#067#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#070#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#070#001",
+    "Tag":"query_text_id last ext_tpcds1000#070#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#076#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#076#001",
+    "Tag":"query_text_id last ext_tpcds1000#076#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#080#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#080#001",
+    "Tag":"query_text_id last ext_tpcds1000#080#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#080#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#080#002",
+    "Tag":"query_text_id last ext_tpcds1000#080#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#080#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#080#003",
+    "Tag":"query_text_id last ext_tpcds1000#080#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#082#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#082#001",
+    "Tag":"query_text_id last ext_tpcds1000#082#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#086#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#086#001",
+    "Tag":"query_text_id last ext_tpcds1000#086#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#086#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#086#002",
+    "Tag":"query_text_id last ext_tpcds1000#086#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#086#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#086#003",
+    "Tag":"query_text_id last ext_tpcds1000#086#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#088#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#088#001",
+    "Tag":"query_text_id last ext_tpcds1000#088#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#088#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#088#002",
+    "Tag":"query_text_id last ext_tpcds1000#088#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#088#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#088#003",
+    "Tag":"query_text_id last ext_tpcds1000#088#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#089#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#089#003",
+    "Tag":"query_text_id last ext_tpcds1000#089#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#092#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#092#003",
+    "Tag":"query_text_id last ext_tpcds1000#092#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#093#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#093#001",
+    "Tag":"query_text_id last ext_tpcds1000#093#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#093#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#093#002",
+    "Tag":"query_text_id last ext_tpcds1000#093#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#093#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#093#003",
+    "Tag":"query_text_id last ext_tpcds1000#093#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#096#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#096#002",
+    "Tag":"query_text_id last ext_tpcds1000#096#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#098#001",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#098#001",
+    "Tag":"query_text_id last ext_tpcds1000#098#001",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#098#002",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#098#002",
+    "Tag":"query_text_id last ext_tpcds1000#098#002",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"28f4a0f8_0+last=ext_tpcds1000#098#003",
+    "Base":"28f4a0f8_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"ext_tpcds1000#098#003",
+    "Tag":"query_text_id last ext_tpcds1000#098#003",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "ext_tpcds1000#028#001",
+      "ext_tpcds1000#009#003",
+      "ext_tpcds1000#028#003",
+      "ext_tpcds1000#055#001",
+      "ext_tpcds1000#086#003"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-16-1783276972704-0",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-0",
+    "Tag":"routed_cluster_name last autoslo-16-1783276972704-0",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-16-1783276972704-1",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-1",
+    "Tag":"routed_cluster_name last autoslo-16-1783276972704-1",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-16-1783276972704-4",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-4",
+    "Tag":"routed_cluster_name last autoslo-16-1783276972704-4",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-16-1783276972704-6",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-6",
+    "Tag":"routed_cluster_name last autoslo-16-1783276972704-6",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-16-1783276972704-7",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-7",
+    "Tag":"routed_cluster_name last autoslo-16-1783276972704-7",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-16-1783276972704-8",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-16-1783276972704-8",
+    "Tag":"routed_cluster_name last autoslo-16-1783276972704-8",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-32-1783276972704-2",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-2",
+    "Tag":"routed_cluster_name last autoslo-32-1783276972704-2",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-32-1783276972704-3",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-3",
+    "Tag":"routed_cluster_name last autoslo-32-1783276972704-3",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  },
+  {
+    "Name":"ecd3b58c_0+last=autoslo-32-1783276972704-5",
+    "Base":"ecd3b58c_0",
+    "Pre-agg Value":"",
+    "Agg":"last",
+    "Post-agg Value":"autoslo-32-1783276972704-5",
+    "Tag":"routed_cluster_name last autoslo-32-1783276972704-5",
+    "Base Variable Occurences":17281,
+    "Type":"str",
+    "Examples":[
+      "autoslo-16-1783276972704-0",
+      "autoslo-16-1783276972704-1",
+      "autoslo-32-1783276972704-2",
+      "autoslo-32-1783276972704-3",
+      "autoslo-16-1783276972704-4"
+    ],
+    "From regex":true,
+    "TemplateText":""
+  }
+]
