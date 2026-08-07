@@ -521,6 +521,34 @@ class Logos:
             calculate_std_error=False,
         )["ATE"]
 
+    def get_unadjusted_ate(
+        self,
+        treatment: str,
+        outcome: str,
+    ) -> float: 
+        """
+        Calculate the unadjusted ATE of `treatment` on `outcome`.
+
+        Parameters:
+            treatment: The name or tag of the treatment variable.
+            outcome: The name or tag of the outcome variable.
+
+        Returns:
+            The unadjusted ATE.
+        """
+        preparer_log = self.prepared_log
+        preparer_vars = self.prepared_variables
+        return ATECalculator.get_ate_and_confidence(
+            preparer_log,
+            preparer_vars,
+            treatment,
+            outcome,
+            confounder=None,
+            graph=None,  # No adjustment for unadjusted ATE
+            calculate_p_value=False,
+            calculate_std_error=False,
+        )["ATE"]
+
     # ------------------------------------------------------------------
     # Tag management
     # ------------------------------------------------------------------
