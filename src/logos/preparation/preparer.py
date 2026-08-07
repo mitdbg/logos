@@ -250,6 +250,7 @@ class Preparer:
         force: bool = False,
         drop_bad_aggs: bool = True,
         default_imp: str = "no_imp",
+        drop_units_with_missing_values: bool = True,
     ) -> bool:
         """
         Prepare the parsed log for causal analysis.
@@ -292,6 +293,7 @@ class Preparer:
                 ignore_uninteresting=ignore_uninteresting,
                 drop_bad_aggs=drop_bad_aggs,
                 default_imp=default_imp,
+                drop_units_with_missing_values=drop_units_with_missing_values,
             )
 
         return True
@@ -304,6 +306,7 @@ class Preparer:
         ignore_uninteresting: bool = True,
         drop_bad_aggs: bool = True,
         default_imp: str = "no_imp",
+        drop_units_with_missing_values: bool = True,
     ) -> None:
         """
         Prepare the log anew.
@@ -481,7 +484,9 @@ class Preparer:
             self._prepared_log[col] = (self._imp_funcs[func_name])(
                 self._prepared_log[col]
             )
-        self._prepared_log.dropna(inplace=True)
+
+        if drop_units_with_missing_values:
+            self._prepared_log.dropna(inplace=True)
 
         # Drop variables that do not add information compared to other variables
         # based on the same base variable but using a different aggregation

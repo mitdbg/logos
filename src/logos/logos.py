@@ -335,6 +335,7 @@ class Logos:
         drop_bad_aggs: bool = True,
         reject_prunable_edges: bool = False,
         default_imp: str = "no_imp",
+        drop_units_with_missing_values: bool = True,
     ) -> None:
         """
         Prepare the log for causal analysis.
@@ -354,6 +355,8 @@ class Logos:
             default_imp: Imputation applied to any variable not in `custom_imp`.
                 Defaults to ``"no_imp"`` (rows with NaN are dropped by dropna).
                 Set to ``"zero_imp"`` to impute all uncovered variables with 0.
+            drop_units_with_missing_values: Whether to drop causal units with any
+                missing values after imputation.  Defaults to True.
         """
         start_time = datetime.now()
         if custom_agg is None:
@@ -371,6 +374,7 @@ class Logos:
             force,
             drop_bad_aggs,
             default_imp=default_imp,
+            drop_units_with_missing_values=drop_units_with_missing_values,
         ):
             return
 
